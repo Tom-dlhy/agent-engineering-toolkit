@@ -3,7 +3,7 @@ name: python-observability
 domain: backend
 version: "2.0.0"
 description: >-
-  Use for Python structured JSON logging, contextvars correlation IDs, OpenTelemetry traces/metrics, redaction and production incident signals. Do not use for generic aesthetic logging or as a replacement for infrastructure SRE monitoring.
+  Use when working on Python structured JSON logging, contextvars correlation IDs, OpenTelemetry traces/metrics, redaction and production incident signals. Do not use for generic aesthetic logging or as a replacement for infrastructure SRE monitoring.
 ---
 
 # Python observability — actionable signals and safe context

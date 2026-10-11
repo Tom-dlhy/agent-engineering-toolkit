@@ -3,7 +3,7 @@ name: python-http-clients
 domain: backend
 version: "2.0.0"
 description: >-
-  Use for outbound Python HTTPX requests, async reusable clients, partner API adapters, retry/idempotency policies, auth headers, network errors and response validation. Do not use for unrelated FastAPI incoming request handling or SDK-native cloud calls.
+  Use when working on outbound Python HTTPX requests, async reusable clients, partner API adapters, retry/idempotency policies, auth headers, network errors and response validation. Do not use for unrelated FastAPI incoming request handling or SDK-native cloud calls.
 ---
 
 # Python outbound HTTP — typed, bounded and observable

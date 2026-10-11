@@ -3,7 +3,7 @@ name: fastapi-service
 domain: backend
 version: "2.0.0"
 description: >-
-  Use for FastAPI HTTP endpoints, lifespan resources, DI, Pydantic request/response contracts, exception handlers and API testing/deployment. Do not use for a plain Python script or unrelated ML notebook.
+  Use when working on FastAPI HTTP endpoints, lifespan resources, DI, Pydantic request/response contracts, exception handlers and API testing/deployment. Do not use for a plain Python script or unrelated ML notebook.
 ---
 
 # FastAPI — lifecycle, contracts and production HTTP

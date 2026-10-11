@@ -3,7 +3,7 @@ name: modern-python
 domain: backend
 version: "2.0.0"
 description: >-
-  Use for Python runtime, package structure, type safety, dependency management, concurrency choices, configuration and Python-specific code quality. Do not use instead of FastAPI, SQLAlchemy, HTTPX or LLM provider specialists.
+  Use when working on Python runtime, package structure, type safety, dependency management, concurrency choices, configuration and Python-specific code quality. Do not use instead of FastAPI, SQLAlchemy, HTTPX or LLM provider specialists.
 ---
 
 # Modern Python — engineering foundations
