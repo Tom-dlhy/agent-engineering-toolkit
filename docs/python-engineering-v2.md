@@ -89,3 +89,15 @@ and pools, trace privacy, and Celery worker-loss semantics.
 See [Backend audit](backend-refactor-audit.md).
 The previously useful native AWS/GCP/Azure LLM specialists are
 unchanged and must still be verified against actual account/model.
+
+## AI category source review — 2026-10-11
+
+AI domain independently routes agent-orchestration (durable
+LangGraph workflows), rag-engineering (retriever/corpus/ACL)
+and mcp-integration (2026-07-28 protocol/SDK). Existing
+python-llm-gateways and llm-integration retain owned
+boundary responsibilities. Python-LLM profile opts into agent
+orchestration and RAG implementation; MCP stays a separately
+installable, explicitly selected tool-integration skill.
+See [AI audit](ai-refactor-audit.md) for version details,
+budget fail-open caveats, OWASP and verification limits.

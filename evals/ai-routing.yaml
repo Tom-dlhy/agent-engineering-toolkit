@@ -1,0 +1,37 @@
+# Lexical routing regression only, not real model host behavioral evaluation.
+version: 1
+selection:
+  - query: "agent tool safety prompt injection authorization approval"
+    expected: agent-tool-safety
+  - query: "llm evaluation eval judge rubric dataset"
+    expected: llm-evaluation
+  - query: "llm structured output calling provider streaming"
+    expected: llm-integration
+  - query: "litellm gateway router proxy multi provider fallback"
+    expected: python-llm-gateways
+  - query: "rag evaluation retrieval recall grounding citation"
+    expected: rag-evaluation
+  - query: "agent orchestration langgraph checkpoint durable resume interrupt"
+    expected: agent-orchestration
+  - query: "rag ingestion chunking embedding hybrid reranking index"
+    expected: rag-engineering
+  - query: "mcp protocol server client transport oauth stdio"
+    expected: mcp-integration
+negative_neighbors:
+  - query: "AWS Bedrock Converse model inference"
+    expected: aws-bedrock
+  - query: "Azure Foundry Entra Responses deployment"
+    expected: azure-ai-foundry
+  - query: "Google Vertex AI Gemini google genai SDK"
+    expected: gcp-vertex-ai
+  - query: "pytest property concurrency test strategy"
+    expected: test-strategy
+  - query: "secure code review ssrf injection authorization"
+    expected: secure-code-review
+  - query: "cdc debezium flink watermark kafka checkpoint streaming"
+    expected: streaming-cdc-engineering
+  - query: "FastAPI lifespan endpoint Pydantic dependency"
+    expected: fastapi-service
+no_match:
+  - ""
+  - "zzzzqqyyunknownmodelskill"

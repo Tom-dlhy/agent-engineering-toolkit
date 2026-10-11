@@ -1,26 +1,38 @@
 version: 1
 # Explicit first-party catalog; only names/descriptions are exposed by search.
 skills:
+  - name: agent-orchestration
+    domain: ai
+    path: skills/ai/agent-orchestration
+    keywords: ["agent","orchestration","checkpoint","langgraph","durable","handoff","workflow","resume","interrupt"]
   - name: agent-tool-safety
     domain: ai
     path: skills/ai/agent-tool-safety
-    keywords: ["agent","tool","mcp","security","prompt","injection"]
+    keywords: ["agent","tool","safety","prompt","injection","authorization","approval","privilege","attack"]
   - name: llm-evaluation
     domain: ai
     path: skills/ai/llm-evaluation
-    keywords: ["llm","eval","prompt","benchmarks","quality"]
+    keywords: ["llm","evaluation","eval","judge","rubric","dataset","benchmark","quality","grader"]
   - name: llm-integration
     domain: ai
     path: skills/ai/llm-integration
-    keywords: ["llm", "structured", "output", "tool", "calling", "providers", "production", "pydantic"]
+    keywords: ["llm","structured","output","calling","model","provider","streaming","refusal","pydantic"]
+  - name: mcp-integration
+    domain: ai
+    path: skills/ai/mcp-integration
+    keywords: ["mcp","protocol","server","client","transport","oauth","tools","resources","stdio"]
   - name: python-llm-gateways
     domain: ai
     path: skills/ai/python-llm-gateways
-    keywords: ["litellm", "langchain", "langgraph", "gateway", "router", "multi", "provider", "proxy", "python", "orchestration"]
+    keywords: ["litellm","langchain","gateway","router","proxy","multi","provider","fallback","python"]
+  - name: rag-engineering
+    domain: ai
+    path: skills/ai/rag-engineering
+    keywords: ["rag","ingestion","chunking","embedding","hybrid","reranking","index","acl","vector"]
   - name: rag-evaluation
     domain: ai
     path: skills/ai/rag-evaluation
-    keywords: ["rag","embedding","search","retrieval","chunking","evaluation"]
+    keywords: ["rag","evaluation","retrieval","recall","grounding","citation","benchmark","ranking"]
   - name: api-contract-design
     domain: architecture
     path: skills/architecture/api-contract-design

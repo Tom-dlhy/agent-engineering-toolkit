@@ -1,0 +1,1 @@
+"""Educational AI-tool and RAG permission fixtures (in memory only)."""

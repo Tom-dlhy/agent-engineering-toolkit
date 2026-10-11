@@ -2,7 +2,7 @@
 
 ## Current state
 
-- 116 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
+- 119 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
 - The AWS split, 35 UI provider branches and design/growth/refined methodology work use selective references.
 - Additional skills remain condensed methodological overviews and are scheduled for deeper technical coverage.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
@@ -79,3 +79,15 @@ dbt/GX adapter runtimes, Snowflake/BigQuery costs/quotas,
 multi-engine Iceberg/catalog writer tests, Debezium recovery,
 Flink source-to-sink replay and real-agent held-out scenarios.
 No blanket production/SOTA certification from static markdown.
+
+## AI category refactor — source-verified, integration proofs still needed
+
+AI includes eight skills, 26 reference leaves and three new task-scoped
+specialists: durable agent orchestration, RAG engineering and MCP
+2026-07-28 protocol implementation. Deterministic tool-executor policy
+and query-time RAG tenant filter tests run offline; eval/routing metadata
+and context limits remain validated. Remaining real-world evidence:
+provider-native paid tests, LangGraph checkpoint crash recovery,
+MCP SDK v2 server/client interop, retrieval index/ACL benchmarks,
+model evals with consented datasets and supervised red-team.
+No universal production/SOTA guarantee from green CI.

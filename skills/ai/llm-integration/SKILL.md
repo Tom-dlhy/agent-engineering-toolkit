@@ -1,28 +1,54 @@
 ---
 name: llm-integration
 domain: ai
-version: "2.0.0"
+version: "2.1.0"
 description: >-
-  Use when designing model-backed application boundaries, structured output, tool safety, retrieval, LLM failure classification, evaluations and multi-provider contracts. For native Bedrock, Vertex AI or Azure operations activate the service-specific cloud skill; for LangChain/LiteLLM activate python-llm-gateways.
+  Use when defining production model-backed app contracts, typed outputs,
+  streaming, rate/cost policies, provider-native API capabilities and
+  safe error mapping. Do not implement agent durability, RAG indexing
+  or protocol-level MCP servers with this general integration skill.
 ---
 
-# LLM integration — application contract independent of SDK
+# LLM integration — application-owned contract, provider-specific reality
 
-## Start with capability, not brand
-1. Define input modality, output schema, max latency, reliability, compliance/residency, budget, rate limits, eval data and tool side effects.
-2. Evaluate **native SDK** if using one provider or provider-only capability. Use a minimal application-owned Protocol/adapter to avoid bleeding SDK responses into domain.
-3. Evaluate LiteLLM for many provider deployments needing routing/budgets/gateway; LangChain for tool/prompt/retrieval component composition; LangGraph for durable orchestrated agent state. Don't install all three by default.
-4. Validate untrusted model text and tool arguments with Pydantic/schema; tool calls must pass authorization, allowlists, idempotency and human approval gates.
-5. Define classification and deadlines for 429/quota, auth errors, invalid outputs, safety blocks, tool cycles and cancellation; default to **no silent fallback** across models without quality/compliance approval.
-6. Establish evaluation and telemetry of output quality, schema violations, p95/99 latency, retries, token/cost per task and provider differences.
+## Model boundary method
+1. Specify input/output modalities, structured schema, safety/abstention,
+   data residency, latency, quota, allowed tool actions and acceptance evals.
+2. Prefer native SDK plus a thin owned adapter for one provider or
+   deep provider features; use python-llm-gateways only when its
+   multi-provider routing or central governance is justified.
+3. Pin exact SDK/model/api versions and test feature matrix: structured
+   output, streaming, function calls, reasoning blocks, context caching
+   and usage metrics vary across model and deployment.
+4. Validate output at runtime; strict JSON schema or function arguments
+   are **not** guaranteed semantic truth or permission to execute a tool.
+   Handle refusal, incomplete output, content filter and token truncation.
+5. Preserve provider-specific completion reason/tool identifiers and
+   multiline/multimodal parts; never join arbitrary stream deltas
+   and declare a structured document valid before terminal event.
+6. Assign total deadline, retries and token/cost capacity at tenant and
+   provider, including cancellation, 429 and unknown remote outcome.
+7. Establish versioned negative/behavioral evals, privacy-safe telemetry,
+   controlled release and stop/rollback thresholds.
 
 ## Targeted references
-- [Typed LLM ports and structured output](references/typed-boundary-and-outputs.md) — read when creating domain/provider-independent LLM adapter or validation contracts.
-- [Reliability, token budgets, fallbacks and security](references/reliability-and-risk.md) — read when implementing retries, quotas, gateway, model routing, streaming and tool side effects.
-- [Production LLM verification and rollout](references/testing-evals-and-rollout.md) — read when testing model changes, building evals, staging and canary.
+- [Typed LLM ports and structured output](references/typed-boundary-and-outputs.md)
+  — **read when** building Pydantic/application-owned schema or adapters.
+- [Reliability, token budgets, fallbacks and security](references/reliability-and-risk.md)
+  — **read when** handling quotas, provider errors and side effects.
+- [Production LLM verification and rollout](references/testing-evals-and-rollout.md)
+  — **read when** changing provider/model/prompt in production.
+- [Provider capability matrix and streaming envelopes](references/provider-capabilities-and-streaming.md)
+  — **read when** mapping AWS/GCP/Azure/native response shapes,
+  refusals, tool results and partial streams.
 
-## Native specialists
-aws-bedrock for Bedrock Converse and tool use, gcp-vertex-ai for Google Gen AI/Vertex, azure-ai-foundry for Azure Foundry and managed identity; python-llm-gateways for LangChain/LiteLLM/agent orchestration.
+## Distinct specialist routes
+aws-bedrock for Bedrock Converse, gcp-vertex-ai for Gemini on Vertex,
+azure-ai-foundry for Azure; python-llm-gateways for LiteLLM/LangChain;
+agent-orchestration for durable runs; rag-engineering for indexing and
+retrieval, mcp-integration for protocol mechanics.
 
 ## Done
-Contract tested and versioned, model/mode capabilities explicitly confirmed, privacy and fallback policy agreed, budget/latency measured where available, real evaluation evidence distinguished from mock tests.
+Supported deployment capability, typed response, explicit error taxonomy,
+resource/budget and privacy controls, reproducible negative tests and
+documented unverified provider/cloud features.
