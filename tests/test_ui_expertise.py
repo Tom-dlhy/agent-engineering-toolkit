@@ -26,7 +26,7 @@ class UIExpertiseTests(unittest.TestCase):
 
     def test_exact_provider_count_and_deduplicated_selector(self):
         self.assertEqual(len(self.providers), 35)
-        self.assertEqual(len(self.skills), 150)
+        self.assertEqual(len(self.skills), 151)
         self.assertEqual(self.skills["ui-library-selection"].path,
                          "skills/stacks/ui-library-selection")
 
@@ -47,7 +47,7 @@ class UIExpertiseTests(unittest.TestCase):
         self.assertEqual(len(refs), 5)
         self.assertTrue(all(len(read_reference(self.skills["ui-component-research"], r, ROOT)) > 1600
                             for r in refs))
-        self.assertEqual(len(indexed_references(self.skills["ui-library-selection"], ROOT)), 1)
+        self.assertEqual(len(indexed_references(self.skills["ui-library-selection"], ROOT)), 3)
 
     def test_provider_selection_and_negative_routing(self):
         cases = {

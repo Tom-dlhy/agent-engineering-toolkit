@@ -589,15 +589,19 @@ skills:
     domain: quality
     path: skills/quality/test-strategy
     keywords: ["test","testing","pytest","unit","integration","contract","e2e","property","concurrency","coverage","tdd"]
+  - name: authentication-solution-selection
+    domain: stacks
+    path: skills/stacks/authentication-solution-selection
+    keywords: ["authentication","auth","identity","login","sessions","sso","oidc","passkeys","mfa","provider","selection"]
   - name: database-selection
     domain: stacks
     path: skills/stacks/database-selection
-    keywords: ["database","selection","postgres","sqlite","redis","mysql","neon"]
+    keywords: ["database","selection","postgres","sqlite","redis","mysql","neon","d1","transactions","consistency","storage"]
   - name: stack-advisor
     domain: stacks
     path: skills/stacks/stack-advisor
-    keywords: ["stack","advisor","choose","framework","tech","technologies","saas"]
+    keywords: ["stack","advisor","choose","framework","tech","technologies","saas","fullstack","compatibility","tco"]
   - name: ui-library-selection
     domain: stacks
     path: skills/stacks/ui-library-selection
-    keywords: ["components","library","ui","shadcn","mui","radix","tailwind"]
+    keywords: ["components","library","ui","shadcn","mui","radix","tailwind","migration","licensing"]
