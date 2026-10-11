@@ -39,7 +39,7 @@ After inspecting output add `--apply` to execute. The installer will not overwri
 
 ## V2 integration policy
 
-The existing selector remains at `skills/stacks/ui-library-selection`. No duplicate `ui-library-selection` is registered. Provider skills live under `skills/ui/` and should supply targeted local deep references beyond links to vendor websites. The set of providers is **available** but is not part of default profiles; the platform profiles are opt-in. Only claim expert maturity for skills whose content and behavior have been evaluated, not by file count. Full operational depth is improved incrementally; current version-sensitive APIs must be checked against installed packages.
+The existing selector remains at `skills/stacks/ui-library-selection`, with no duplicate. Provider skills under `skills/ui/` are opt-in and use targeted local leaves. Each must meet the common quality contract, with version-specific API claims checked against actual installed packages. No maturity labels determine routing or trust.
 
 ## External source and maintenance
 
@@ -51,6 +51,6 @@ Keep the catalog useful but its claims modest: compatibility, props, licenses an
 
 Use `python scripts/validate_skills.py`, `python -m unittest discover -s tests -v`, and `python scripts/context_budget.py --profile minimal --budget 2500`; also inspect `--profile web-app` estimates and validate the target installation in dry-run mode. Context-budget estimates are character heuristics, not measured model tokens.
 
-## Verification and remaining maturity work
+## Verification and remaining evidence
 
-The PR includes deterministic tests for all 35 local leaf pairs, four component research leaves, safe installer selection, metadata budgets, routing and security. Verify individual providers against **installed SDK/package major versions**; actual real-device/browser accessibility and component code are not exercised by markdown validation. Promote `expanded-v2` to `expert-v2` only after hands-on representative implementation and measured agent-evaluation results. See `docs/expertise-audit.md`.
+The existing deterministic suite covers 35 local provider leaf pairs, four shared component-research leaves, safe installation, context budgets and routing. These checks do not establish that every provider API or accessibility behavior has been validated in a live app; keep the missing evidence as a QA backlog rather than a maturity tier. See `docs/expertise-audit.md`.

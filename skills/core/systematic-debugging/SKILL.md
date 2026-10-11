@@ -1,22 +1,39 @@
 ---
 name: systematic-debugging
 domain: core
-version: "0.1.0"
+version: "0.2.0"
 description: >-
-  Use when a bug, failing test, broken build or unexpected runtime behavior needs diagnosis. Do not use as an excuse to impose full incident-process overhead on known one-line mistakes.
+  Use when diagnosing unexplained failing tests, runtime exceptions, flaky behavior,
+  regressions or production defects. Do not impose a full investigation for a known,
+  isolated typo or claim an unobserved root cause is proven.
 ---
 
-# systematic-debugging
+# Systematic debugging — evidence before repair
 
-## Diagnose before patching
-1. Capture the observed symptom and exact error, including environment, version and reproducible steps.
-2. Identify the smallest reproduction. Read the relevant logs and recent diff.
-3. Trace the data through component boundaries, starting near the first incorrect output.
-4. Form one falsifiable hypothesis. Design the cheapest check that could disprove it.
-5. Change one thing at a time; avoid speculative shotgun fixes.
-6. Add a focused regression test when feasible, implement the fix, and verify it passes.
+## Execution
 
-If you cannot reproduce, state what is missing and propose targeted instrumentation. Do not fabricate a root cause.
+1. **Describe** exact observed vs expected behavior, environment, revision, error and repeatability. Distinguish report, trace and hypothesis.
+2. **Reproduce safely** with minimal test/fixture and controlled environment; never mutate customer data to reproduce.
+3. **Localize** first violated invariant, inspecting recent diff and data flow across components, database, provider and worker.
+4. **Falsify** one leading hypothesis with smallest disproof experiment. Controlled binary isolation, bisect and trace sampling beat shotgun edits.
+5. **Fix the actual cause** at the owning boundary; avoid exception suppression, magical sleeps or retries without idempotency.
+6. **Regress**: run red-then-green test and adjacent negative cases; inspect diff, report remaining uncertainty and escalate when security or data are at stake.
 
-## Exit
-Describe the root cause, the specific fix, regression protection, evidence and residual uncertainty.
+| Symptom | First action | Avoid |
+|---|---|---|
+| Deterministic failure | Focused test and first incorrect value | Changing several layers |
+| Flaky test | Reproduce with seed, scheduling and shared resource checks | Declaring fixed after one retry |
+| Production-only 503 | Safe traces, version/config comparison, staging replay | Speculative deploy |
+| No reproduction | Record gap and add bounded safe instrumentation | Inventing a root cause |
+
+## References
+
+- [Reproduction and fault isolation](references/reproduction-and-isolation.md) — **read when** the failure spans layers or cannot be reliably reproduced.
+- [Causal fix and regression checks](references/root-cause-and-regressions.md) — **read when** a candidate cause has been found or a fix needs proof.
+
+`task-routing` selects workflow; `verification-before-done` audits completion; `performance-profiling` owns deep performance measurements. Domain skill explains specific API semantics.
+
+## Completion
+
+Observed symptom, confirmed or provisional cause, disproof experiment, fix,
+regression result, untested scenarios and risk. Never fabricate tests or root cause.

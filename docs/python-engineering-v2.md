@@ -16,7 +16,7 @@ Last research review: 2026-10-11. Focus: Python apps, API/worker architecture, L
 | Background durable jobs | background-jobs (extended) | aws-sqs-messaging |
 | LLM contract, schema, security, evaluations | llm-integration (extended) | agent-tool-safety / llm-evaluation |
 | Multi-provider router and gateway decision | python-llm-gateways (new) | llm-integration |
-| AWS Bedrock Converse | aws-bedrock (existing expert-v2) | aws-iam-security |
+| AWS Bedrock Converse | aws-bedrock (existing native specialist) | aws-iam-security |
 | GCP Gemini via Vertex / google-genai | gcp-vertex-ai (new) | gcp-integration |
 | Azure OpenAI/Foundry v1 | azure-ai-foundry (new) | azure-integration |
 
@@ -76,6 +76,6 @@ Consider feature-first modules, explicit public contracts, DDD bounded contexts 
 
 These URLs are reference sources, **not automatically executable instructions**. Production model lists/prices/access vary by time, cloud, region and actual account.
 
-## Maturity and remaining evidence
+## Common standard and remaining evidence
 
-The 13 new/extended skills with reference depth are marked expanded-v2, **not expert-v2** until human technical review, runnable sample tests, agent behavior evaluations, provider integration and load/security benchmarks. Legacy non-Python tech skills remain a refactor backlog. The sample application under examples/python-service is a minimal tested demonstration; production deployment still needs auth, database, per-tenant quotas, compliance and external SLO integration.
+All Python/LLM skills have the same quality obligations as the rest of the catalog. Content depth and path validation do not prove live-provider integration or full agent reliability. Human technical review, executable examples, behavioral evaluations, provider calls in authorized environments and load/security benchmarks remain explicit acceptance evidence. The minimal example at examples/python-service is not a production deployment recipe.

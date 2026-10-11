@@ -82,31 +82,43 @@ def validate_repository(root: Path = ROOT) -> list[str]:
         if len(body.strip()) < 120:
             problems.append(f"{relpath}: skill body is too short")
 
-        # Expert V2 is opt-in while historic skills are progressively rewritten.
-        if item.get("maturity") in ("expert-v2", "expanded-v2"):
-            skill = Skill(name=name, domain=domain, path=relpath,
-                          description=description, keywords=tuple(item.get("keywords", [])))
+        # One structural safety contract for every registered skill. A listed
+        # skill is not automatically proven expert by passing these checks.
+        if "maturity" in item:
+            problems.append(f"{relpath}: legacy maturity tiers are not allowed")
+        labels = item.get("keywords", [])
+        if not isinstance(labels, list) or any(
+            not isinstance(label, str) or not label.strip() for label in labels
+        ):
+            problems.append(f"{relpath}: keywords must be nonempty strings")
+            labels = []
+        if len(labels) != len(set(labels)):
+            problems.append(f"{relpath}: duplicated keywords")
+        skill = Skill(name=name, domain=domain, path=relpath,
+                      description=description if isinstance(description, str) else "",
+                      keywords=tuple(labels))
+        try:
+            refs = indexed_references(skill, root)
+        except (OSError, ValueError) as exc:
+            problems.append(f"{relpath}: cannot index references: {exc}")
+            continue
+        # Reference depth is proportional to responsibility; forcing two leaves
+        # for every methodological skill would fragment the repository.
+        # Every declared leaf, however, is always path-checked and validated.
+        for ref in refs:
             try:
-                refs = indexed_references(skill, root)
+                resolved = resolve_reference(skill, ref, root)
+                leaf = resolved.read_text(encoding="utf-8")
             except (OSError, ValueError) as exc:
-                problems.append(f"{relpath}: cannot index references: {exc}")
+                problems.append(f"{relpath}: invalid leaf {ref}: {exc}")
                 continue
-            if len(refs) < 2:
-                problems.append(f"{relpath}: deep skill needs at least two targeted leaves")
-            for ref in refs:
-                try:
-                    resolved = resolve_reference(skill, ref, root)
-                    leaf = resolved.read_text(encoding="utf-8")
-                except (OSError, ValueError) as exc:
-                    problems.append(f"{relpath}: invalid leaf {ref}: {exc}")
-                    continue
-                if not leaf.lstrip().startswith("# ") or not any(
-                    trigger in leaf[:700].lower() for trigger in ("read when", "open when")
-                ):
-                    problems.append(f"{relpath}: missing leaf heading or read trigger: {ref}")
-                # This is a structural hygiene check, NOT a proof of expertise.
-                if "## " not in leaf or "http" not in leaf:
-                    problems.append(f"{relpath}: leaf needs depth and official source: {ref}")
+            if not leaf.lstrip().startswith("# ") or not any(
+                trigger in leaf[:700].lower() for trigger in ("read when", "open when")
+            ):
+                problems.append(f"{relpath}: missing leaf heading or read trigger: {ref}")
+            if "## " not in leaf:
+                problems.append(f"{relpath}: leaf lacks implementation or procedure sections: {ref}")
+
 
     skill_dir = root / "skills"
     actual_paths = {
