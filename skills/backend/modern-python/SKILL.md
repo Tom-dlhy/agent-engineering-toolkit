@@ -1,27 +1,37 @@
 ---
 name: modern-python
 domain: backend
-version: "2.0.0"
+version: "2.1.0"
 description: >-
-  Use when working on Python runtime, package structure, type safety, dependency management, concurrency choices, configuration and Python-specific code quality. Do not use instead of FastAPI, SQLAlchemy, HTTPX or LLM provider specialists.
+  Use when engineering Python runtime, packaging, typing, configuration,
+  synchronous or asynchronous concurrency and robust command-line or service code.
+  Do not replace FastAPI, HTTPX, SQLAlchemy or domain-specific specialists.
 ---
 
-# Modern Python — engineering foundations
+# Modern Python — production mechanics before abstraction
 
-## Decide before scaffolding
-1. Identify project type (one-off script, CLI/library, worker, API, ML experiment), Python versions, package manager, lockfile, deployment platform and existing conventions. No migration for fashion.
-2. Define untrusted inputs, domain invariants, side-effect boundaries, error contracts, lifecycle and cancellation.
-3. Choose sync versus async from actual I/O drivers and latency; do not use async as a CPU acceleration technique.
-4. Select the lightest project structure that preserves testing and deployment. Record reasons before introducing extra abstraction.
-5. Establish reproducible builds, typed boundaries, static checks, deterministic tests and release/rollback criteria.
+## Decisions
+1. Identify **application type** (script, CLI, package, ASGI API, batch, worker), supported interpreter/runtime and current lock/build conventions. Preserve coherent existing projects.
+2. Separate pure calculations from I/O, parse untrusted data at runtime boundaries, enforce type contracts in static checks and handle explicit errors; Python hints do **not** validate inputs automatically.
+3. For dependency builds pin tested interpreter and resolved lock. With uv, choose `uv sync --locked` to **check** lock freshness; `--frozen` skips freshness check. Do not treat both as equivalent.
+4. Choose concurrency by workload: async for compatible nonblocking I/O; threads for blocking drivers; processes or native releases of GIL for CPU workloads. Never introduce unlimited tasks to hide slow I/O.
+5. Own resources at proper lifetime and cancellation boundaries. Do not suppress `CancelledError`, leak file/HTTP connections, or put customer credentials into exceptions or logs.
+6. Validate configuration at startup with Pydantic Settings or stdlib as appropriate, including env/dotenv/secret source precedence and unexpected configuration.
+7. Prove tests, lint/typing, locks and packaging for **actual deployment platform**, not a solely local REPL success.
 
-## Targeted references
-- [Python packaging, uv and builds](references/project-packaging.md) — read when choosing project layout, dependency pinning, locking, CI or distribution.
-- [Typing, domain contracts and exceptions](references/typing-and-quality.md) — read when defining interfaces, data types, validation or reviewing maintainability.
-- [Concurrency, capacity and performance](references/concurrency-and-performance.md) — read when deciding sync vs async, threads/processes/workers, rate limits or bottlenecks.
-- [Pydantic settings and secrets](references/settings-and-secrets.md) — read when setting env config, cache lifetime, secret injection and fail-fast startup.
+## Read only as needed
+- [Packaging, uv and reproducibility](references/project-packaging.md) — read when locking, shipping wheels or building containers.
+- [Python typing, quality and contracts](references/typing-and-quality.md) — read when designing types, Protocols, exceptions and validation.
+- [Async, threads, processes and capacity](references/concurrency-and-performance.md) — read when choosing concurrency or managing cancellation.
+- [Settings and injected secrets](references/settings-and-secrets.md) — read when building typed configuration or testing source precedence.
+- [CLI and batch reliability](references/cli-batch-and-filesystem.md) — read when building file processing, idempotent batch or command-line automation.
+- [Supported runtime and deployment compatibility](references/runtime-lifecycle-and-compatibility.md) — read when changing Python versions, packaging or deploying heterogeneous environments.
 
-Use python-project-architecture for layout decisions, fastapi-service for ASGI, python-http-clients for outbound REST, python-persistence for databases, python-observability for telemetry, and llm-integration for models.
+## Boundaries
+python-project-architecture chooses package/module architecture;
+fastapi-service handles HTTP routes/lifespan; background-jobs owns durable queues;
+test-strategy owns test-suite design.
 
-## Done
-Version and toolchain recorded, type/lint/test/build commands run where available, runtime budgets and failure modes examined, no secret or hidden global side effect.
+## Completion
+Runtime and lock pinned; inputs and secrets protected; bounded resources,
+correct cancellation/cleanup; appropriate negative tests executed or gaps named.

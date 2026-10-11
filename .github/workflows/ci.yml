@@ -36,6 +36,12 @@ jobs:
         run: |
           python -m pip install -e "./examples/python-service[dev]"
           python -m pytest examples/python-service/tests -q
+      - name: Setup Node.js 24 for TypeScript backend example
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 verified SHA
+        with:
+          node-version: "24"
+      - name: Run TypeScript backend runtime contract tests
+        run: node --test examples/backend-typescript/tests/*.test.ts
       - name: Smoke test progressive references
         run: |
           python scripts/skillctl.py references aws-bedrock

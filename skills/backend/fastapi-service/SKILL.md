@@ -1,30 +1,32 @@
 ---
 name: fastapi-service
 domain: backend
-version: "2.0.0"
+version: "2.1.0"
 description: >-
-  Use when working on FastAPI HTTP endpoints, lifespan resources, DI, Pydantic request/response contracts, exception handlers and API testing/deployment. Do not use for a plain Python script or unrelated ML notebook.
+  Use when implementing FastAPI HTTP, WebSocket or streaming endpoints,
+  lifespan dependency injection, Pydantic contracts, auth, errors and ASGI deployment.
+  Do not apply to unrelated scripts, SQL internals or cloud SDK-only tasks.
 ---
 
-# FastAPI — lifecycle, contracts and production HTTP
+# FastAPI service — observable behavior and safe lifetimes
 
-## Start with the existing app
+## Approach
+1. Inspect FastAPI, Pydantic and Starlette versions and actual application conventions. The `lifespan` async context is preferred for shared startup/shutdown resources; do not mix legacy startup event assumptions.
+2. Routes own HTTP/request parsing and public responses; application services own business invariants and authorization; adapters own DB/cloud/HTTP protocol mapping. Enforce object-level tenant authorization on reads **and** writes.
+3. Keep shared HTTPX client/engine at application lifespan, DB **AsyncSession per request/task**, and no mutable request data in global clients.
+4. Define Create / PATCH / Response / List DTOs; distinguish omitted vs null, apply response filters and safe exception mapping. A successful Pydantic parse isn't a security boundary or business decision.
+5. Design timeouts, streaming cancellation, disconnect, input/body upload limits, HTTP status/caching, reverse proxy trust and background-job durability separately. Synchronous blocking code inside `async def` can stall event loop.
+6. Test lifespan via TestClient context (or explicit ASGI lifespan manager), dependencies with overrides, request validation, 401/403/404/409/422/429/5xx and failure shutdown behavior.
+7. Ship with trusted-proxy TLS, worker/pool/DB capacity, readiness vs liveness and graceful termination; never run schema migrations in each worker startup.
 
-Identify FastAPI/Pydantic versions, current ASGI server, routers, authentication, DB/HTTP clients, startup ownership, response model and error contract. Avoid rewriting an existing service to a template.
+## Progressive reference access
+- [Lifespan, DI, app composition](references/lifespan-and-di.md) — read when setting clients/DB or overrides.
+- [DTOs and exception translation](references/schemas-and-errors.md) — read when implementing request/response/partial updates.
+- [Request context, middleware and traces](references/middleware-and-request-context.md) — read when instrumenting and validating headers.
+- [Testing, deploy and readiness](references/testing-and-deployment.md) — read when designing CI, worker or startup testing.
+- [Security, auth, proxy and uploads](references/security-and-trust-boundaries.md) — read when exposing protected routes, CORS, rate limiting or untrusted files.
+- [Streams, SSE/WebSockets and disconnect](references/streaming-and-backpressure.md) — read when implementing long-lived responses and cancellation.
 
-## Execution plan
-1. Separate routing (HTTP validation/status) from application service (business rules) and infra (SQL/SDK/HTTP clients). Pick layered or feature-first folder organization according to python-project-architecture.
-2. Use lifespan for shared connections and client disposal. Request DI constructs per-request dependencies; never share mutable AsyncSession across requests/tasks.
-3. Define Create, PATCH/Update, Response, paginated List models; enforce explicit invariants, distinguish unset vs null. Never return ORM secrets.
-4. Translate expected domain failures to stable public 404/409/422/503; distinguish upstream 429/4xx/5xx, and sanitize internal exception text.
-5. Handle request IDs, metrics/traces and exceptions consistently, including 500s, stream behavior and trust boundaries.
-6. Test unit, route contracts, startup/shutdown and real adapter integration. Operate with worker/pool/timeout budgets and graceful shutdown.
-
-## Select only needed references
-- [Lifespan, dependency injection and shared clients](references/lifespan-and-di.md) — read when wiring resources, settings and composition root.
-- [Pydantic DTOs, PATCH semantics and error mapping](references/schemas-and-errors.md) — read when implementing Create/Update/Response/List or 4xx/5xx contracts.
-- [Middleware and request context](references/middleware-and-request-context.md) — read when adding correlation IDs, request telemetry or security headers.
-- [API tests and deployment readiness](references/testing-and-deployment.md) — read when validating overrides, lifespan tests, load/health or serving in production.
-
-## Done
-No leaked credentials or raw tracebacks, stable API contracts, explicit ownership, negative tests, auth/tenant checks, startup/shutdown and verified readiness semantics.
+## Exit
+Real HTTP contract, authorization, resource lifetimes, negative integration
+tests and deployment assumptions proven with limitations clearly labeled.

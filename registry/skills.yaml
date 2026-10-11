@@ -56,31 +56,31 @@ skills:
   - name: background-jobs
     domain: backend
     path: skills/backend/background-jobs
-    keywords: ["jobs", "queue", "celery", "rq", "dramatiq", "workers", "retry", "background"]
+    keywords: ["jobs","queue","celery","rq","dramatiq","workers","retry","background","scheduler"]
   - name: fastapi-service
     domain: backend
     path: skills/backend/fastapi-service
-    keywords: ["fastapi", "python", "pydantic", "route", "endpoint", "lifespan", "dependency", "api"]
+    keywords: ["fastapi","python","pydantic","route","endpoint","lifespan","dependency","api","streaming"]
   - name: modern-python
     domain: backend
     path: skills/backend/modern-python
-    keywords: ["python", "uv", "pyproject", "typing", "ruff", "pytest", "packaging", "settings", "asyncio"]
+    keywords: ["python","uv","pyproject","typing","ruff","pytest","packaging","settings","asyncio","cli"]
   - name: python-http-clients
     domain: backend
     path: skills/backend/python-http-clients
-    keywords: ["python", "httpx", "asyncclient", "outbound", "http", "client", "retry", "timeout", "external", "api"]
+    keywords: ["python","httpx","asyncclient","outbound","http","client","retry","timeout","external","api"]
   - name: python-persistence
     domain: backend
     path: skills/backend/python-persistence
-    keywords: ["python", "sqlalchemy", "orm", "asyncsession", "transaction", "repository", "alembic", "persistence"]
+    keywords: ["python","sqlalchemy","orm","asyncsession","transaction","repository","alembic","persistence","pooling"]
   - name: python-observability
     domain: backend
     path: skills/backend/python-observability
-    keywords: ["python", "observability", "logging", "json", "correlation", "opentelemetry", "tracing", "metrics", "contextvars"]
+    keywords: ["python","observability","logging","json","correlation","opentelemetry","tracing","metrics","contextvars"]
   - name: typescript-api
     domain: backend
     path: skills/backend/typescript-api
-    keywords: ["typescript","node","nestjs","express","fastify","backend"]
+    keywords: ["typescript","nodejs","node","api","fastify","express","nestjs","runtime","validation","http"]
   - name: aws-integration
     domain: cloud
     path: skills/cloud/aws-integration

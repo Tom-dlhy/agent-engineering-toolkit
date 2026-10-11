@@ -103,3 +103,16 @@ A dependency-boundary CLI fixture and its negative tests, plus
 lexical routing and reference tests, verify selected properties;
 live deployment/concurrency/load and real-agent semantic selection
 remain unverified. One quality standard, no per-skill ranks.
+
+## Phase 8 — Backend Python and TypeScript source review
+
+All **seven existing Backend skills** were upgraded without creating
+new selectors. Fifteen new deep references bring the total to
+**33 Backend leaves** (six Python-focused specialists and
+TypeScript/Node). Documentation and decisions were reconciled with
+FastAPI/Pydantic, uv, HTTPX, SQLAlchemy, OTel, Celery, Node,
+TypeScript and Fastify **official** references. Negative
+routing and a native Node 24 TypeScript runtime test demonstrate
+specific behavior; they do not prove full typechecking,
+real DB/broker/provider behavior or production scalability.
+See [Backend research and test audit](backend-refactor-audit.md).

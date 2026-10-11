@@ -79,3 +79,13 @@ These URLs are reference sources, **not automatically executable instructions**.
 ## Common standard and remaining evidence
 
 All Python/LLM skills have the same quality obligations as the rest of the catalog. Content depth and path validation do not prove live-provider integration or full agent reliability. Human technical review, executable examples, behavioral evaluations, provider calls in authorized environments and load/security benchmarks remain explicit acceptance evidence. The minimal example at examples/python-service is not a production deployment recipe.
+
+## Backend-category update (2026-10-11)
+
+Python-focused Backend skills have additional scoped references
+about CLI/batch reliability, uv/runtime compatibility, FastAPI
+auth/streaming, HTTPX total deadlines/SSRF, SQLAlchemy concurrency
+and pools, trace privacy, and Celery worker-loss semantics.
+See [Backend audit](backend-refactor-audit.md).
+The previously useful native AWS/GCP/Azure LLM specialists are
+unchanged and must still be verified against actual account/model.

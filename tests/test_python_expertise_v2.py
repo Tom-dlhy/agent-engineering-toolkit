@@ -56,7 +56,7 @@ class PythonExpertiseV2Tests(unittest.TestCase):
                     self.assertIn("## ", body)
                     self.assertIn("https://", body)
                     total += 1
-        self.assertEqual(total, 37)  # +2 DDD/hexagonal architecture leaves
+        self.assertEqual(total, 48)  # +11 Backend reference leaves
 
     def test_provider_native_vs_gateway_routing(self):
         cases = {
