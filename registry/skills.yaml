@@ -364,7 +364,7 @@ skills:
   - name: glassmorphism
     domain: design
     path: skills/design/glassmorphism
-    keywords: ["frosted","glass","transparent","blur","backdrop","css","liquid","glass"]
+    keywords: ["frosted","glass","transparent","blur","backdrop","css","liquid"]
   - name: interaction-motion
     domain: design
     path: skills/design/interaction-motion
