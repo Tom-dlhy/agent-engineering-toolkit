@@ -2,7 +2,7 @@
 
 ## Current state
 
-- 113 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
+- 116 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
 - The AWS split, 35 UI provider branches and design/growth/refined methodology work use selective references.
 - Additional skills remain condensed methodological overviews and are scheduled for deeper technical coverage.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
@@ -65,3 +65,17 @@ real Postgres concurrency/rollback suites, live broker crash tests,
 authorized provider HTTP quota/fallback integration, SSE/proxy
 load, tracing exporter, and held-out agent behavioral evaluations.
 No maturity tiers and no blanket claim of proven production readiness.
+
+## Data refactor — targeted expertise and verifiable SQL contracts
+
+Data now has seven independent skills and 22 leaves. Primary
+sources cover PostgreSQL planner/RLS, dbt incremental, GX 1.x,
+Airflow 3.x, Snowflake Dynamic Tables, BigQuery billing,
+Iceberg evolution, Debezium WAL and Flink checkpoint guarantees.
+CI runs disposable Postgres integration RLS/constraint/rollback
+tests and deterministic in-memory source revision replay tests.
+Outstanding domain evidence: real DB online backfill with locks,
+dbt/GX adapter runtimes, Snowflake/BigQuery costs/quotas,
+multi-engine Iceberg/catalog writer tests, Debezium recovery,
+Flink source-to-sink replay and real-agent held-out scenarios.
+No blanket production/SOTA certification from static markdown.

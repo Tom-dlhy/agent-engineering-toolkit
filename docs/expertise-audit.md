@@ -116,3 +116,18 @@ routing and a native Node 24 TypeScript runtime test demonstrate
 specific behavior; they do not prove full typechecking,
 real DB/broker/provider behavior or production scalability.
 See [Backend research and test audit](backend-refactor-audit.md).
+
+## Phase 9 — Data source-verified refactor (2026-10-11)
+
+Four short Data skills were upgraded with 13 task-specific deep references.
+Three new, non-overlapping skills were added: `analytics-modeling`
+(business grain/dbt/fact-dimension), `lakehouse-engineering`
+(Parquet/Iceberg/Snowflake/BigQuery storage and cost) and
+`streaming-cdc-engineering` (Debezium/Flink WAL/event time/checkpoint).
+**7 Data skills, 22 leaves; 116 catalog skills overall, 16 profiles.**
+The data-engineering profile deliberately adds all three skills' compact
+metadata while leaving full leaves opt-in. Real PostgreSQL 18 SQL/RLS
+integration checks and a pure Python CDC replay fixture complement
+lexical routing and reference safety. See
+[Data audit](data-refactor-audit.md) for official sources and limits.
+This is uniform quality, not a maturity rank.

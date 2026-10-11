@@ -1,0 +1,35 @@
+# Deterministic advisory lexical selection, not verified agent autonomy.
+version: 1
+selection:
+  - query: "data pipeline quality Airflow freshness replay"
+    expected: data-pipeline-quality
+  - query: "database relational constraints tenant rls normalization"
+    expected: database-design
+  - query: "postgresql postgres explain analyze vacuum performance"
+    expected: postgres-performance
+  - query: "schema migrations expand contract backfill ddl"
+    expected: schema-migrations
+  - query: "analytics dimensional star fact dimension grain mart dbt"
+    expected: analytics-modeling
+  - query: "lakehouse iceberg parquet snowflake bigquery warehouse"
+    expected: lakehouse-engineering
+  - query: "cdc debezium flink watermark kafka checkpoint streaming"
+    expected: streaming-cdc-engineering
+negative_neighbors:
+  - query: "SQLAlchemy AsyncSession Alembic transaction"
+    expected: python-persistence
+  - query: "DDD bounded aggregate Python"
+    expected: python-ddd
+  - query: "event saga outbox inbox idempotency replay"
+    expected: event-driven-design
+  - query: "FastAPI lifespan endpoint Pydantic dependency"
+    expected: fastapi-service
+  - query: "REST OpenAPI API contract versioning ETag pagination"
+    expected: api-contract-design
+  - query: "performance profiling cprofile p95 benchmark"
+    expected: performance-profiling
+  - query: "GitHub branch PR merge checks"
+    expected: git-pr-workflow
+no_match:
+  - ""
+  - "zzzxxyynodataskillknown"

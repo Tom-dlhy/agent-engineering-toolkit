@@ -4,6 +4,9 @@ skills:
   - task-routing
   - verification-before-done
   - data-pipeline-quality
+  - analytics-modeling
+  - lakehouse-engineering
+  - streaming-cdc-engineering
   - database-design
   - database-selection
   - postgres-performance

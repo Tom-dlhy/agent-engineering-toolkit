@@ -1,21 +1,50 @@
 ---
 name: database-design
 domain: data
-version: "0.1.0"
+version: "0.2.0"
 description: >-
-  Use when choosing relational schema, migrations, transactions, constraints, indexing or persistence boundaries. Do not use for a trivial one-off CSV transformation.
+  Use when designing transactional relational schemas, keys, constraints,
+  relationships, tenant ownership, isolation and data retention.
+  Do not substitute for warehouse dimensional grain, migration execution,
+  query plan profiling or ORM lifecycle implementation.
 ---
 
-# database-design
+# Relational database design — invariants that survive concurrency
 
-## Schema design
-Identify entities and lifecycle, cardinality, uniqueness, consistency and data retention. Prefer database-enforced constraints for invariants that must survive concurrency. Choose indexes based on actual queries and EXPLAIN plans, not speculation.
+## Model decision sequence
+1. Understand domain entities/lifecycles, ownership, query/update patterns,
+   expected contention, privacy boundaries, delete/retention and evolution.
+2. Define natural/surrogate keys, compound uniqueness, foreign keys,
+   check constraints, null semantics, cardinality and historical snapshots.
+   Enforce invariants in DB where concurrent processes might bypass code.
+3. Normalize transactional state enough to preserve correctness, then
+   denormalize only when measured reads justify synchronization complexity.
+   JSONB is useful for variable attributes but not a free replacement
+   for relational queries/constraints.
+4. Select correct transaction and isolation strategy based on actual
+   anomalies (lost update, write skew, dirty/nonrepeatable/phantom reads),
+   not vague "ACID means safe" reasoning.
+5. Design tenant access at application and DB layers. PostgreSQL RLS
+   applies only when enabled; table owners and BYPASSRLS roles require
+   explicit evaluation. Test through **actual application DB role**.
+6. Avoid cascade/delete surprises, PII in logs, unbounded exports and
+   indefinite retention. Model ownership of encrypted fields and backups.
+7. Plan migration through schema-migrations and performance through
+   postgres-performance, not premature indexes on every column.
 
-## Migrations
-Plan backward-compatible expand/migrate/contract steps for deployed systems. Consider locks, long-running backfills, duplicate processing, rollback and cutover verification. Protect personally identifiable information and credentials; validate tenant isolation and row-level access when applicable.
+## Open on demand
+- [Keys, constraints and relational boundaries](references/keys-constraints-and-normalization.md) —
+  **read when** designing tables, relationships, unique constraints and denormalization.
+- [Isolation, multi-tenancy and row security](references/transactions-and-tenant-isolation.md) —
+  **read when** preventing races, enforcing RLS and ownership.
+- [Retention, partitions and schema evolution](references/retention-and-data-lifecycle.md) —
+  **read when** planning historic rows, deletion, audit data and retention.
 
-## Transactions
-Use the correct isolation level, transaction scope and retry/idempotency behavior. Keep external network calls outside long transactions. Model pagination, N+1 queries and connection limits explicitly.
+## Boundaries
+python-persistence owns SQLAlchemy session/ORM; schema-migrations owns
+rollout and backfill; analytics-modeling owns fact/dimension and BI
+semantic models; database-selection owns DB product tradeoffs.
 
-## Verification
-Test real migration up/down paths in staging or disposable DB, validate representative query performance and confirm backup/recovery assumptions.
+## Done
+Data model with keys and constraints, authorized negative tests,
+concurrency risks, retention policy and intentional query profiles.
