@@ -1,55 +1,61 @@
 # Agent Engineering Toolkit
 
-Modular, vendor-neutral AI engineering toolkit: reusable Agent Skills, lightweight workflows, quality gates, cloud and architecture guidance, and small installation profiles.
+**Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-**Status: bootstrap.** This repo provides guidance and safe local tooling, NOT a full agent runtime, external marketplace, automatic importer or LLM token meter.
+A growing library of **59 first-party skills across 10 domains**, with **11 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-## Principles
+> Status: framework foundation and initial curated catalog. This is not an autonomous agent runtime, model-independent execution engine, third-party skill marketplace or exact token meter.
 
-1. Tiny permanent instructions; only load relevant skill bodies and referenced files on demand.
-2. Prefer deterministic tools, evidence-based verification and simple designs over agent proliferation.
-3. Scale process to risk: light, standard or deep.
-4. Keep business logic testable and independent of provider SDKs when it has practical value.
-5. Treat external skills as untrusted code; pin revisions, review scripts and preserve licenses.
-6. Avoid blanket "always trigger" rules and benchmark usefulness before expanding.
+## Why
 
-## Layout
+The number of skills in a repository should not determine the cost of every agent session:
 
-- AGENTS.md: concise shared operating contract
-- CLAUDE.md: Claude Code-specific entry point
-- skills/: portable SKILL.md guides, grouped by domain
-- registry/skills.yaml: local skills catalog
-- registry/sources.lock.yaml: future third-party provenance lock
-- profiles/: curated subsets for different kinds of projects
-- workflows/: light, standard and deep coordination recipes
-- agents/: optional role briefs, not automatically spawned
-- scripts/: validate, estimate context cost and safely install selected skills
-- tests/: deterministic regression tests
-- docs/: architecture and roadmap
+- **59 skills stored** in the library; only **5–20 installed** in a project profile.
+- **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
+- **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
+- **Validation and tests** run without using any LLM tokens.
+- **No automatic third-party downloads or execution**; security and licensing come before convenience.
 
 ## Quick start
 
-Requires Python 3.12+.
+Requirements: Python 3.12+ and PyYAML.
 
 ~~~bash
 python -m pip install -r requirements-dev.txt
 python scripts/validate_skills.py
 python -m unittest discover -s tests -v
-python scripts/context_budget.py --profile minimal
 
-# Preview: does NOT write files
-python scripts/install_profile.py --profile python-backend --agent codex --project /path/to/project
+# Find focused skills and an advisory workflow mode
+python scripts/skillctl.py search "Python DDD clean architecture" --profile python-backend
+python scripts/skillctl.py recommend "AWS IAM migration" --profile cloud-engineering
+python scripts/skillctl.py profiles
+python scripts/skillctl.py show python-ddd
 
-# Apply a profile only when you want to install the skills
-python scripts/install_profile.py --profile python-backend --agent codex --project /path/to/project --apply
+# Compare approximate always-on context sizes
+python scripts/context_budget.py --all
+
+# Safe local installation: preview first, then copy
+python scripts/install_profile.py --agent codex --profile python-backend --project /path/to/project
+python scripts/install_profile.py --agent codex --profile python-backend --project /path/to/project --apply
+
+# For Claude Code use --agent claude; no overwrite of existing installed skills
 ~~~
 
-Codex installs to .agents/skills; Claude Code installs to .claude/skills. Never overwrites existing skills. Copy/adapt AGENTS.md separately if you want the shared rules in a target project. The installer does not execute skill scripts or access the internet.
+The installer writes only when `--apply` is provided. It copies selected skills to `.agents/skills` (Codex) or `.claude/skills` (Claude Code). Copy/adapt `AGENTS.md` into a target project separately to adopt shared conventions. Never install every profile indiscriminately.
 
-Profiles: minimal, web-app, python-backend, cloud-engineering, fullstack. Installation is only a curated set; it does not imply every installed skill must run.
+## Explore
 
-## Contribution and security
+- [Catalog and authoring conventions](docs/catalog.md)
+- [Progressive disclosure and token budgets](docs/skill-routing.md)
+- [Architecture](docs/architecture.md)
+- [Roadmap](docs/roadmap.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security and third-party intake](SECURITY.md)
 
-Open a feature/fix/docs branch, submit a PR, and merge only after CI checks pass. Never commit directly to main. See CONTRIBUTING.md, SECURITY.md and docs/roadmap.md.
+The library covers Python DDD and hexagonal architecture, API design, modern Python and TypeScript, AWS/GCP/Azure/Cloudflare and IaC, data engineering, LLM applications, UI/UX and glassmorphism, testing, security and release workflows.
 
-Original work licensed under MIT. Future third-party imports must retain compatible licenses and attribution.
+## Development policy
+
+Open a focused feature branch and PR. CI validates all skill metadata/profile references, runs unit tests and enforces a **rough** context-budget guardrail. Never push directly to main. Merge only after required checks pass.
+
+Original content is MIT licensed. Third-party sources such as [ECC](https://github.com/affaan-m/ECC), [Superpowers](https://github.com/obra/superpowers), [Anthropic Cybersecurity Skills](https://github.com/mukul975/Anthropic-Cybersecurity-Skills) and [Brag](https://github.com/latent-spaces/brag) inspired the architecture; **none of their skills are copied into the project at this stage**.
