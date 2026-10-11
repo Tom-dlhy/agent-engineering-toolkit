@@ -74,6 +74,10 @@ The sources are informational, not remotely executable instructions.
   profile boundaries and uniform no-maturity policy.
 - tests/test_data_replay_contract.py runs deterministic pure
   Python replay/deduplication/tombstone/tenant corrections.
+- tests/test_data_analytics_contract.py runs five SQLite in-memory
+  semantic contract tests: fact grain, correct/incorrect SCD2 joins,
+  overlap detection and weighted ratios. SQLite is a logic fixture,
+  **not** Snowflake/BigQuery dialect or performance certification.
 - examples/data-postgres/tests/test_postgres_contracts.py exercises
   **real disposable PostgreSQL 18** in CI, with an independent
   NOLOGIN app role for RLS, uniqueness, CHECK, rollback,
