@@ -96,6 +96,185 @@ skills:
     path: skills/cloud/aws-ecs-deployment
     maturity: expert-v2
     keywords: ["aws", "ecs", "fargate", "task", "container", "deployment", "alb", "service", "scaling"]
+  - name: ui-component-research
+    domain: ui
+    path: skills/ui/ui-component-research
+    keywords: ["ui-component-research", "ui", "component", "research", "anatomy", "patterns", "forms", "overlays", "tables", "accessibility", "api"]
+  - name: shadcn-ui
+    domain: ui
+    path: skills/ui/shadcn-ui
+    maturity: expanded-v2
+    keywords: ["shadcn-ui", "shadcn", "components.json", "registry", "tailwind", "baseui"]
+  - name: base-ui
+    domain: ui
+    path: skills/ui/base-ui
+    maturity: expanded-v2
+    keywords: ["base-ui", "base", "baseui", "render", "headless", "popover"]
+  - name: radix-primitives
+    domain: ui
+    path: skills/ui/radix-primitives
+    maturity: expanded-v2
+    keywords: ["radix-primitives", "primitives", "aschild", "slot"]
+  - name: radix-themes
+    domain: ui
+    path: skills/ui/radix-themes
+    maturity: expanded-v2
+    keywords: ["radix-themes", "themes", "colors", "scale"]
+  - name: react-aria-components
+    domain: ui
+    path: skills/ui/react-aria-components
+    maturity: expanded-v2
+    keywords: ["react-aria-components", "aria", "components", "reactaria", "adobe", "i18n", "accessibility"]
+  - name: heroui
+    domain: ui
+    path: skills/ui/heroui
+    maturity: expanded-v2
+    keywords: ["heroui"]
+  - name: mantine
+    domain: ui
+    path: skills/ui/mantine
+    maturity: expanded-v2
+    keywords: ["mantine", "hooks", "modals"]
+  - name: chakra-ui
+    domain: ui
+    path: skills/ui/chakra-ui
+    maturity: expanded-v2
+    keywords: ["chakra-ui", "chakra", "recipes", "panda"]
+  - name: mui
+    domain: ui
+    path: skills/ui/mui
+    maturity: expanded-v2
+    keywords: ["mui", "material", "xgrid", "sx"]
+  - name: ant-design
+    domain: ui
+    path: skills/ui/ant-design
+    maturity: expanded-v2
+    keywords: ["ant-design", "ant", "antd", "form"]
+  - name: primereact
+    domain: ui
+    path: skills/ui/primereact
+    maturity: expanded-v2
+    keywords: ["primereact", "datatable"]
+  - name: fluent-ui
+    domain: ui
+    path: skills/ui/fluent-ui
+    maturity: expanded-v2
+    keywords: ["fluent-ui", "fluent"]
+  - name: flowbite-react
+    domain: ui
+    path: skills/ui/flowbite-react
+    maturity: expanded-v2
+    keywords: ["flowbite-react", "flowbite"]
+  - name: headless-ui
+    domain: ui
+    path: skills/ui/headless-ui
+    maturity: expanded-v2
+    keywords: ["headless-ui", "headless"]
+  - name: vuetify
+    domain: ui
+    path: skills/ui/vuetify
+    maturity: expanded-v2
+    keywords: ["vuetify"]
+  - name: primevue
+    domain: ui
+    path: skills/ui/primevue
+    maturity: expanded-v2
+    keywords: ["primevue"]
+  - name: quasar
+    domain: ui
+    path: skills/ui/quasar
+    maturity: expanded-v2
+    keywords: ["quasar"]
+  - name: element-plus
+    domain: ui
+    path: skills/ui/element-plus
+    maturity: expanded-v2
+    keywords: ["element-plus", "element", "plus"]
+  - name: ant-design-vue
+    domain: ui
+    path: skills/ui/ant-design-vue
+    maturity: expanded-v2
+    keywords: ["ant-design-vue", "ant"]
+  - name: angular-material
+    domain: ui
+    path: skills/ui/angular-material
+    maturity: expanded-v2
+    keywords: ["angular-material", "material"]
+  - name: primeng
+    domain: ui
+    path: skills/ui/primeng
+    maturity: expanded-v2
+    keywords: ["primeng"]
+  - name: ng-zorro
+    domain: ui
+    path: skills/ui/ng-zorro
+    maturity: expanded-v2
+    keywords: ["ng-zorro", "ng", "zorro"]
+  - name: bits-ui
+    domain: ui
+    path: skills/ui/bits-ui
+    maturity: expanded-v2
+    keywords: ["bits-ui", "bits"]
+  - name: skeleton
+    domain: ui
+    path: skills/ui/skeleton
+    maturity: expanded-v2
+    keywords: ["skeleton"]
+  - name: flowbite-svelte
+    domain: ui
+    path: skills/ui/flowbite-svelte
+    maturity: expanded-v2
+    keywords: ["flowbite-svelte", "flowbite"]
+  - name: daisyui
+    domain: ui
+    path: skills/ui/daisyui
+    maturity: expanded-v2
+    keywords: ["daisyui"]
+  - name: bootstrap
+    domain: ui
+    path: skills/ui/bootstrap
+    maturity: expanded-v2
+    keywords: ["bootstrap"]
+  - name: web-awesome
+    domain: ui
+    path: skills/ui/web-awesome
+    maturity: expanded-v2
+    keywords: ["web-awesome", "web", "awesome"]
+  - name: ionic
+    domain: ui
+    path: skills/ui/ionic
+    maturity: expanded-v2
+    keywords: ["ionic"]
+  - name: react-native-paper
+    domain: ui
+    path: skills/ui/react-native-paper
+    maturity: expanded-v2
+    keywords: ["react-native-paper", "paper"]
+  - name: tamagui
+    domain: ui
+    path: skills/ui/tamagui
+    maturity: expanded-v2
+    keywords: ["tamagui"]
+  - name: gluestack-ui
+    domain: ui
+    path: skills/ui/gluestack-ui
+    maturity: expanded-v2
+    keywords: ["gluestack-ui", "gluestack"]
+  - name: rneui
+    domain: ui
+    path: skills/ui/rneui
+    maturity: expanded-v2
+    keywords: ["rneui"]
+  - name: flutter-material
+    domain: ui
+    path: skills/ui/flutter-material
+    maturity: expanded-v2
+    keywords: ["flutter-material", "material"]
+  - name: flutter-cupertino
+    domain: ui
+    path: skills/ui/flutter-cupertino
+    maturity: expanded-v2
+    keywords: ["flutter-cupertino", "cupertino"]
   - name: azure-integration
     domain: cloud
     path: skills/cloud/azure-integration

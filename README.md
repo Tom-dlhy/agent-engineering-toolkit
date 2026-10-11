@@ -2,7 +2,7 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **65 first-party skills across 10 domains**, with **12 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **101 first-party skills across 11 domains**, with **13 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
  > Status: progressive expertise refactor underway. Seven AWS skills are deep V2; the other 58 entries retain their original scope and are scheduled for content review. This is not an autonomous agent runtime, model-independent execution engine, third-party skill marketplace or exact token meter.
 
@@ -10,7 +10,7 @@ A growing library of **65 first-party skills across 10 domains**, with **12 smal
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **65 skills stored** in the library; only **5–20 installed** in a project profile.
+- **101 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
@@ -47,6 +47,10 @@ python scripts/install_profile.py --agent codex --profile python-backend --proje
 ~~~
 
 The installer writes only when `--apply` is provided. It copies selected skills to `.agents/skills` (Codex) or `.claude/skills` (Claude Code). Copy/adapt `AGENTS.md` into a target project separately to adopt shared conventions. Never install every profile indiscriminately.
+
+## UI library expertise
+
+35 optional provider skills across web, native and Flutter; plus one `ui-component-research` skill. The original `ui-library-selection` is **extended** in `skills/stacks`, never duplicated. See [UI skills](docs/ui-skills.md). Install only the chosen provider using `--skill` and read its optional references when needed.
 
 ## Explore
 

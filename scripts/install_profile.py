@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import shutil
+import re
 from pathlib import Path
 
 import yaml
@@ -11,16 +12,31 @@ ROOT = Path(__file__).resolve().parents[1]
 AGENTS = {"codex": ".agents/skills", "claude": ".claude/skills", "generic": ".agents/skills"}
 
 
-def planned_sources(profile: str, root: Path = ROOT) -> list[Path]:
-    if not profile or not all(c.islower() or c.isdigit() or c == "-" for c in profile):
-        raise ValueError("invalid profile name")
-    path = root / "profiles" / f"{profile}.yaml"
-    if not path.is_file():
-        raise ValueError(f"unknown profile: {profile}")
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+def planned_sources(
+    profile: str | None, root: Path = ROOT, skills: tuple[str, ...] = (),
+) -> list[Path]:
+    """Resolve a profile and/or explicit skills, preserving order and safety."""
+    if not profile and not skills:
+        raise ValueError("specify --profile or at least one --skill")
     catalog = yaml.safe_load((root / "registry" / "skills.yaml").read_text(encoding="utf-8"))
-    sources = {item["name"]: root / item["path"] for item in catalog["skills"]}
-    return [sources[name] for name in data["skills"]]
+    available = {item["name"]: root / item["path"] for item in catalog["skills"]}
+    names: list[str] = []
+    if profile:
+        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", profile):
+            raise ValueError("invalid profile name")
+        path = root / "profiles" / f"{profile}.yaml"
+        if not path.is_file():
+            raise ValueError(f"unknown profile: {profile}")
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        names.extend(data["skills"])
+    for name in skills:
+        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
+            raise ValueError(f"invalid skill identifier: {name!r}")
+        names.append(name)
+    unknown = sorted(set(names) - available.keys())
+    if unknown:
+        raise ValueError("unknown skills: " + ", ".join(unknown))
+    return [available[name] for name in dict.fromkeys(names)]
 
 
 def _reject_symlinks(root: Path) -> None:
@@ -28,7 +44,7 @@ def _reject_symlinks(root: Path) -> None:
         raise ValueError(f"skill includes a symlink; manual audit required: {root}")
 
 
-def install(profile: str, agent: str, project: Path, apply: bool = False, root: Path = ROOT) -> list[Path]:
+def install(profile: str | None, agent: str, project: Path, apply: bool = False, root: Path = ROOT, skills: tuple[str, ...] = ()) -> list[Path]:
     if agent not in AGENTS:
         raise ValueError(f"unsupported agent: {agent}")
     if not project.expanduser().is_dir():
@@ -37,7 +53,7 @@ def install(profile: str, agent: str, project: Path, apply: bool = False, root: 
     target = project_root / AGENTS[agent]
     if any(p.is_symlink() for p in (target, target.parent)):
         raise ValueError(f"installation destination uses a symlink: {target}")
-    sources = planned_sources(profile, root)
+    sources = planned_sources(profile, root, skills)
     if not sources or any(not (p / "SKILL.md").is_file() for p in sources):
         raise ValueError("profile contains missing or invalid skills")
     for source in sources:
@@ -62,13 +78,14 @@ def install(profile: str, agent: str, project: Path, apply: bool = False, root: 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--profile", required=True)
+    parser.add_argument("--profile", help="Optional curated profile")
+    parser.add_argument("--skill", action="append", default=[], help="Extra individual skill; repeatable")
     parser.add_argument("--agent", choices=sorted(AGENTS), required=True)
     parser.add_argument("--project", type=Path, required=True)
     parser.add_argument("--apply", action="store_true", help="Copy files (default: preview only)")
     args = parser.parse_args()
     try:
-        destinations = install(args.profile, args.agent, args.project, args.apply)
+        destinations = install(args.profile, args.agent, args.project, args.apply, skills=tuple(args.skill))
     except (OSError, ValueError, KeyError, yaml.YAMLError) as exc:
         parser.error(str(exc))
     print(("Installed" if args.apply else "Would install") + f" {len(destinations)} skills:")

@@ -42,3 +42,11 @@ Phase 1 keeps the original 59 entries, refactors the broad `aws-integration` ski
 6. **Global review:** consolidate duplicate knowledge, benchmark skill selection/reference reads in actual Codex and Claude, measure actual token usage where host surfaces it.
 
 Review each refactor on its own merits; no mechanical mass-generation or blanket `expert-v2` badges. Promotion to `expert-v2` requires human technical review in addition to static CI.
+
+## Phase 2 addendum — UI integration into current main (PR #9)
+
+The original PR #9 is now reconciled with main after PR #5 and PR #10 merged. The repository contains **101 unique skills**, including **35 opt-in UI library providers**, one shared `ui-component-research` and exactly one `ui-library-selection` under `skills/stacks`. UI-specific references: **70 local provider leaves + 4 shared component-family leaves + 1 selector map**. Existing seven AWS `expert-v2` specialists remain unchanged.
+
+The 35 UI providers are marked `expanded-v2` (distinct from `expert-v2`): all have version-checking implementation and integration playbooks, but static validation is not evidence that every vendor API, full production workflow or accessibility behavior was tested against a live app. Some providers remain broad and need further version-pinned component examples and agent behavioral evaluation. Treat source citations as directions for freshness, not permission to assume current props.
+
+Follow-up work: run representative benchmark apps for web, Vue/Angular/Svelte, React Native and Flutter, test a form/overlay/data table from each selected provider under the installed release, measure skill-selection errors, and promote selectively after review. Do not force all 35 into standard install profiles.

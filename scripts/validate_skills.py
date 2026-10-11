@@ -83,7 +83,7 @@ def validate_repository(root: Path = ROOT) -> list[str]:
             problems.append(f"{relpath}: skill body is too short")
 
         # Expert V2 is opt-in while historic skills are progressively rewritten.
-        if item.get("maturity") == "expert-v2":
+        if item.get("maturity") in ("expert-v2", "expanded-v2"):
             skill = Skill(name=name, domain=domain, path=relpath,
                           description=description, keywords=tuple(item.get("keywords", [])))
             try:
@@ -92,7 +92,7 @@ def validate_repository(root: Path = ROOT) -> list[str]:
                 problems.append(f"{relpath}: cannot index references: {exc}")
                 continue
             if len(refs) < 2:
-                problems.append(f"{relpath}: expert-v2 needs at least two targeted leaves")
+                problems.append(f"{relpath}: deep skill needs at least two targeted leaves")
             for ref in refs:
                 try:
                     resolved = resolve_reference(skill, ref, root)
