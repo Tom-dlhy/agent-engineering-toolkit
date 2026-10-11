@@ -88,6 +88,8 @@ class DesignProductSkillsTests(unittest.TestCase):
             "taxonomy navigation information architecture": "information-architecture",
             "microcopy labels errors terminology": "content-design",
             "shadcn ui components.json registry": "shadcn-ui",
+            "shadcn Chart tooltip Recharts": "shadcn-ui",
+            "MUI X Charts implementation": "mui",
             "Base UI Dialog render": "base-ui",
             "dbt analytics mart star schema": "analytics-modeling",
             "FastAPI Pydantic endpoint": "fastapi-service",
