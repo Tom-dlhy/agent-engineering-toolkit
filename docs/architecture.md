@@ -2,7 +2,7 @@
 
 ## Progressive disclosure
 
-The local catalog contains 151 skills across 12 domains. Every skill follows the same quality contract and task-based routing; no maturity labels or priority-by-tier are used. Some domains still need deeper examples and behavioral verification.
+The local catalog contains 163 skills across 13 domains. Every skill follows the same quality contract and task-based routing; no maturity labels or priority-by-tier are used. Some domains still need deeper examples and behavioral verification.
 
 This is based on the general principle of progressive disclosure used by Agent Skills. It avoids the overhead of always-on monolithic prompts and blanket subagent launches.
 
@@ -32,6 +32,7 @@ AGENTS.md (tiny cross-model contract)
 - **Profiles**: curated packages installed into a target project
 - **Workflows**: execution protocols independent of the skill catalog
 - **Agents**: optional role briefs, no implicit subagent creation
+- **Personas**: 12 opt-in, fully self-contained behavioral operating protocols in `skills/personas/`, independent of role briefs and implementation-specific expertise; do not auto-activate or override approval boundaries
 - **Host adapters**: Codex uses `.agents/skills`, Claude Code `.claude/skills`; platform hooks differ
 - **Tests**: no network or LLM calls needed for catalog/installer/router validation
 

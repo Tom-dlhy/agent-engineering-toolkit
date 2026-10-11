@@ -2,11 +2,11 @@
 
 This toolkit distinguishes **library size**, **installation profile size** and **activation size**.
 
-1. The library holds 151 local `SKILL.md` files and may grow to hundreds.
+1. The library holds 163 local `SKILL.md` files and may grow to hundreds.
 2. A profile installs only a curated subset (5–20 skills).
 3. The model sees a brief name/description, not a full skill body.
 4. Only 1–3 directly relevant skill bodies should be read for ordinary tasks.
-5. References/assets/scripts are read only if the task actually requires them.
+5. Technical references/assets/scripts are read only if the task actually requires them; the 12 opt-in persona skills instead carry their **entire method in one SKILL.md** without references.
 
 The CLI uses deterministic word matching, not LLM calls. It reads local files as *program input*; it does not paste all their bodies into model context.
 
@@ -28,6 +28,10 @@ python scripts/install_profile.py --profile ui-ux-design --agent claude --projec
 ~~~
 
 Styles such as `bento-grid` and `glassmorphism` are **catalog opt-ins**, not part of the general `ui-ux-design` profile. Select them explicitly via `--skill` when a brief requires the technique; do not treat a design request as automatic permission to add effects.
+
+## Persona activation versus workflow and technical knowledge
+
+Personas are deliberate *operating modes*, not technical source-of-truth skills and not automatically launched subagents. A user can explicitly request `grill-master`, `test-adversary` or `learning-mentor` while a relevant technical skill supplies API knowledge. Use at most one primary persona in an ordinary task; compose another only if its **independent outcome** is requested, and apply the project's LIGHT/STANDARD/DEEP safety process separately. All 12 are **opt-in** and deliberately absent from general installation profiles. Installed availability varies by host; this repository's discovery does not imply native Claude/Codex invocation.
 
 ## Workflow policy
 
