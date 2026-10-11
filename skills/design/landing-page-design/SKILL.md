@@ -1,18 +1,24 @@
 ---
 name: landing-page-design
 domain: design
-version: "0.2.0"
+version: "2.0.0"
 description: >-
-  Use when designing marketing pages, launch sites or landing pages with clear value proposition and conversion paths. Do not use for an authenticated admin interface.
+  Use when structuring or redesigning a public product, service or campaign landing page with a clear visitor intent, truthful messaging and conversion path. Do not use for logged-in dashboards, generic UI styling or unverified marketing claims.
 ---
 
-# landing-page-design
+# Landing pages — credible narrative before decoration
 
-## Narrative
-Define audience, most important question, core promise, evidence and primary action. Lead with a concrete product example rather than generic SaaS slogans.
-## Composition
-Choose hero, product demonstration, proof, explanation, objection handling and CTA sequence based on evidence and the funnel. Don't default to feature-card grids without content justification.
-## Performance and trust
-Prioritize fast first paint, responsive imagery, semantics, accessibility, believable testimonials and honest claims. Avoid invented metrics, logos and social proof.
-## Validate
-Test mobile above-the-fold message clarity, keyboard access, form friction, analytics events and SEO metadata. For page crawl/index implementation activate technical-seo; for editorial pillar planning activate content-strategy; for uncertain AI answer visibility measurements use ai-search-visibility. Do not automatically activate all three for a landing page. Use A/B tests only when traffic and instrumentation can support conclusions.
+## Plan from verified facts
+1. Read existing brand, approved copy, product capability, audience evidence, competitor context, user intent, conversion event and constraints. Label assumptions; do not invent testimonials, client logos, savings or performance numbers.
+2. Decide the single primary question the page must answer and the primary action. Distinguish informational, transactional, local service and product onboarding journeys.
+3. Sketch the narrative based on actual objections and proof: proposition, explanation/demo, necessary capabilities, evidence, risk reduction and CTA. Do not enforce identical section order on every business.
+4. Route composition and visual identity to `frontend-design`; reuse existing design tokens and provider components. Prioritize authentic imagery and real content over generic gradients or stock SaaS cards.
+5. Specify mobile-first message comprehension, accessible forms/controls, load and error states, trust disclosures, image sizing and legal/privacy constraints before implementation.
+6. Measure only real configured events and funnel definitions; refuse claims that layout or design alone guarantees conversions or search ranking.
+
+## Deep branches
+- [Message hierarchy, objections and factual proof](references/narrative-and-evidence.md) — **read when** defining the hero, content sections, social proof or multi-audience value propositions.
+- [Conversion flows, accessibility and measurement](references/conversion-and-verification.md) — **read when** building lead forms, CTA paths, experiments, consented analytics or performance acceptance.
+
+## Boundaries and done
+`technical-seo` owns crawl/indexing and schema; `content-strategy` owns editorial programs; `frontend-design` owns art direction; `accessibility-wcag` owns formal WCAG mapping. Finish with a grounded brief, an implemented or explicitly proposed flow, tested states, and measurement limits.

@@ -1,29 +1,22 @@
 ---
 name: glassmorphism
 domain: design
-version: "0.1.0"
+version: "2.0.0"
 description: >-
-  Use when a product explicitly calls for glassmorphism, frosted surfaces or layered translucent UI. Do not use by default on forms, dense data tables or low-contrast accessibility-sensitive screens.
+  Use when explicitly implementing or reviewing frosted-glass, translucent layered or glassmorphism surfaces in an existing brand. Do not activate for a routine button, dense forms, tables, or an unrequested visual trend.
 ---
 
-# glassmorphism
+# Glassmorphism — opt-in effect with reliable fallback
 
-## Composition
-Use glass as a targeted foreground surface over a carefully chosen background, not as a blanket treatment. Define consistent translucency, blur, border luminance and elevation tokens. Keep text in sufficiently opaque contrast-bearing regions. Avoid nesting many blurs and stacking expensive backdrop filters.
+## Decision gate
+1. Require an explicit design brief or an existing glass aesthetic; avoid default adoption. Identify the real content, background variants, overlays and interaction density.
+2. Limit translucent surfaces to places where layering communicates depth or hierarchy. Use design-system color/blur/border tokens, not scattered opacities or a new visual language.
+3. Compose from a readable opaque fallback first; progressive-enhance blur only with supported `backdrop-filter`. Keep focus rings, critical copy and actionable controls legible above dynamic backgrounds.
+4. Check `prefers-reduced-transparency` as an optional enhancement (not supported everywhere), forced-colors and reduced-motion if animations exist. Never rely on blur/transparency for meaning.
+5. Profile expensive large/nested blur only when necessary; check low-power devices and screenshots with multiple backgrounds. Avoid assuming a translucent layer satisfies contrast on every photograph.
 
-~~~css
-.glass {
-  background: rgb(255 255 255 / 0.72);
-  border: 1px solid rgb(255 255 255 / 0.45);
-  box-shadow: 0 12px 32px rgb(0 0 0 / 0.12);
-}
-@supports (backdrop-filter: blur(12px)) {
-  .glass { backdrop-filter: blur(12px); }
-}
-~~~
+## Deep branch
+- [Progressive enhancement, fallback and visual acceptance](references/translucency-fallback-and-qa.md) — **read when** implementing CSS frosted surfaces, debugging contrast or motion/reduced-transparency/forced-color behavior.
 
-## Production checks
-Test against every background variant, including photographs and dynamic imagery. Provide graceful no-blur fallback and consider reduced-transparency preferences where supported. Check WCAG contrast for text and controls, mobile GPU/frame impact, focus outlines and nested modal readability.
-
-## Done when
-The style serves a product goal, works without blur, and is legible on real devices.
+## Boundaries
+`frontend-design` sets art direction; `design-system` owns global tokens; `accessibility-wcag` evaluates conformance. A glass request does not authorize brand redesign or adding animation dependencies. Exit with readable fallback and verified representative backgrounds.

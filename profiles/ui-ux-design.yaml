@@ -1,5 +1,5 @@
 name: ui-ux-design
-description: Visual craft, responsive design, accessibility, systems and creative effects.
+description: Core visual craft, responsive design, accessibility and systems. Specialist bento/glass effects install on request.
 skills:
   - task-routing
   - verification-before-done
@@ -7,8 +7,6 @@ skills:
   - design-system
   - typography-layout
   - landing-page-design
-  - bento-grid
-  - glassmorphism
   - dark-mode-theming
   - interaction-motion
   - ux-audit
