@@ -38,7 +38,7 @@ class PythonExpertiseV2Tests(unittest.TestCase):
         )
 
     def test_skills_and_count(self):
-        self.assertEqual(len(self.catalog), 116)
+        self.assertEqual(len(self.catalog), 119)
         self.assertIn("aws-bedrock", self.catalog)
         for name in self.new + self.extended:
             self.assertIn(name, self.catalog)
@@ -56,7 +56,7 @@ class PythonExpertiseV2Tests(unittest.TestCase):
                     self.assertIn("## ", body)
                     self.assertIn("https://", body)
                     total += 1
-        self.assertEqual(total, 48)  # +11 Backend reference leaves
+        self.assertEqual(total, 50)  # +2 AI provider/gateway reference leaves
 
     def test_provider_native_vs_gateway_routing(self):
         cases = {

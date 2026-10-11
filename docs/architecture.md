@@ -2,7 +2,7 @@
 
 ## Progressive disclosure
 
-The local catalog contains 116 skills across 12 domains. Every skill follows the same quality contract and task-based routing; no maturity labels or priority-by-tier are used. Some domains still need deeper examples and behavioral verification.
+The local catalog contains 119 skills across 12 domains. Every skill follows the same quality contract and task-based routing; no maturity labels or priority-by-tier are used. Some domains still need deeper examples and behavioral verification.
 
 This is based on the general principle of progressive disclosure used by Agent Skills. It avoids the overhead of always-on monolithic prompts and blanket subagent launches.
 

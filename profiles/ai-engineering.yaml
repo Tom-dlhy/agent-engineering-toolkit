@@ -10,6 +10,9 @@ skills:
   - aws-bedrock
   - llm-evaluation
   - rag-evaluation
+  - rag-engineering
+  - agent-orchestration
+  - mcp-integration
   - agent-tool-safety
   - api-contract-design
   - architecture-decision

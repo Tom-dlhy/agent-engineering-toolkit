@@ -131,3 +131,15 @@ integration checks and a pure Python CDC replay fixture complement
 lexical routing and reference safety. See
 [Data audit](data-refactor-audit.md) for official sources and limits.
 This is uniform quality, not a maturity rank.
+
+## Phase 10 — AI domain and official-spec interoperability
+
+Five existing AI skills were expanded and clarified, plus three
+independent specialists for agent-orchestration, rag-engineering and
+mcp-integration. **Eight AI skills and 26 selected references total**
+(20 new, 6 retained); the catalog now holds 119 skills with
+16 profiles. Specific facts cross-checked against MCP
+2026-07-28, LangGraph, LiteLLM, OWASP, OpenAI, AWS and Vertex.
+Offline authorization/RAG fixtures and negative lexical routing are
+necessary but not proof of real model behavior. Consult the
+[AI refactor research audit](ai-refactor-audit.md). No maturity ranks.

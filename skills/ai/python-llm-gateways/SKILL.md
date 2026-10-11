@@ -1,28 +1,54 @@
 ---
 name: python-llm-gateways
 domain: ai
-version: "2.0.0"
+version: "2.1.0"
 description: >-
-  Use when implementing Python multi-provider LLM routing with LiteLLM SDK/Proxy, LangChain model/tool orchestration or LangGraph persistence, including retries, budgets and shared gateways. Do not activate for a single provider's native SDK feature when abstraction brings no value.
+  Use when selecting and operating Python LiteLLM SDK/Proxy, LangChain
+  model abstraction and multi-provider routing, budgets or fallback.
+  Do not use when a direct native SDK is simpler or when the task is
+  implementing durable agent state, RAG indexing or MCP wire protocol.
 ---
 
-# Python LLM abstraction and routing — choose the smallest useful tool
+# Python multi-provider LLM gateways — no free abstraction
 
-## Decision tree
-- **One provider, strict regional/security/feature controls?** Prefer native SDK + application-owned thin adapter.
-- **Multiple providers/deployments from one Python app?** Evaluate LiteLLM SDK Router with explicit per-model capability and error policy.
-- **Multiple teams/services and central spend/keys/logging?** Evaluate LiteLLM Proxy/gateway (new service, DB/Redis/ops dependencies), not just SDK.
-- **Complex chains, tools or RAG composition?** Evaluate LangChain; test actual integration package and model capabilities.
-- **Durable stateful agent/human approval and recovery?** Evaluate LangGraph persistence and checkpoint semantics, not in-memory tool loop.
-Avoid stacking LangChain → LiteLLM Proxy → generic adapter by default; each layer adds latency and error mapping complexity.
+## Choose based on actual responsibility
+- Native SDK + minimal owned adapter for one provider/security region,
+  provider-only tools and exact capability support.
+- LiteLLM Python SDK Router for multi-deployment routing in one process;
+  review feature translation and SDK error taxonomy.
+- LiteLLM Proxy if several apps need centralized key access, spend
+  governance, routing and audit. It is an **additional service** with
+  database, Redis/cache options, uptime and identity obligations.
+- LangChain only when its compositional model/tool/retrieval abstractions
+  reduce complexity, not as a mandatory wrapper around every native call.
+- LangGraph orchestrator belongs to agent-orchestration when needing
+  checkpointed flows and human review; avoid burying reliability in a
+  generic gateway adapter.
 
-## Targeted references
-- [LiteLLM SDK, Proxy, deployment router](references/litellm-routing.md) — read when adding cross-provider routing, quota, fallback or governance.
-- [LangChain structured outputs and LangGraph durability](references/langchain-and-langgraph.md) — read when composing tools, agents, retrieval chains or checkpointed workflows.
-- [Abstraction tradeoffs and system scaling](references/provider-selection-and-scale.md) — read when deciding native vs framework, tenancy, quotas and reliability under load.
+## Reliability and privacy
+Pin SDK/proxy versions; validate model feature matrix and regional
+allowlist. Fallbacks can alter structured outputs, model quality,
+reasoning content, safety, token billing and data residency. Do not
+silently fallback to an unauthorized cloud or model.
+LiteLLM budget enforcement for Proxy depends on database-enabled
+operation; a DB-less configuration can fail open for spend caps.
+Retries must remain bounded across app, router, proxy and provider.
 
-## Related
-llm-integration owns common output contracts/quality; aws-bedrock, gcp-vertex-ai, azure-ai-foundry own provider-native behavior; agent-tool-safety owns tool authority and injection mitigation.
+## Deep references
+- [LiteLLM SDK, Proxy and deployment router](references/litellm-routing.md)
+  — **read when** configuring virtual keys, budgets or router fallbacks.
+- [LangChain model abstraction and LangGraph boundaries](references/langchain-and-langgraph.md)
+  — **read when** choosing framework composition, typed models and checkpoint integration.
+- [Abstraction tradeoffs and scaling](references/provider-selection-and-scale.md)
+  — **read when** comparing providers, reliability and capacity.
+- [Gateway failure isolation and cost guardrails](references/gateway-failure-and-budget-tests.md)
+  — **read when** testing budget fail-open, authentication, fallback regions and layered retries.
+
+## Boundaries
+llm-integration owns app contract; agent-orchestration owns workflow
+durability; agent-tool-safety owns authorization/injection; cloud
+specialists own IAM/quota/native provider APIs.
 
 ## Done
-Chosen framework justified, per-provider exceptions and response capabilities verified, explicit fallback/residency policy, budgets and evaluation benchmark, no hidden recursive retry storm.
+Smallest justified stack, proven feature coverage, isolated budgets,
+observed routing/failure modes, and explicitly untested live quotas.

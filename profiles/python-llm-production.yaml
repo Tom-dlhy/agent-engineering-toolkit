@@ -16,6 +16,8 @@ skills:
   - azure-ai-foundry
   - agent-tool-safety
   - llm-evaluation
+  - agent-orchestration
+  - rag-engineering
   - background-jobs
   - test-strategy
   - secure-code-review
