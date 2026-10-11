@@ -1,28 +1,50 @@
 ---
 name: python-project-architecture
 domain: architecture
-version: "2.0.0"
+version: "2.1.0"
 description: >-
-  Use when choosing or refactoring an entire Python application's package structure, module ownership, layered versus feature-first layout or architecture by project scale and constraints. Do not force DDD/hexagonal patterns onto simple scripts or small CRUD tasks.
+  Use when selecting or restructuring a Python application package layout,
+  layered versus feature-first modules, deployment boundaries and
+  evolutionary architecture under actual requirements. Do not force
+  DDD, microservices or a src layout on a tiny script.
 ---
 
-# Python project architecture — choose complexity deliberately
+# Python project architecture — choose by boundaries and deployment
 
 ## Decision algorithm
-1. Inventory domain rules, number of independent features/teams, integrations, expected change rate, deployment/runtime and operational constraints. Preserve existing coherent structure.
-2. Pick the **simplest architecture that enforces important boundaries**: single module/script, feature-based package, layers, modular monolith, or DDD/hexagonal bounded contexts.
-3. Separate three concerns even in small services: transport/API validation, business/application decisions and side-effecting adapters. Do not create an interface for every file.
-4. For change across multiple providers or many invariants, define ports around *capabilities*, not vendor SDK shapes. Own transactions and unit of work in the application boundary.
-5. Choose sync vs async and request vs background queues by actual latency, throughput and durability requirements; don't equate user count with architecture type.
-6. Define a migration path and tests for structure changes. Do not perform a multi-service rewrite without architectural evidence.
+1. Inventory codebase and Python/runtime/deploy constraints, user journeys,
+   data ownership, team capabilities, changes, concurrency and testing.
+2. Select simplest appropriate **project organization** (script/library,
+   feature-first, small layers, modular monolith, DDD/hexagonal when justified).
+   It is not the job of this skill to choose every vendor SDK/framework.
+3. Assign transport validation, business rules, persistence/network adapters
+   and application composition to clear owners; don't equate directory names
+   with actually enforced imports.
+4. Choose request vs queue and sync vs async according to blocking drivers,
+   latency and recovery; async doesn't accelerate CPU-bound code.
+5. Wire shared clients/DB engines at lifespan; keep AsyncSession/request
+   state per task and never open DB transaction across a slow LLM call.
+6. Plan package/test/deploy conventions already present; no speculative
+   rewrite of a functioning app or arbitrary interfaces just for purity.
+7. Validate import boundaries and representative runnable feature
+   before declaring refactor complete.
 
-## Targeted deep routing
-- [Architecture selection by complexity and scale](references/architecture-decisions.md) — read when deciding lightweight, layered, modular monolith or DDD/hexagonal.
-- [Concrete Python application trees and dependency boundaries](references/project-layouts-and-composition.md) — read when scaffolding, organizing modules or wiring routes/services/repositories.
-- [Architecture evolution and operational scaling](references/evolution-and-scale.md) — read when app grows, teams split, performance changes or a POC must be hardened.
+## Targeted references
+- [Architecture style choice by complexity](references/architecture-decisions.md)
+  — **read when** choosing layered, modular monolith or DDD/hexagonal.
+- [Concrete Python package layout and composition](references/project-layouts-and-composition.md)
+  — **read when** scaffolding files, DI or enforcing service/adapters.
+- [Incremental scale and production evolution](references/evolution-and-scale.md)
+  — **read when** turning POC into production, scaling workloads or
+  contemplating network-deployed services.
 
-## Related
-python-ddd owns aggregates/bounded contexts; hexagonal-architecture owns abstract port/adapters; fastapi-service owns HTTP mechanics; python-persistence owns session/unit of work.
+## Distinct ownership
+architecture-decision captures major system ADR;
+technology-tradeoffs compares concrete products;
+python-ddd models domain; hexagonal-architecture defines ports;
+fastapi-service implements HTTP endpoints; python-persistence owns DB.
 
-## Definition of done
-A chosen architecture with rejected alternatives, dependency direction, enforceable tests, explicit runtime/resource ownership and no unjustified folder proliferation.
+## Exit
+One maintainable layout, explicit dependencies/resource lifecycles,
+supported alternatives, tests and an evolution path without
+imaginary user-count architecture thresholds.

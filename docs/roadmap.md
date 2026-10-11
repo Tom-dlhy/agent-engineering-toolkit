@@ -42,3 +42,14 @@ added. Next evidence improvements: target-language E2E suites against real
 apps, approved staging k6 profiles, security/ASVS review rehearsal, SLSA
 attestation verification on actual artifacts, and independent agent
 behavioral evaluation with held-out tasks. No skill maturity tiers.
+
+## Architecture category complete as a source-reviewed content refactor
+
+Eight architecture skills now have 24 targeted leaves and
+a research audit. Automated tests can reject specific bad imports
+and detect routing/reference regressions. Outstanding proof:
+held-out agent design exercises, real DB outbox/saga fault
+injection, toolchain/versioned OpenAPI client compatibility
+and load/deployment measurements for concrete apps. The
+toolkit does not proclaim architecture production-ready solely
+from green static CI.

@@ -1,0 +1,35 @@
+# Deterministic lexical advisory baseline only, not LLM behavior proof.
+version: 1
+selection:
+  - query: "REST OpenAPI API contract versioning ETag pagination"
+    expected: api-contract-design
+  - query: "ADR architecture decision record alternatives tradeoffs"
+    expected: architecture-decision
+  - query: "event saga outbox inbox idempotency replay"
+    expected: event-driven-design
+  - query: "hexagonal ports adapters Python dependency inversion"
+    expected: hexagonal-architecture
+  - query: "modular monolith module boundaries ownership coupling"
+    expected: modular-monolith
+  - query: "python project package layout layered structure"
+    expected: python-project-architecture
+  - query: "python DDD domain bounded aggregate invariants"
+    expected: python-ddd
+  - query: "technology compare library benchmark TCO lockin"
+    expected: technology-tradeoffs
+negative_neighbors:
+  - query: "FastAPI Pydantic endpoint"
+    expected: fastapi-service
+  - query: "SQLAlchemy AsyncSession Alembic"
+    expected: python-persistence
+  - query: "grill requirements interview acceptance"
+    expected: requirements-discovery
+  - query: "debug traceback exception reproduce root cause"
+    expected: systematic-debugging
+  - query: "pytest property concurrency test strategy"
+    expected: test-strategy
+  - query: "GitHub branch PR merge checks"
+    expected: git-pr-workflow
+no_match:
+  - ""
+  - "zzzzunknownarchitemxxyy"
