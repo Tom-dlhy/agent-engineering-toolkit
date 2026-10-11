@@ -36,3 +36,10 @@ Track Base UI React version independently from shadcn/ui generated components; d
 ## Verification output
 
 Record: package version and relevant official page, configuration change, screenshots/tests actually run, residual compatibility risk and rollback path.
+
+## 2026 provider-specific release and visual-fidelity addendum
+
+### Verified package and composition contract
+The current official package is `@base-ui/react`, including deep imports such as `@base-ui/react/menu`. The custom `render` element must **forward ref and spread props**; in function form, preserve handlers, roles, ids, aria attrs and state-specific data attributes. Nested triggers and custom buttons need a test that no nested native `<button>` results. Base UI is headless: accessible behavior comes from library, art direction from owned CSS/tokens. The design must visibly distinguish focus, selected, disabled, invalid, expanded and destructive operations. Run tab/arrow/Escape, focus return and screen-reader tests in a real browser after changing render anatomy. Docs: https://base-ui.com/react/handbook/composition .
+
+**Evidence boundary:** documentation is not a real app build; verify against the pinned installed release and record browser/device tests run. Distinctiveness is evaluated against real brand/content, not automated detection of AI authorship.

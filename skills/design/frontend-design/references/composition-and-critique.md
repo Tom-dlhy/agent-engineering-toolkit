@@ -35,3 +35,18 @@ Separate defects from preferences, reference specific viewport and selector/elem
 If token/semantic contrast is the root issue, route to design-system. If motion or transitions are dysfunctional, route to interaction-motion. If the user cannot complete the task, route to ux-audit. Provider-specific props go to UI provider skill, not a generic redesign.
 
 Methods adapted from design engineering sources with independently written examples: https://github.com/emilkowalski/skills/blob/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/emil-design-eng/SKILL.md .
+
+## Browser review must be evidence-based
+
+Capture and compare real rendered screens at the project's target
+viewport sizes and browser engines before claiming visual polish.
+Critique **content first**: page purpose clear in first screen, genuine
+features rather than invented KPIs, one legible action hierarchy,
+appropriate density and clear error/recovery messages. Then examine
+typographic baseline alignment, contrast/focus, image crop, clipped
+localization, overlay portals, z-index, desktop/tablet/mobile, 200%
+text zoom and reduced motion. Record exact route/viewport/element
+and proposed correction instead of a subjective overall score.
+For component-level audit use the official Vercel Web Interface
+Guidelines at https://vercel.com/design/guidelines and W3C APG
+https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/ .

@@ -31,3 +31,10 @@ Inventory installed components and public props/slots; read versioned changelog;
 ## Release notes to report
 
 Version inspected; configuration/files touched; docs checked; tests actually executed; unsupported behavior and next verification needed. External vendor docs are for version freshness, not the only technical substance of this leaf.
+
+## 2026 provider-specific release and visual-fidelity addendum
+
+### Svelte 5 binding and headless contract
+Bits UI official documentation targets Svelte 5; example `Accordion.Root` uses component-root/parts and Svelte-specific state semantics, not Radix React `asChild` or Svelte 4-only props. Confirm Svelte version and Bits generation before using snippets, validate the controlled/bindable state and keyboard behavior in the actual built SvelteKit app. Since primitives are unstyled, deliberate brand choices (semantic foreground, focus/invalid states, typography, dense/sparse layout) are required. Reusing Bits as a component layer must not alter app-owned actions/authorization on server. Docs: https://bits-ui.com/docs/getting-started .
+
+**Evidence boundary:** documentation is not a real app build; verify against the pinned installed release and record browser/device tests run. Distinctiveness is evaluated against real brand/content, not automated detection of AI authorship.

@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Integration, theming and regression checks](references/integration-and-verification.md) — **read when** integrating chakra-ui with SSR, forms, themes, upgrades, tests or app delivery.
 
 For ordinary tasks, this `SKILL.md` is sufficient to choose the next action. **Do not bulk-load both leaves** unless the request genuinely spans implementation and integration. A skill available in the catalog is not permission to install its package.
+
+## Current provider contract and visual identity
+
+Chakra v3 replaces several v2 props and component shapes with compound parts/recipes; provider and theme changed. Check v2-v3 before applying CLI snippets or migrating. Official: https://chakra-ui.com/docs/get-started/migration
+For **art direction**, activate the existing `frontend-design` skill; this library skill owns exact props, composition, states, version compatibility and accessibility. Do not ship the stock demo skin or force visual novelty contrary to the product brief.

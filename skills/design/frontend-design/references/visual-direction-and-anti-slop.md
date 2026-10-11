@@ -37,3 +37,19 @@ Original synthesis informed by:
 - https://github.com/Krirox/anti-ai-slop-skills/blob/b7515139a58dd3076588a3981d3d6f8d4e5bb064/SKILL.md
 - https://github.com/emilkowalski/skills/blob/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/emil-design-eng/SKILL.md
 No upstream mega-prompt or automatic invocation rule has been imported.
+
+## Research update: avoid checklist aesthetics
+
+Anthropic's officially maintained frontend-design skill (2026) emphasizes
+subject matter and an explicit planning/critique pass over decorating an
+unspecified product. Avoid labels like "modern", "premium", or "clean" as
+stand-alone design requirements. Translate them into real content density,
+typography, photography, grid and behavior. Do **not** interpret its
+examples as banning Inter/system fonts or mandating loud typography:
+such choices may already be correct for a documented brand or dense
+enterprise app. A UI library's defaults are implementation scaffolding,
+not art direction. Preserve component interaction semantics while
+changing theme, type, surfaces and hierarchy coherently.
+
+Official maintained skill (reference only; do not copy/install):
+https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md .

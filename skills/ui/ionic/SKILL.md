@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Integration, styling and verification](references/integration-and-verification.md) — **read when** configuring the library, SSR/native platform, themes, upgrades or testing.
 
 Read only the needed leaf, in addition to the activated SKILL.md. Do not infer API compatibility from similar React/Vue/Angular/Svelte packages. A provider is opt-in and not automatically installed.
+
+## Current provider contract and visual identity
+
+Ionic Core integration must match React/Vue/Angular + Capacitor target; overlays, Ionic router outlet lifecycle, device back button and safe areas are platform-specific. Do not paste mobile-web-only CSS or assume one shared navigation stack. https://ionicframework.com/docs
+For product visual direction route to `frontend-design`; this skill owns toolkit composition, version matching, native accessibility and controlled states. Verify on intended devices, not only web-like demos.

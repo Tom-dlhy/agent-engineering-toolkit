@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Integration, styling and verification](references/integration-and-verification.md) — **read when** configuring the library, SSR/native platform, themes, upgrades or testing.
 
 Read only the needed leaf, in addition to the activated SKILL.md. Do not infer API compatibility from similar React/Vue/Angular/Svelte packages. A provider is opt-in and not automatically installed.
+
+## Current provider contract and visual identity
+
+Vuetify Vue 3 theme/provider/icon setup, `v-model` and Vuetify v-data-table differ from PrimeVue. Confirm SSR Nuxt integration and match version; avoid default Material theme when brief has distinct brand. https://vuetifyjs.com/en/
+For art direction use the existing `frontend-design` skill; this specialist owns accurate library API, interaction, accessibility and version migration. Refine the existing brand rather than accepting a demo component theme as final UI.

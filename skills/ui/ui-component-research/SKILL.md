@@ -26,6 +26,8 @@ This complements one selected provider skill and `frontend-design`. It does **no
 - [Data display](references/data-display.md) — **read when** dealing with tables, grids, virtualization or server pagination. — tables, grids, async and virtualization.
 - [Feedback and theme](references/feedback-and-theme.md) — **read when** dealing with notifications, errors, loading or tokens. — loading, toasts, accessibility and tokens.
 
+- [Provider compatibility, upgrades and release evidence](references/provider-compatibility-and-release.md) — **read when** upgrading UI dependencies, switching primitive backends, reviewing licenses or validating browser/device behavior.
+
 ## Boundary
 
 A component is not a new skill merely because it has a unique name. Create a **specialized subskill** only if it adds a distinct reusable workflow (e.g. a complex table engineering/testing methodology), validated against existing skills. Otherwise use small references and the provider’s official docs.

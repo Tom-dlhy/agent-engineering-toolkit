@@ -1,0 +1,24 @@
+version: 1
+# Manual decision scenarios, not automatic aesthetic grading or model eval.
+scenarios:
+  - id: maritime-order
+    audience: "Sailors ordering provisions for delivery to a boat"
+    primary_task: "Understand ordering process and contact delivery team"
+    factual_inputs: ["published delivery steps", "real contact method", "available product categories"]
+    direction: "Service-first editorial hierarchy with locally authentic imagery when supplied"
+    anti_template_failure: "Invented testimonials and a generic AI-platform feature-card hero"
+    acceptance: ["order steps clear", "contact accessible", "photos truthful", "responsive form states"]
+  - id: finance-ops
+    audience: "Finance analysts managing daily operational exceptions"
+    primary_task: "Locate anomalies, filter and investigate status"
+    factual_inputs: ["real table fields", "status categories", "filter semantics"]
+    direction: "Dense readable data grid with disciplined numerals and actionable status hierarchy"
+    anti_template_failure: "Oversized decorative charts and invented revenue stats"
+    acceptance: ["sortable data identity", "filter state preserved", "no invented metrics", "errors legible"]
+  - id: public-library
+    audience: "Readers discovering local events and books"
+    primary_task: "Browse real collections and find accessible event details"
+    factual_inputs: ["catalog metadata", "official event dates", "licensed cover imagery"]
+    direction: "Reading-first typography, searchable index and content-backed editorial treatment"
+    anti_template_failure: "Generic SaaS three-column features with invented partner logos"
+    acceptance: ["keyboard navigation", "meaningful content", "clear dates", "reading contrast"]

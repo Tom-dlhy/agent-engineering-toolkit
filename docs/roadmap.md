@@ -111,3 +111,14 @@ Avoid mass-importing a generic cloud services inventory.
 ## Frontend category refactor — source-verified implementation guidance
 
 Seven frontend specialists with 21 references and an 18-skill optional discovery profile. A framework-neutral Node test fixture covers SSR serialization and direct API authorization. Future proof requires pinned React/Next/TanStack/Nuxt/SvelteKit/Angular/Astro project builds, Playwright browser hydration and security cases, web performance measurement and held-out agent activation evaluation. React Router full-stack specialist remains an individually assessed future candidate. Next proposed domain refactor: UI libraries.
+
+## UI refactor — library correctness and distinctive product visual craft
+
+All 35 existing providers were enriched in place and eight critical
+vendor integrations were deepened (shadcn/Base/Chakra/HeroUI/MUI/
+PrimeVue/Bits/Skeleton). The UI shared specialist now has five leaves;
+frontend-design has three with product brief and anti-template review.
+No catalog/profiles were added. Next evidence stage is actual
+version-pinned provider projects, real browser/native screen captures,
+keyboard/ARIA checks and task-based visual critique, not arbitrary
+'AI-slop scores'.

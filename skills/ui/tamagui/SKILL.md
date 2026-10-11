@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Runtime integration and validation](references/integration-and-verification.md) — **read when** configuring theme, SDK/build, native platform, accessibility, performance or upgrades.
 
 Use only the relevant local leaf. Native and web APIs must **not** be assumed interchangeable; run actual device checks when possible.
+
+## Current provider contract and visual identity
+
+Tamagui React Native/web tokens and compiler/plugin configuration must match installed versions; optimize style extraction on measured outputs and avoid mixing web-only primitives into mobile. Brand with theme/token decisions. https://tamagui.dev/docs/intro/introduction
+For product visual direction route to `frontend-design`; this skill owns toolkit composition, version matching, native accessibility and controlled states. Verify on intended devices, not only web-like demos.

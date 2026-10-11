@@ -36,3 +36,10 @@ Review providers, SSR color mode and token layering. Test focus trapping, field 
 ## Verification output
 
 Record: package version and relevant official page, configuration change, screenshots/tests actually run, residual compatibility risk and rollback path.
+
+## 2026 provider-specific release and visual-fidelity addendum
+
+### Migration gate for v2 → v3
+Do not copy Chakra v2 `isOpen`, `isDisabled`, `colorScheme` and flat component anatomy into Chakra v3. Official migration guidance uses `open`, `disabled`, `colorPalette`, compound component parts, recipes and new `ChakraProvider value={system}` conventions. The docs suggest codemod `--dry` before mutation; a codemod is not permission to rewrite a production project. Snippets copied by the CLI are source-owned and should be reviewed for design tokens, keyboard/ARIA, dialog portals and hydration under existing color-mode provider. Verify theme semantic pairs under both modes and a complex form before deploying. Docs: https://chakra-ui.com/docs/get-started/migration .
+
+**Evidence boundary:** documentation is not a real app build; verify against the pinned installed release and record browser/device tests run. Distinctiveness is evaluated against real brand/content, not automated detection of AI authorship.

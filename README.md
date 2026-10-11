@@ -238,3 +238,18 @@ node --test examples/frontend-boundaries/tests/*.test.mjs
 ~~~
 
 [Frontend framework map](docs/frontend-framework-map.md) and [official source audit](docs/frontend-refactor-audit.md). The Node boundary example tests an educational server, not a real framework runtime; each production app still needs its own pinned typecheck/build and browser E2E.
+
+## UI: production component contracts without template-shaped design
+
+35 existing component-library specialists remain **opt-in** with two
+deep references each, now with vendor-specific version/composition
+warnings. The common ui-component-research has five leaves including
+upgrades, licensing and release tests. Existing frontend-design has a
+new art-direction and critique leaf: audience and authentic product
+content drive layout/typography; defaults and demo themes are scaffolds.
+
+[UI production rubric](docs/ui-production-quality.md) ·
+[Source and GitHub skill audit](docs/ui-refactor-audit.md) ·
+[Contrasting design briefs](evals/ui-visual-briefs.yaml).
+Do not automatically import outside skills or claim a page is visually
+validated without viewing rendered screenshots.

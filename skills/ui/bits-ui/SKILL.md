@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Integration, styling and verification](references/integration-and-verification.md) — **read when** configuring the library, SSR/native platform, themes, upgrades or testing.
 
 Read only the needed leaf, in addition to the activated SKILL.md. Do not infer API compatibility from similar React/Vue/Angular/Svelte packages. A provider is opt-in and not automatically installed.
+
+## Current provider contract and visual identity
+
+Bits UI v2 targets Svelte 5; use bindable state, snippets and headless parts as documented, not Svelte 4 or React Radix patterns. Its unstyled primitives need purposeful design tokens. https://bits-ui.com/docs/getting-started
+For art direction use the existing `frontend-design` skill; this specialist owns accurate library API, interaction, accessibility and version migration. Refine the existing brand rather than accepting a demo component theme as final UI.

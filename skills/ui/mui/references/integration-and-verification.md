@@ -35,3 +35,10 @@ For Dialog, make `open` controlled, connect label/description and focus restorat
 ## Verification output
 
 Record: package version and relevant official page, configuration change, screenshots/tests actually run, residual compatibility risk and rollback path.
+
+## 2026 provider-specific release and visual-fidelity addendum
+
+### MUI X entitlement and real-world table behavior
+The MIT Community DataGrid lives in `@mui/x-data-grid`; advanced Pro/Premium features require commercial licensed packages. Verify license for pinning/grouping/Excel export before promising them. A basic table may be a better fit for simple read-only content. For server-side rows, specify persistent row IDs, pagination/filter/sort state and stable intrinsic parent height; test selection persistence, loading/no-result/errors, permission masking and narrow viewport. Apply the actual brand through ThemeProvider typography, palette and component overrides rather than leaving the stock MUI admin demo untouched. Docs: https://mui.com/x/introduction/licensing/ ; https://mui.com/x/react-data-grid/quickstart/ .
+
+**Evidence boundary:** documentation is not a real app build; verify against the pinned installed release and record browser/device tests run. Distinctiveness is evaluated against real brand/content, not automated detection of AI authorship.
