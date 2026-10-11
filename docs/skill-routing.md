@@ -2,7 +2,7 @@
 
 This toolkit distinguishes **library size**, **installation profile size** and **activation size**.
 
-1. The library holds 171 local `SKILL.md` files and may grow to hundreds.
+1. The library holds 177 local `SKILL.md` files and may grow to hundreds.
 2. A profile installs only a curated subset (5–20 skills).
 3. The model sees a brief name/description, not a full skill body.
 4. Only 1–3 directly relevant skill bodies should be read for ordinary tasks.
@@ -48,6 +48,17 @@ Personas are deliberate *operating modes*, not technical source-of-truth skills 
 - `snowflake-security-governance` owns Snowflake SQL grants, masking and row access policies, not cloud IAM, GDPR legal signoff or Cortex answer evaluation.
 
 All five are opt-in and absent from existing installation profiles. Exact matching is still lexical; the local finder is not a semantic multilingual router. See [platform governance](snowflake-platform-audit.md).
+
+## Databricks specialist selection (opt-in)
+
+- `databricks-spark-delta` owns Spark query plans, AQE/Photon, Delta transactions and liquid clustering, not Snowflake warehouse profiling.
+- `databricks-lakeflow-pipelines` owns Auto Loader, Lakeflow Jobs and AUTO CDC state/replay, not generic source Debezium or Snowpipe.
+- `databricks-unity-catalog` owns asset RBAC, governed ABAC, workspace bindings and sharing, not Unity Gateway model request traffic.
+- `databricks-mlflow-mlops` owns MLflow 3 training/registry/serving lifecycle, not Snowpark ML Model Registry.
+- `databricks-automation-bundles` owns CI/CD config/state/CLI and deployments for Databricks assets, not generic Terraform providers.
+- `databricks-ai-governance` owns Unity Gateway models/MCP/tool/service policies, not Cortex Agents or Bedrock Converse.
+
+No new default profile contents and no automatic activation. Exact selection is lexical and must be tested against UI, Data, Cloud and Snowflake negative requests. See [Databricks audit](databricks-platform-audit.md).
 
 ## Workflow policy
 

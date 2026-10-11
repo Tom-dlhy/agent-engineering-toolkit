@@ -1,6 +1,6 @@
 # Skill catalog and design conventions
 
-The source of truth is `registry/skills.yaml`: 171 first-party skills grouped into 14 domains (13 technical domains and one opt-in behavioral-persona domain).
+The source of truth is `registry/skills.yaml`: 177 first-party skills grouped into 14 domains (13 technical domains and one opt-in behavioral-persona domain).
 
 | Domain | Focus |
 | --- | --- |
@@ -12,7 +12,7 @@ The source of truth is `registry/skills.yaml`: 171 first-party skills grouped in
 | `design` | Art direction, flows, information architecture, content, charts, UX and accessibility |
 | `cloud` | AWS, GCP, Azure, Terraform, Cloudflare, Kubernetes, FinOps, SRE |
 | `data` | Data quality, SQL, migrations and performance |
-| `data-platforms` | Snowflake-specific query execution, Snowpipe/Tasks, Snowpark ML, Cortex AI and RBAC/governance |
+| `data-platforms` | Snowflake and Databricks platform-specific Spark/Delta, Lakeflow, Unity Catalog, MLflow, bundles, Cortex, ML and access controls |
 | `ai` | LLM adapters, RAG evaluation, model evals and secure agents |
 | `quality` | Testing, code review, dependencies, releases and PR workflows |
 | `ui` | Provider-specific React/Vue/Angular/Svelte/mobile component guidance |

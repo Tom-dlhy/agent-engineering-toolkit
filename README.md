@@ -2,15 +2,15 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **171 first-party skills across 14 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **177 first-party skills across 14 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status (2026-10-12, following merged PR #27; three additional opt-in personas proposed): the original **12 technical domains** have undergone source-reviewed refactors; the Snowflake specialist domain is proposed as an additional technical domain; the catalog has **171 skills (including 15 opt-in personas), 397 technical reference leaves and 20 installation profiles**. A single authoring contract applies to every skill, without maturity tiers. This is a **documentation and deterministic-CI milestone**, not proof of production correctness, skill-routing quality or improvement in real agent outcomes. Next: fix observed discovery limitations and run held-out baseline-vs-toolkit evaluations.
+> Status (2026-10-12, following merged Snowflake PR #29; Databricks specialist expansion proposed): the original **12 technical domains** have undergone source-reviewed refactors; the data-platforms domain now contains Snowflake and Databricks specialists; the catalog has **177 skills (including 15 opt-in personas), 415 technical reference leaves and 20 installation profiles**. A single authoring contract applies to every skill, without maturity tiers. This is a **documentation and deterministic-CI milestone**, not proof of production correctness, skill-routing quality or improvement in real agent outcomes. Next: fix observed discovery limitations and run held-out baseline-vs-toolkit evaluations.
 
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **171 skills stored** in the library; only **5–20 installed** in a project profile.
+- **177 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
@@ -30,6 +30,22 @@ python scripts/install_profile.py --skill snowflake-query-performance --agent co
 ~~~
 
 See the [Snowflake governance and source audit](docs/snowflake-platform-audit.md).
+
+## Databricks platform expertise (explicit opt-in)
+
+Six first-party platform specialists complement Snowflake without replacing it:
+`databricks-spark-delta`, `databricks-lakeflow-pipelines`, `databricks-unity-catalog`, `databricks-mlflow-mlops`, `databricks-automation-bundles` and `databricks-ai-governance`. Each has three deep local references containing Databricks-specific methods, current API/version gates, negative scenarios and source links; no paid cloud operations or credentials are required. **Declarative Automation Bundles** is the current name of Asset Bundles; **Unity Gateway** is distinct from legacy AI Gateway endpoints.
+
+~~~bash
+python scripts/skillctl.py search "Databricks Lakeflow Auto Loader AUTO CDC"
+python scripts/skillctl.py show databricks-mlflow-mlops
+python scripts/skillctl.py references databricks-automation-bundles
+python scripts/skillctl.py read-ref databricks-ai-governance references/agents-mcp-and-service-policies.md
+# Preview single-skill installation (no changes until --apply).
+python scripts/install_profile.py --skill databricks-lakeflow-pipelines --agent claude --project /path/to/project
+~~~
+
+See [Databricks source/governance audit](docs/databricks-platform-audit.md).
 
 ## Quick start
 
