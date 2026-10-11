@@ -39,7 +39,7 @@ class UIProductionQualityTests(unittest.TestCase):
         )
 
     def test_maintains_exact_catalog_no_fragmentation(self):
-        self.assertEqual(len(self.catalog),144)
+        self.assertEqual(len(self.catalog),148)
         self.assertEqual(len(self.providers),35)
         self.assertEqual(
             len([s for s in self.catalog.values() if s.domain=="ui"]),36)

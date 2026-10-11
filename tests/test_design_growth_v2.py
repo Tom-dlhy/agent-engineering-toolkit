@@ -36,7 +36,7 @@ class DesignGrowthV2Tests(unittest.TestCase):
         )
 
     def test_catalog_and_existing_provider_are_preserved(self):
-        self.assertEqual(len(self.catalog), 144)
+        self.assertEqual(len(self.catalog), 148)
         self.assertEqual(self.catalog["requirements-discovery"].domain, "core")
         self.assertEqual(self.catalog["technical-seo"].domain, "growth")
         self.assertEqual(self.catalog["ui-library-selection"].path, "skills/stacks/ui-library-selection")
