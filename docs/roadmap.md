@@ -2,7 +2,7 @@
 
 ## Current state
 
-- 106 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
+- 113 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
 - The AWS split, 35 UI provider branches and design/growth/refined methodology work use selective references.
 - Additional skills remain condensed methodological overviews and are scheduled for deeper technical coverage.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
@@ -30,3 +30,6 @@
 - Keep costly model-driven evals manually invoked with explicit budgets and reproducible fixtures.
 
 External sources and decisions: [V2 design and growth intake](design-growth-source-review.md).
+
+## Completed partial Python vertical refactor
+Python 3.x packaging, architecture, FastAPI, HTTPX, SQLAlchemy, observability and AWS/GCP/Azure LLM access now have indexed deep references. Remaining: build and execute concrete sample apps for each cloud provider, performance/chaos benchmarks, async DB contract suites, model eval dataset harness and version-pinned SDK compatibility CI. Do not infer fully production-tested implementations from Markdown static validation.

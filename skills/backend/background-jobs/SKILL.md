@@ -1,18 +1,23 @@
 ---
 name: background-jobs
 domain: backend
-version: "0.1.0"
+version: "2.0.0"
 description: >-
-  Use when designing background jobs, task queues, scheduled workers and long-running asynchronous processing. Do not use when a synchronous request completes reliably within its latency budget.
+  Use when designing Python durable background tasks, schedulers and queues (Celery, RQ, Dramatiq, cloud queues), including timeouts, idempotency, worker scale and DLQ. Do not use for a quick synchronous operation that fits its deadline.
 ---
 
-# background-jobs
+# Python background jobs — durability boundaries
 
-## Contract
-Define task payload, unique ID, idempotency key, maximum duration, retry count, dead-letter behavior and job status. Do not pass unbounded serialized ORM objects to workers.
-## Reliability
-At-least-once delivery should be the default assumption. Use durable state, exponential backoff with jitter, timeout/cancellation semantics and a dead-letter queue or manual review path. Isolate side effects behind idempotent operations.
-## Operations
-Track queued/running/completed/failed counts, queue age, stalled leases and repeated poison jobs. Separate worker concurrency from web-server processes.
-## Verify
-Test duplicate delivery, partial failure, cancellation, worker restart, clock/time-zone edge cases and replay.
+## Choose
+1. If quick best-effort local noncritical task, framework background task may suffice with acknowledged loss on worker crash; otherwise choose durable external queue.
+2. Define job ID, schema version, tenant, idempotency, max runtime, retry count, deadline, DLQ, cancellation and ownership.
+3. Select worker/task system by broker deployment, ecosystem, scheduling, Python task needs and operational experience, not popularity.
+4. Separate HTTP admission/status from worker concurrency and actual external side effects.
+5. Measure queue age and retry storm behavior, ensure replay and poison handling, and test worker restart.
+
+## Deep references
+- [Queue selection and execution contract](references/queue-patterns.md) — read when picking Celery/RQ/Dramatiq/cloud queues or designing payloads and worker state.
+- [Recovery, idempotency, scaling and operations](references/job-recovery-and-capacity.md) — read when dealing with duplicates, DLQ, scheduling and realistic load.
+
+## Exit
+At-least-once assumption explicit, durable state for important tasks, bounded retries, recovery plan, monitoring and tested failure windows.

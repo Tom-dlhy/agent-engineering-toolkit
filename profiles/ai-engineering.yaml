@@ -4,6 +4,10 @@ skills:
   - task-routing
   - verification-before-done
   - llm-integration
+  - python-llm-gateways
+  - gcp-vertex-ai
+  - azure-ai-foundry
+  - aws-bedrock
   - llm-evaluation
   - rag-evaluation
   - agent-tool-safety

@@ -1,18 +1,22 @@
 ---
 name: hexagonal-architecture
 domain: architecture
-version: "0.1.0"
+version: "2.0.0"
 description: >-
-  Use when isolating core business rules from HTTP frameworks, cloud providers, storage drivers or messaging libraries using ports and adapters. Do not use to wrap every basic utility in an interface.
+  Use when isolating Python application logic from HTTP, SQL, LLM, cloud APIs and messaging through behavior-oriented ports/adapters. Do not create an interface wrapper around every stable utility or framework method.
 ---
 
-# hexagonal-architecture
+# Ports and adapters — clear dependency direction
 
-## Ports
-Define use-case input/output and behavior-oriented interfaces at the application boundary. Ports should be expressed in domain vocabulary (e.g. `send_invoice`) rather than vendor SDK types (`put_object`).
-## Adapters
-Implement small concrete adapters for SQL, cloud SDKs, REST and queues. Convert transport/persistence DTOs at adapters. Wire dependencies at one composition root. Keep migrations and provider-specific error mapping here, not inside the domain.
-## Tests
-Domain/application tests use fakes implementing ports. Run adapter contract tests against representative real infrastructure; fake-only tests cannot prove network semantics.
-## Decision gate
-List which external systems are reasonably expected to change or need simulation. If a simple module achieves sufficient separation, prefer it over a complex architecture framework.
+## Decisions
+1. Identify business capability that must survive infrastructure replacement or be testable without side effects.
+2. Define an inward-facing port using domain/application types, not vendor SDK shapes.
+3. Build concrete adapters mapping external errors and data, with connection ownership at composition root/lifespan.
+4. Test pure use cases with in-memory fakes and adapters with real sandbox/DB contracts. Don't mistake fake-only tests for infrastructure verification.
+5. Keep a clear import direction enforced in review or static architecture tests; avoid circular dependencies and a universal ServiceLocator.
+
+## References
+- [Ports and adapters in Python](references/ports-and-composition.md) — read when defining Protocols, wiring DI and deciding what to abstract.
+- [Adapter contracts and anti-pattern review](references/adapter-tests-and-boundaries.md) — read when testing cloud/HTTP/SQL adapters and avoiding excessive abstraction.
+
+For overall project selection use python-project-architecture; python-ddd is optional for complex domains, not a required companion.
