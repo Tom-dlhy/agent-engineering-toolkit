@@ -1,18 +1,26 @@
 ---
 name: azure-integration
 domain: cloud
-version: "0.1.0"
+version: "0.2.0"
 description: >-
-  Use when implementing Microsoft Azure integrations such as Blob Storage, Service Bus, Container Apps, Functions or Azure AI services. Do not use for projects that do not use Azure.
+  Use when coordinating multiple Azure services, Entra identity, RBAC data/control-plane access and SDK clients. Do not use for a single Azure service with a dedicated specialist.
 ---
 
-# azure-integration
+# Azure integration coordinator
 
-## Identity
-Prefer managed identities and Azure Identity credential chains over static connection strings and secrets. Scope Azure RBAC to necessary resource groups/resources. Avoid embedding Azure SDK models in business/domain entities; map responses at adapter boundaries.
+## Decision path
+1. Identify actual task, environment, owner, runtime, provider/version, safety and operational consequence.
+2. Route Entra/IAM to azure-identity-security, Container Apps to azure-container-apps, Blob to azure-blob-storage, Service Bus to azure-service-bus, Key Vault to azure-key-vault, Functions to azure-functions-runtime, Azure Foundry to azure-ai-foundry.
+3. Use `DefaultAzureCredential` for local dev where suitable; prefer intended explicit `ManagedIdentityCredential` in deployed service with user-assigned identity. Check actual azure-identity version before use of AZURE_TOKEN_CREDENTIALS=prod. Ensure correct audience (data plane vs ARM).
+4. Azure Contributor management role does not automatically grant storage Blob/Service Bus/Key Vault data roles. Check tenant, subscription, managed identity principal, network endpoint and RBAC propagation. IAM changes require approval.
+5. Verify deterministic checks first, then only authorized sandbox connectivity or dry-run. Any real infra apply/deletion requires separate explicit approval.
 
-## Reliability
-Set explicit timeouts, retry policy and idempotency/deduplication according to each service's documented semantics. Model Service Bus message settlement and poison message handling. Validate storage security, private endpoints, networking and data residency.
+## Progressive references
+- [Decisions and implementation](references/selection-and-implementation.md) — **read when** choosing tools, access, configuration or development workflow.
+- [Safety, failures and release evidence](references/security-operations-and-tests.md) — **read when** hardening, operating, scaling, testing or releasing.
 
-## Deployment and test
-Use declarative IaC with reviewed plans, environment-specific configuration, telemetry via appropriate Azure monitoring tools, and cost limits. Unit-test application ports without Azure access; run sandbox integration tests with least privilege. Never mutate subscriptions or IAM roles without user approval.
+## Boundaries
+Use a dedicated provider service skill for AWS/GCP/Azure/Cloudflare SDK operations. This skill owns Azure integration coordinator cross-service method only.
+
+## Completion
+Concrete decision, current-version limitations, scoped authorization, negative tests and measured or explicitly unknown operating evidence.

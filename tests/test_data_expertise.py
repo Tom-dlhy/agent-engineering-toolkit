@@ -40,7 +40,7 @@ class DataExpertiseTests(unittest.TestCase):
     def test_seven_distinct_data_skills_and_catalog_count(self):
         found = {s.name for s in self.catalog.values() if s.domain == "data"}
         self.assertEqual(found, set(DATA))
-        self.assertEqual(len(self.catalog), 119)
+        self.assertEqual(len(self.catalog), 141)
 
     def test_single_quality_standard_with_no_maturity_rank(self):
         entries = yaml.safe_load(

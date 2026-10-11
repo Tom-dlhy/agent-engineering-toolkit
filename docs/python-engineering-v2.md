@@ -101,3 +101,15 @@ orchestration and RAG implementation; MCP stays a separately
 installable, explicitly selected tool-integration skill.
 See [AI audit](ai-refactor-audit.md) for version details,
 budget fail-open caveats, OWASP and verification limits.
+
+## Cloud integration skills — source-verified service boundaries
+
+Cloud provider per-service authentication/playbooks added without
+duplicating Python HTTPX/FastAPI, AWS Bedrock Converse, GCP Vertex
+Gemini or Azure Foundry native model skills. AWS Boto3 credentials,
+GCP ADC and Azure Identity/Managed Identity have different
+resolution and token-audience semantics. New GCP/Azure/Cloudflare
+profiles keep SDK/runbook context opt-in. See
+[Cloud service map](cloud-service-map.md) and
+[Cloud official-source audit](cloud-refactor-audit.md). Real
+principal/IAM/network testing is required before deployment.

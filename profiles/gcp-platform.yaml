@@ -1,0 +1,18 @@
+name: gcp-platform
+description: Google Cloud service-specific identity, Cloud Run, storage, messaging, SQL and Vertex; opt-in references.
+skills:
+  - task-routing
+  - verification-before-done
+  - systematic-debugging
+  - gcp-integration
+  - gcp-iam-identity
+  - gcp-cloud-run
+  - gcp-cloud-storage
+  - gcp-pubsub
+  - gcp-secret-manager
+  - gcp-cloud-sql
+  - gcp-vertex-ai
+  - terraform-iac
+  - observability-sre
+  - test-strategy
+  - secure-code-review

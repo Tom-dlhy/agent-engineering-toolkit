@@ -1,6 +1,6 @@
 # Skill catalog and design conventions
 
-The source of truth is `registry/skills.yaml`: 119 first-party skills grouped into 12 domains.
+The source of truth is `registry/skills.yaml`: 141 first-party skills grouped into 12 domains.
 
 | Domain | Focus |
 | --- | --- |

@@ -91,3 +91,19 @@ provider-native paid tests, LangGraph checkpoint crash recovery,
 MCP SDK v2 server/client interop, retrieval index/ACL benchmarks,
 model evals with consented datasets and supervised red-team.
 No universal production/SOTA guarantee from green CI.
+
+## Cloud provider-specific connectivity and operational gaps
+
+Cloud category now provides per-service SDK/IAM/recovery guides
+for AWS/GCP/Azure/Cloudflare, 41 specialists and 82 leaves,
+with three new provider/edge opt-in profiles. Tests check
+routing, safe reference access, Python syntax and discovery
+budgets. The next evidence stage must validate live identity
+and secret-free SDK reads in **authorized sandbox projects**,
+regional quotas and pricing, network/private endpoints and
+integration resilience (retry, redelivery, failover). Uncovered
+services to evaluate individually: AWS SNS/KMS/Step Functions,
+GCP Cloud Tasks/Eventarc/Firestore, Azure Cosmos/Event Grid/SQL,
+Cloudflare KV/Queues/Durable Objects/Workflows and provider-specific
+managed Kubernetes EKS/GKE/AKS and monitoring dashboards.
+Avoid mass-importing a generic cloud services inventory.

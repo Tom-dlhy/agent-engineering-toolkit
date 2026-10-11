@@ -1,18 +1,26 @@
 ---
 name: ci-cd-engineering
 domain: cloud
-version: "0.1.0"
+version: "0.2.0"
 description: >-
-  Use when designing GitHub Actions, deployment pipelines, quality gates or protected branch workflows. Do not add expensive jobs without a concrete coverage purpose.
+  Use when engineering GitHub Actions quality gates, OIDC deployment roles, protected environments and supply chain workflows. Do not use for a generic Git PR or frontend component unrelated to pipeline execution.
 ---
 
-# ci-cd-engineering
+# CI/CD and federated cloud deployment
 
-## Threat model
-Treat PR source, third-party actions, artifacts, caches and workflow inputs as untrusted. Pin actions to vetted immutable SHAs, restrict GITHUB_TOKEN permissions, avoid untrusted code executing with privileged pull_request_target contexts.
-## Pipeline
-Split deterministic checks (format, manifest, unit tests, typecheck, build, security) by failure domain. Use cache keys tied to lockfiles, concurrency controls and bounded timeouts. Avoid pipelines where output is masked and failures appear green.
-## Release
-Separate validation from deployment. Use short-lived cloud credentials via OIDC and environment approvals before production. Ensure required status checks use stable, unambiguous job names.
-## Review
-Prove negative cases: intentional failing tests block merge, PR from untrusted branch cannot access secrets and protected branch cannot be pushed directly by ordinary contributors.
+## Decision path
+1. Identify actual task, environment, owner, runtime, provider/version, safety and operational consequence.
+2. Separate untrusted pull request verification from privileged deploy jobs. Pin actions immutable SHAs, constrain GITHUB_TOKEN, use environment approvals and repository/ref/environment claims for federated OIDC.
+3. GitHub OIDC `id-token: write` permits requesting identity JWT but does NOT itself give cloud permissions; AWS/GCP/Azure trust policy grants cloud role conditioned on issuer/audience/subject. Tokens must never appear in logs.
+4. Fork PR cannot read deploy credentials or request production role; a failing test must block promotion; concurrency prevents conflicting deploys; artifact provenance/SBOM and immutable build digest protect release chain.
+5. Verify deterministic checks first, then only authorized sandbox connectivity or dry-run. Any real infra apply/deletion requires separate explicit approval.
+
+## Progressive references
+- [Decisions and implementation](references/selection-and-implementation.md) — **read when** choosing tools, access, configuration or development workflow.
+- [Safety, failures and release evidence](references/security-operations-and-tests.md) — **read when** hardening, operating, scaling, testing or releasing.
+
+## Boundaries
+Use a dedicated provider service skill for AWS/GCP/Azure/Cloudflare SDK operations. This skill owns CI/CD and federated cloud deployment cross-service method only.
+
+## Completion
+Concrete decision, current-version limitations, scoped authorization, negative tests and measured or explicitly unknown operating evidence.

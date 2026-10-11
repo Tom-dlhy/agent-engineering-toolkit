@@ -1,0 +1,15 @@
+name: cloudflare-edge
+description: Cloudflare Workers/Pages, R2, D1 and Access with deployment and authorization safeguards.
+skills:
+  - task-routing
+  - verification-before-done
+  - systematic-debugging
+  - cloudflare-platform
+  - cloudflare-workers-runtime
+  - cloudflare-r2-storage
+  - cloudflare-d1-database
+  - cloudflare-access-security
+  - ci-cd-engineering
+  - terraform-iac
+  - secure-code-review
+  - test-strategy
