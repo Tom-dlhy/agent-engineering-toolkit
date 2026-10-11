@@ -7,7 +7,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from toolkit.catalog import ROOT, load_catalog, load_profile
 
@@ -40,11 +43,10 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--activated cannot be combined with --all")
     profiles = [p.stem for p in sorted((ROOT / "profiles").glob("*.yaml"))] if args.all else [args.profile]
     try:
-        rows = [
-            {"profile": name, "installed_skills": estimate(name, ROOT, tuple(args.activated))[1],
-             "estimated_tokens": estimate(name, ROOT, tuple(args.activated))[0]}
-            for name in profiles
-        ]
+        rows = []
+        for name in profiles:
+            approx, count = estimate(name, ROOT, tuple(args.activated))
+            rows.append({"profile": name, "installed_skills": count, "estimated_tokens": approx})
     except (ValueError, OSError, KeyError) as exc:
         parser.error(str(exc))
     if args.json:
