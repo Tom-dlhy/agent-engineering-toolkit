@@ -110,7 +110,7 @@ class ArchitectureRefactorTests(unittest.TestCase):
     def test_official_research_and_limitations_documented(self):
         text = (ROOT / "docs/architecture-refactor-audit.md").read_text()
         for phrase in ("RFC 9457", "OpenAPI 3.2", "AsyncAPI",
-                       "AWS", "Microsoft", "SLA", "ADR", "SOTA"):
+                       "AWS", "Microsoft", "SLO", "ADR", "SOTA"):
             self.assertIn(phrase, text)
 
     def test_repository_integrity(self):

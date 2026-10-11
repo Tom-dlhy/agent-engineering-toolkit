@@ -80,13 +80,25 @@ def scan(root: Path, rules: tuple[Rule, ...]) -> list[str]:
         except (SyntaxError, UnicodeError) as exc:
             findings.append(f"{file.relative_to(root)}: invalid Python: {exc}")
             continue
+        # One actionable finding per instruction, source-rule and
+        # forbidden prefix. An ImportFrom yields both its base module
+        # and its qualified imported names; those are one violation.
+        reported: set[tuple[int, str, str]] = set()
         for line, imported in _imports(tree, package):
             for rule in applicable:
-                if any(_under(imported, blocked) for blocked in rule.forbidden):
-                    findings.append(
-                        f"{file.relative_to(root)}:{line}: {module} imports forbidden {imported}"
-                    )
-                    break
+                blocked = next(
+                    (item for item in rule.forbidden if _under(imported, item)),
+                    None,
+                )
+                if blocked is None:
+                    continue
+                key = (line, rule.source, blocked)
+                if key in reported:
+                    continue
+                reported.add(key)
+                findings.append(
+                    f"{file.relative_to(root)}:{line}: {module} imports forbidden {imported}"
+                )
     return findings
 
 
