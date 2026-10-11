@@ -1,0 +1,21 @@
+name: frontend-platform
+description: Frontend engineering across React, Next, TanStack Start, Vue/Nuxt, SvelteKit, Angular and Astro; references opened only on demand.
+skills:
+  - task-routing
+  - verification-before-done
+  - systematic-debugging
+  - stack-advisor
+  - react-architecture
+  - nextjs-application
+  - tanstack-start
+  - vue-application
+  - sveltekit-application
+  - angular-application
+  - astro-application
+  - accessibility-wcag
+  - design-system
+  - ui-library-selection
+  - secure-code-review
+  - test-strategy
+  - performance-profiling
+  - responsive-visual-qa

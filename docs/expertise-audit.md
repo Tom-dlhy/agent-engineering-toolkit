@@ -157,3 +157,7 @@ See [official-source Cloud audit](cloud-refactor-audit.md) and
 [connection map](cloud-service-map.md). Static docs, fake tests and
 routing checks do not demonstrate live permissions or deployment.
 All have one uniform quality contract, never maturity rankings.
+
+## Phase 12 — Frontend framework source review
+
+React, Next.js, TanStack Start upgraded with three practical deep leaves each; the combined Vue/Svelte skill was replaced with Vue/Nuxt and Svelte/SvelteKit, and Angular/Astro added as independent domains. Seven frontend skills now expose **21 leaves**. Catalog **144 skills / 20 profiles**, preserving metadata-only discovery. See [Frontend audit](frontend-refactor-audit.md) and [framework map](frontend-framework-map.md). Browser/framework adapter integration remains a follow-up, not presumed by green structural CI.

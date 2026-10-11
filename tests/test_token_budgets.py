@@ -32,7 +32,7 @@ class BudgetTests(unittest.TestCase):
 
     def test_descriptions_are_distinct_and_brief(self):
         skills = load_catalog(ROOT)
-        self.assertEqual(len(skills), 141)
+        self.assertEqual(len(skills), 144)
         descriptions = [s.description for s in skills.values()]
         self.assertEqual(len(descriptions), len(set(descriptions)))
         self.assertTrue(all(35 <= len(d) <= 750 for d in descriptions))

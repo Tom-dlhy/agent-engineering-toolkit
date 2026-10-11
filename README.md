@@ -2,15 +2,15 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **141 first-party skills across 12 domains**, with **19 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **144 first-party skills across 12 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status: a single skill-quality contract applies to all 141 catalog entries. Depth and real-world verification remain uneven across domains; inclusion in the catalog and passing structural CI are not evidence of production expertise. Refactoring proceeds domain by domain without maturity tiers.
+> Status: a single skill-quality contract applies to all 144 catalog entries. Depth and real-world verification remain uneven across domains; inclusion in the catalog and passing structural CI are not evidence of production expertise. Refactoring proceeds domain by domain without maturity tiers.
 
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **141 skills stored** in the library; only **5–20 installed** in a project profile.
+- **144 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
@@ -225,3 +225,16 @@ See [cloud service-by-service connection map](docs/cloud-service-map.md)
 and [official-source audit](docs/cloud-refactor-audit.md). Reading skills
 **does not authenticate** an agent to cloud resources or authorize
 resource creation. Production requires owner-approved IAM/network/test.
+
+## Frontend framework engineering
+
+Seven focused frontend skills have 21 selectively readable deep references on React, Next.js, TanStack Start, Vue/Nuxt, Svelte/SvelteKit, Angular and Astro. The legacy combined Vue/Svelte skill was replaced rather than duplicated. A new 18-skill frontend-platform discovery profile is opt-in.
+
+~~~bash
+python scripts/skillctl.py search 'TanStack Start serverfunctions middleware csrf'
+python scripts/skillctl.py references tanstack-start
+python scripts/skillctl.py read-ref tanstack-start references/start-server-functions-auth.md
+node --test examples/frontend-boundaries/tests/*.test.mjs
+~~~
+
+[Frontend framework map](docs/frontend-framework-map.md) and [official source audit](docs/frontend-refactor-audit.md). The Node boundary example tests an educational server, not a real framework runtime; each production app still needs its own pinned typecheck/build and browser E2E.
