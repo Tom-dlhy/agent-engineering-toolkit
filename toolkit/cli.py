@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from toolkit.catalog import ROOT, load_catalog, load_profile, search, suggest_workflow, tokenize
+from toolkit.knowledge import indexed_references, read_reference
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -25,6 +26,11 @@ def main(argv: list[str] | None = None) -> int:
     recommend.add_argument("--limit", type=int, default=3)
     show = commands.add_parser("show", help="Read one selected skill, without scanning other bodies")
     show.add_argument("name")
+    refs = commands.add_parser("references", help="List declared leaf paths for a single skill (no leaf bodies)")
+    refs.add_argument("name")
+    read = commands.add_parser("read-ref", help="Read one allowlisted reference for an activated skill")
+    read.add_argument("name")
+    read.add_argument("path")
     args = parser.parse_args(argv)
     try:
         catalog = load_catalog(args.root)
@@ -53,6 +59,14 @@ def main(argv: list[str] | None = None) -> int:
                     print(f"{match.skill.name}: {match.skill.path}/SKILL.md | score={match.score} | {', '.join(match.reasons)}")
                 if not results:
                     print("No confident lexical match; ask for context or choose manually.")
+        elif args.command in ("references", "read-ref"):
+            if args.name not in catalog:
+                raise ValueError("unknown skill: " + args.name)
+            if args.command == "references":
+                for path in indexed_references(catalog[args.name], args.root):
+                    print(path)
+            else:
+                print(read_reference(catalog[args.name], args.path, args.root))
         elif args.command == "show":
             if args.name not in catalog:
                 raise ValueError("unknown skill: " + args.name)
