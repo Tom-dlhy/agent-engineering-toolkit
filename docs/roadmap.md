@@ -33,3 +33,12 @@ External sources and decisions: [V2 design and growth intake](design-growth-sour
 
 ## Completed partial Python vertical refactor
 Python 3.x packaging, architecture, FastAPI, HTTPX, SQLAlchemy, observability and AWS/GCP/Azure LLM access now have indexed deep references. Remaining: build and execute concrete sample apps for each cloud provider, performance/chaos benchmarks, async DB contract suites, model eval dataset harness and version-pinned SDK compatibility CI. Do not infer fully production-tested implementations from Markdown static validation.
+
+## Quality category refactor
+
+Seven Quality skills have 21 task-scoped references and a source-driven audit;
+deterministic routing/integrity tests and a local negative-test fixture were
+added. Next evidence improvements: target-language E2E suites against real
+apps, approved staging k6 profiles, security/ASVS review rehearsal, SLSA
+attestation verification on actual artifacts, and independent agent
+behavioral evaluation with held-out tasks. No skill maturity tiers.

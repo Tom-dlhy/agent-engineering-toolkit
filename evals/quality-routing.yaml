@@ -1,0 +1,31 @@
+# Lexical routing fixtures only, not real agent behavior evidence.
+version: 1
+selection:
+  - query: "pytest property concurrency test strategy"
+    expected: test-strategy
+  - query: "secure code review ssrf injection authorization"
+    expected: secure-code-review
+  - query: "dependency supply chain sbom cve lockfile"
+    expected: dependency-supply-chain
+  - query: "performance profiling cprofile p95 benchmark"
+    expected: performance-profiling
+  - query: "release readiness rollback canary go no-go"
+    expected: release-readiness
+  - query: "git pr branch merge ruleset review"
+    expected: git-pr-workflow
+  - query: "external skill import license provenance audit"
+    expected: external-skill-audit
+negative_neighbors:
+  - query: "FastAPI Pydantic endpoint"
+    expected: fastapi-service
+  - query: "SQLAlchemy AsyncSession Alembic"
+    expected: python-persistence
+  - query: "grill requirements interview acceptance"
+    expected: requirements-discovery
+  - query: "debug traceback exception reproduce root cause"
+    expected: systematic-debugging
+  - query: "verify evidence checks proof completion"
+    expected: verification-before-done
+no_match:
+  - "zzzzzznotarealqualitytopic"
+  - ""
