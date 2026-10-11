@@ -48,7 +48,7 @@ class DesignRefactorTests(unittest.TestCase):
                       if skill.domain == "design"}
 
     def test_all_twelve_existing_skills_and_catalog_preserved(self):
-        self.assertEqual(len(self.catalog), 163)
+        self.assertEqual(len(self.catalog), 166)
         self.assertEqual(len(self.design), 16)
         self.assertTrue(set(REFS).issubset(self.design))
         self.assertIn("frontend-design", self.design)
