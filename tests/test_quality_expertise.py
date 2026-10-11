@@ -90,9 +90,23 @@ class QualityRefactorTests(unittest.TestCase):
                         "references/not-listed.md"):
             with self.subTest(path=invalid), self.assertRaises(ValueError):
                 read_reference(skill, invalid, ROOT)
-        self.assertNotIn("test-strategy", load_profile("minimal", ROOT))
+        minimal = load_profile("minimal", ROOT)
+        self.assertIn("test-strategy", minimal)
+        self.assertNotIn("dependency-supply-chain", minimal)
         base, _ = estimate("minimal", ROOT)
+        active, _ = estimate("minimal", ROOT, ("test-strategy",))
+        leaf, _ = estimate(
+            "minimal", ROOT, ("test-strategy",),
+            ("test-strategy:references/risk-matrix-and-test-design.md",),
+        )
         self.assertLessEqual(base, 2500)
+        self.assertLess(base, active)
+        self.assertLess(active, leaf)
+        with self.assertRaises(ValueError):
+            estimate(
+                "minimal", ROOT, (),
+                ("test-strategy:references/risk-matrix-and-test-design.md",),
+            )
 
     def test_source_audit(self):
         text = (ROOT / "docs" / "quality-refactor-audit.md").read_text()
