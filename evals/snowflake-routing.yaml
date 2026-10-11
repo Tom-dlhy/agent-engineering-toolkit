@@ -18,6 +18,9 @@ selection:
     query: "Snowflake row access masking policy role grants security governance"
     expected: snowflake-security-governance
 negative_neighbors:
+  - id: vuetify-data-table
+    query: "vuetify v-data-table"
+    expected: vuetify
   - id: postgres-plan
     query: "PostgreSQL EXPLAIN ANALYZE vacuum btree indexes"
     expected: postgres-performance
