@@ -11,6 +11,12 @@ skills:
   - aws-lambda-runtime
   - aws-ecs-deployment
   - aws-bedrock
+  - aws-rds-postgres
+  - aws-dynamodb
+  - aws-eventbridge
+  - aws-secrets-manager
+  - aws-vpc-networking
+  - aws-api-gateway
   - terraform-iac
   - observability-sre
   - test-strategy

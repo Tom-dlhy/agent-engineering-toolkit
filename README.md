@@ -2,15 +2,15 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **119 first-party skills across 12 domains**, with **16 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **141 first-party skills across 12 domains**, with **19 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status: a single skill-quality contract applies to all 119 catalog entries. Depth and real-world verification remain uneven across domains; inclusion in the catalog and passing structural CI are not evidence of production expertise. Refactoring proceeds domain by domain without maturity tiers.
+> Status: a single skill-quality contract applies to all 141 catalog entries. Depth and real-world verification remain uneven across domains; inclusion in the catalog and passing structural CI are not evidence of production expertise. Refactoring proceeds domain by domain without maturity tiers.
 
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **119 skills stored** in the library; only **5–20 installed** in a project profile.
+- **141 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
@@ -204,3 +204,24 @@ See [AI technical/source audit](docs/ai-refactor-audit.md). MCP's
 reviewed; LangGraph checkpointers do not guarantee exactly-once external
 effects, and LiteLLM Proxy budgets require a functioning database.
 All examples are offline and must not be deployed as credentialed agents.
+
+## Cloud services — provider-specific production playbooks
+
+**41 Cloud skills** (22 new service specialists) have **82 on-demand reference
+leaves** for authentication, SDK, minimum permissions, diagnostics,
+rate limits and recovery. A narrow service selector avoids blindly
+loading the AWS, GCP, Azure and Cloudflare documentation together.
+Opt-in installation profiles: `aws-platform` (20), `gcp-platform`
+(15), `azure-platform` (15) and `cloudflare-edge` (12).
+
+~~~bash
+python scripts/skillctl.py search "GCP Cloud Run OIDC invoker"
+python scripts/skillctl.py references azure-service-bus
+python scripts/skillctl.py read-ref azure-service-bus references/connection-and-permissions.md
+python scripts/context_budget.py --profile gcp-platform --activated gcp-cloud-run --reference gcp-cloud-run:references/connection-and-permissions.md
+~~~
+
+See [cloud service-by-service connection map](docs/cloud-service-map.md)
+and [official-source audit](docs/cloud-refactor-audit.md). Reading skills
+**does not authenticate** an agent to cloud resources or authorize
+resource creation. Production requires owner-approved IAM/network/test.

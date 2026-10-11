@@ -93,10 +93,98 @@ skills:
     domain: backend
     path: skills/backend/typescript-api
     keywords: ["typescript","nodejs","node","api","fastify","express","nestjs","runtime","validation","http"]
+  - name: aws-rds-postgres
+    domain: cloud
+    path: skills/cloud/aws-rds-postgres
+    keywords: ["aws","rds","aurora","postgresql","iam","database","rdsproxy"]
+  - name: aws-dynamodb
+    domain: cloud
+    path: skills/cloud/aws-dynamodb
+    keywords: ["aws","dynamodb","nosql","partition","conditional","ttl","table"]
+  - name: aws-eventbridge
+    domain: cloud
+    path: skills/cloud/aws-eventbridge
+    keywords: ["aws","eventbridge","eventbus","rules","putevents","scheduler"]
+  - name: aws-secrets-manager
+    domain: cloud
+    path: skills/cloud/aws-secrets-manager
+    keywords: ["aws","secretsmanager","secret","kms","rotation","getsecretvalue"]
+  - name: aws-vpc-networking
+    domain: cloud
+    path: skills/cloud/aws-vpc-networking
+    keywords: ["aws","vpc","subnet","nat","privatelink","securitygroup","network"]
+  - name: aws-api-gateway
+    domain: cloud
+    path: skills/cloud/aws-api-gateway
+    keywords: ["aws","apigateway","jwt","authorizer","httpapi","routes"]
+  - name: gcp-iam-identity
+    domain: cloud
+    path: skills/cloud/gcp-iam-identity
+    keywords: ["gcp","google","adc","iam","federation","identity","serviceaccount"]
+  - name: gcp-cloud-run
+    domain: cloud
+    path: skills/cloud/gcp-cloud-run
+    keywords: ["gcp","cloudrun","oidc","invoker","concurrency","service"]
+  - name: gcp-cloud-storage
+    domain: cloud
+    path: skills/cloud/gcp-cloud-storage
+    keywords: ["gcp","gcs","storage","bucket","signedurl","generation"]
+  - name: gcp-pubsub
+    domain: cloud
+    path: skills/cloud/gcp-pubsub
+    keywords: ["gcp","pubsub","topic","subscription","publisher","subscriber"]
+  - name: gcp-secret-manager
+    domain: cloud
+    path: skills/cloud/gcp-secret-manager
+    keywords: ["gcp","secretmanager","secret","version","accessor"]
+  - name: gcp-cloud-sql
+    domain: cloud
+    path: skills/cloud/gcp-cloud-sql
+    keywords: ["gcp","cloudsql","postgres","connector","sqlalchemy"]
+  - name: azure-identity-security
+    domain: cloud
+    path: skills/cloud/azure-identity-security
+    keywords: ["azure","entra","identity","rbac","managedidentity","credentials"]
+  - name: azure-container-apps
+    domain: cloud
+    path: skills/cloud/azure-container-apps
+    keywords: ["azure","containerapps","keda","revisions","scaling","ingress"]
+  - name: azure-blob-storage
+    domain: cloud
+    path: skills/cloud/azure-blob-storage
+    keywords: ["azure","blob","storage","sas","container","upload"]
+  - name: azure-service-bus
+    domain: cloud
+    path: skills/cloud/azure-service-bus
+    keywords: ["azure","servicebus","queue","deadletter","settlement","locks"]
+  - name: azure-key-vault
+    domain: cloud
+    path: skills/cloud/azure-key-vault
+    keywords: ["azure","keyvault","secret","rotation","certificate"]
+  - name: azure-functions-runtime
+    domain: cloud
+    path: skills/cloud/azure-functions-runtime
+    keywords: ["azure","functions","python","trigger","bindings","timer"]
+  - name: cloudflare-workers-runtime
+    domain: cloud
+    path: skills/cloud/cloudflare-workers-runtime
+    keywords: ["cloudflare","workers","pages","wrangler","bindings","runtime"]
+  - name: cloudflare-r2-storage
+    domain: cloud
+    path: skills/cloud/cloudflare-r2-storage
+    keywords: ["cloudflare","r2","object","bucket","binding","s3"]
+  - name: cloudflare-d1-database
+    domain: cloud
+    path: skills/cloud/cloudflare-d1-database
+    keywords: ["cloudflare","d1","sqlite","prepare","bind","query"]
+  - name: cloudflare-access-security
+    domain: cloud
+    path: skills/cloud/cloudflare-access-security
+    keywords: ["cloudflare","access","zerotrust","policy","jwt","admin"]
   - name: aws-integration
     domain: cloud
     path: skills/cloud/aws-integration
-    keywords: ["aws","s3","iam","bedrock","lambda","ecs","sqs","sns","boto3"]
+    keywords: ["aws","integration","boto3","sdk","crossservice","credentials","region"]
   - name: aws-iam-security
     domain: cloud
     path: skills/cloud/aws-iam-security
@@ -272,27 +360,27 @@ skills:
   - name: azure-integration
     domain: cloud
     path: skills/cloud/azure-integration
-    keywords: ["azure","microsoft","servicebus","functions","blob","container"]
+    keywords: ["azure","integration","entra","sdk","multiservice"]
   - name: ci-cd-engineering
     domain: cloud
     path: skills/cloud/ci-cd-engineering
-    keywords: ["github","actions","pipeline","ci","cd","tests","deployment"]
+    keywords: ["github","actions","cicd","oidc","pipeline","deployment","federation"]
   - name: cloud-provider-selection
     domain: cloud
     path: skills/cloud/cloud-provider-selection
-    keywords: ["aws","gcp","azure","compare","multicloud","provider","cloud"]
+    keywords: ["cloud","multicloud","provider","compare","selection","architecture"]
   - name: cloudflare-platform
     domain: cloud
     path: skills/cloud/cloudflare-platform
-    keywords: ["cloudflare","workers","pages","r2","d1","access"]
+    keywords: ["cloudflare","platform","coordinator","pages","workers","bindings"]
   - name: container-hardening
     domain: cloud
     path: skills/cloud/container-hardening
-    keywords: ["docker","containers","image","security","oci"]
+    keywords: ["docker","oci","container","hardening","image","buildkit"]
   - name: finops-engineering
     domain: cloud
     path: skills/cloud/finops-engineering
-    keywords: ["finops","cloud","cost","pricing","billing","optimisation"]
+    keywords: ["finops","cost","billing","unit","economics","allocation"]
   - name: gcp-vertex-ai
     domain: cloud
     path: skills/cloud/gcp-vertex-ai
@@ -300,19 +388,19 @@ skills:
   - name: gcp-integration
     domain: cloud
     path: skills/cloud/gcp-integration
-    keywords: ["gcp","google","cloud","run","iam","pubsub","bigquery","vertex"]
+    keywords: ["gcp","google","integration","adc","multi","service"]
   - name: kubernetes-deployment
     domain: cloud
     path: skills/cloud/kubernetes-deployment
-    keywords: ["kubernetes","k8s","cluster","deployments","helm"]
+    keywords: ["kubernetes","k8s","deployment","probes","rbac","rollout"]
   - name: observability-sre
     domain: cloud
     path: skills/cloud/observability-sre
-    keywords: ["observability","logs","traces","metrics","opentelemetry","sre"]
+    keywords: ["sre","slo","observability","metrics","alerts","telemetry"]
   - name: terraform-iac
     domain: cloud
     path: skills/cloud/terraform-iac
-    keywords: ["terraform","opentofu","infrastructure","as","code","modules","cloud"]
+    keywords: ["terraform","opentofu","iac","plan","state","backend","modules"]
   - name: requirements-discovery
     domain: core
     path: skills/core/requirements-discovery

@@ -1,0 +1,71 @@
+version: 1
+# Deterministic lexical candidate selection; not proof of agent decision quality.
+selection:
+  - query: "AWS RDS Aurora PostgreSQL RDS Proxy IAM auth database"
+    expected: aws-rds-postgres
+  - query: "AWS DynamoDB partition key conditional update TTL"
+    expected: aws-dynamodb
+  - query: "AWS EventBridge bus PutEvents rule targets scheduler"
+    expected: aws-eventbridge
+  - query: "AWS SecretsManager getsecretvalue rotation KMS"
+    expected: aws-secrets-manager
+  - query: "AWS VPC NAT PrivateLink subnet securitygroup"
+    expected: aws-vpc-networking
+  - query: "AWS API Gateway JWT authorizer HTTPAPI routes"
+    expected: aws-api-gateway
+  - query: "GCP ADC serviceaccount IAM federation identity"
+    expected: gcp-iam-identity
+  - query: "GCP Cloud Run invoker OIDC concurrency"
+    expected: gcp-cloud-run
+  - query: "GCP GCS storage bucket generation signedurl"
+    expected: gcp-cloud-storage
+  - query: "GCP PubSub topic subscription publisher subscriber"
+    expected: gcp-pubsub
+  - query: "GCP SecretManager accessor version secret"
+    expected: gcp-secret-manager
+  - query: "GCP CloudSQL Postgres connector sqlalchemy"
+    expected: gcp-cloud-sql
+  - query: "Azure Entra managedidentity RBAC credentials"
+    expected: azure-identity-security
+  - query: "Azure ContainerApps KEDA revisions ingress"
+    expected: azure-container-apps
+  - query: "Azure Blob Storage SAS container upload"
+    expected: azure-blob-storage
+  - query: "Azure ServiceBus settlement deadletter locks queue"
+    expected: azure-service-bus
+  - query: "Azure KeyVault certificate secret rotation"
+    expected: azure-key-vault
+  - query: "Azure Functions Python trigger bindings timer"
+    expected: azure-functions-runtime
+  - query: "Cloudflare Workers Pages Wrangler runtime bindings"
+    expected: cloudflare-workers-runtime
+  - query: "Cloudflare R2 storage object bucket binding"
+    expected: cloudflare-r2-storage
+  - query: "Cloudflare D1 SQLite prepared query bind"
+    expected: cloudflare-d1-database
+  - query: "Cloudflare Access ZeroTrust JWT policy admin"
+    expected: cloudflare-access-security
+negative_neighbors:
+  - query: "AWS Bedrock Converse model inference"
+    expected: aws-bedrock
+  - query: "Google Vertex AI Gemini google genai SDK"
+    expected: gcp-vertex-ai
+  - query: "Azure Foundry Entra Responses deployment"
+    expected: azure-ai-foundry
+  - query: "Terraform OpenTofu IaC state backend"
+    expected: terraform-iac
+  - query: "GitHub Actions OIDC CI CD pipeline federation"
+    expected: ci-cd-engineering
+  - query: "Kubernetes k8s Deployment probes RBAC"
+    expected: kubernetes-deployment
+  - query: "cloud multicloud provider compare selection architecture"
+    expected: cloud-provider-selection
+  - query: "finops cost billing unit economics allocation"
+    expected: finops-engineering
+  - query: "SQLAlchemy AsyncSession Alembic transaction"
+    expected: python-persistence
+  - query: "CDC Debezium Flink watermark Kafka checkpoint streaming"
+    expected: streaming-cdc-engineering
+no_match:
+  - ""
+  - "zzzzunknowncloudproductz"

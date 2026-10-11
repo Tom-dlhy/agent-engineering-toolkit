@@ -143,3 +143,17 @@ mcp-integration. **Eight AI skills and 26 selected references total**
 Offline authorization/RAG fixtures and negative lexical routing are
 necessary but not proof of real model behavior. Consult the
 [AI refactor research audit](ai-refactor-audit.md). No maturity ranks.
+
+## Phase 11 — Cloud service-level connection and production semantics
+
+Previous category state: 19 Cloud skills (9 deep service specialists
+retained, 10 light/general skills needing improvement). The ten
+cross-provider/coordination skills were extended with 20 technical
+leaves and routing. **22 new independently triggered service skills**
+were added across AWS (6), GCP (6), Azure (6) and Cloudflare (4),
+with 44 further leaves. Cloud now has **41 skills / 82 local
+references**; catalog contains **141 skills and 19 profiles**.
+See [official-source Cloud audit](cloud-refactor-audit.md) and
+[connection map](cloud-service-map.md). Static docs, fake tests and
+routing checks do not demonstrate live permissions or deployment.
+All have one uniform quality contract, never maturity rankings.

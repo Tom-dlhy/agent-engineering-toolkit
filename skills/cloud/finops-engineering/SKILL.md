@@ -1,18 +1,26 @@
 ---
 name: finops-engineering
 domain: cloud
-version: "0.1.0"
+version: "0.2.0"
 description: >-
-  Use when estimating and optimizing cloud spend, unit economics, utilization, egress and managed-service tradeoffs. Do not invent current prices without validating provider pricing.
+  Use when analyzing cloud cost allocation, budgets, deployment pricing, unit economics and billing guardrails. Do not use for choosing cloud solely from guessed retail unit price or model response text.
 ---
 
-# finops-engineering
+# FinOps spend and unit economics
 
-## Baseline
-Gather region, service usage profile, active users, data volume, storage retention, idle time, p95 peaks and growth assumptions. Obtain current pricing from provider calculators when needed.
-## Analyze
-Model compute, networking/egress, databases, API requests, build/CI minutes, monitoring and support. Separate fixed, variable and scale-triggered costs. Attribute to product feature or workload.
-## Optimize
-Right-size resources based on measurements; consider serverless idle economics, data locality, reservations and storage tiers. Assess engineering effort and reliability risk before reducing spend.
-## Report
-Provide a monthly cost range with assumptions, sensitivity cases and alerts/budget guardrails; never describe an estimated saving as a guaranteed outcome.
+## Decision path
+1. Identify actual task, environment, owner, runtime, provider/version, safety and operational consequence.
+2. Measure compute idle/burst, storage and snapshots, networking/NAT/egress, managed DB, monitoring, queues, API calls and provider model tokens. Use cost per successful request/job as denominator instead of just total monthly spend.
+3. Budgets/alerts are not always hard spend cutoffs; compare actual provider billing exports and list prices with commitments, regional fees, free tiers and data egress. Separate estimate vs observed spend vs forecast.
+4. Tag/label ownership, account/project/subscription mapping, daily budget anomaly, cost by product feature/tenant and unit economy sensitivity; don't report precision or guaranteed savings without real billing evidence.
+5. Verify deterministic checks first, then only authorized sandbox connectivity or dry-run. Any real infra apply/deletion requires separate explicit approval.
+
+## Progressive references
+- [Decisions and implementation](references/selection-and-implementation.md) — **read when** choosing tools, access, configuration or development workflow.
+- [Safety, failures and release evidence](references/security-operations-and-tests.md) — **read when** hardening, operating, scaling, testing or releasing.
+
+## Boundaries
+Use a dedicated provider service skill for AWS/GCP/Azure/Cloudflare SDK operations. This skill owns FinOps spend and unit economics cross-service method only.
+
+## Completion
+Concrete decision, current-version limitations, scoped authorization, negative tests and measured or explicitly unknown operating evidence.

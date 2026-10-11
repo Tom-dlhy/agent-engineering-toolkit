@@ -1,0 +1,18 @@
+name: azure-platform
+description: Azure Entra identity, Container Apps, Blob, Service Bus, Vault, Functions and Foundry with opt-in references.
+skills:
+  - task-routing
+  - verification-before-done
+  - systematic-debugging
+  - azure-integration
+  - azure-identity-security
+  - azure-container-apps
+  - azure-blob-storage
+  - azure-service-bus
+  - azure-key-vault
+  - azure-functions-runtime
+  - azure-ai-foundry
+  - terraform-iac
+  - observability-sre
+  - test-strategy
+  - secure-code-review

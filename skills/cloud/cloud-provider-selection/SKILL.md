@@ -1,20 +1,26 @@
 ---
 name: cloud-provider-selection
 domain: cloud
-version: "0.1.0"
+version: "0.2.0"
 description: >-
-  Use when selecting between AWS, GCP, Azure, Cloudflare or portable infrastructure patterns. Do not use if the provider is fixed and only a local code change is needed.
+  Use when comparing AWS, GCP, Azure, Cloudflare or portable architecture for a concrete workload. Do not use for a provider already fixed and only one SDK call is needed.
 ---
 
-# cloud-provider-selection
+# Cloud provider selection and workload placement
 
-## Compare workloads, not marketing matrices
-Gather geography, compliance, team expertise, expected traffic, data sensitivity, latency, cost ceiling, managed-service needs, observability, exit strategy and existing contract constraints.
+## Decision path
+1. Identify actual task, environment, owner, runtime, provider/version, safety and operational consequence.
+2. Compare explicit deployment options (managed serverless vs container vs DB/queue), compliance/region, team knowledge, latency, SLA, integration, cost, egress and lock-in; never compare brand adjectives.
+3. Use current official capabilities/prices by region and account terms; map IAM, networking, quotas and data migration costs. Include non-production/staging, incident ownership, platform maintenance and exit path.
+4. Write measured assumptions, confidence and benchmark plan. A cloud service's marketing autoscaling claim doesn't establish throughput for application DB and provider quotas. Prefer ADR with reversibility and sunset criteria.
+5. Verify deterministic checks first, then only authorized sandbox connectivity or dry-run. Any real infra apply/deletion requires separate explicit approval.
 
-Build a shortlist of concrete architectures and estimate monthly recurring costs with assumptions. Include data egress, observability, backups, networking and support. Compare reliability, access control, regional availability, maturity, pricing and operational burden.
+## Progressive references
+- [Decisions and implementation](references/selection-and-implementation.md) — **read when** choosing tools, access, configuration or development workflow.
+- [Safety, failures and release evidence](references/security-operations-and-tests.md) — **read when** hardening, operating, scaling, testing or releasing.
 
-## Lock-in analysis
-Categorize dependencies: infrastructure IaC, service API, data formats, event semantics, IAM identity and deployment pipeline. Prefer stable protocols when cost-effective, but do not demand the lowest common denominator. Document any intentional vendor-specific optimization.
+## Boundaries
+Use a dedicated provider service skill for AWS/GCP/Azure/Cloudflare SDK operations. This skill owns Cloud provider selection and workload placement cross-service method only.
 
-## Done when
-Provide a scored or reasoned tradeoff, recommended stack, migration/exit cost and a short ADR. Verify current service capabilities and pricing against official provider documentation before making hard claims.
+## Completion
+Concrete decision, current-version limitations, scoped authorization, negative tests and measured or explicitly unknown operating evidence.

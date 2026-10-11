@@ -60,7 +60,7 @@ class ProgressiveExpertiseTests(unittest.TestCase):
         activated, _ = estimate(profile, ROOT, ("aws-s3-storage",))
         one_leaf, _ = estimate(profile, ROOT, ("aws-s3-storage",),
             ("aws-s3-storage:references/object-api-and-uploads.md",))
-        self.assertEqual(n, 14)
+        self.assertEqual(n, 20)
         self.assertLess(baseline, activated)
         self.assertLess(activated, one_leaf)
         with self.assertRaises(ValueError):
