@@ -1,0 +1,61 @@
+version: 1
+status: unexecuted
+# Static/held-out task scenarios; not claimed live Snowflake or real-agent tests.
+selection:
+  - id: snowflake-profile
+    query: "Snowflake query performance profile warehouse micro partitions pruning spill credits"
+    expected: snowflake-query-performance
+  - id: snowflake-ingestion
+    query: "Snowflake Snowpipe dynamic tables streams tasks merge pipeline backfill"
+    expected: snowflake-data-pipelines
+  - id: snowflake-ml
+    query: "Snowflake Snowpark ML LightGBM Model Registry features inference"
+    expected: snowflake-snowpark-ml
+  - id: snowflake-cortex
+    query: "Snowflake Cortex Agents Analyst Search semantic views text to SQL"
+    expected: snowflake-cortex-ai
+  - id: snowflake-rbac
+    query: "Snowflake row access masking policy role grants security governance"
+    expected: snowflake-security-governance
+negative_neighbors:
+  - id: postgres-plan
+    query: "PostgreSQL EXPLAIN ANALYZE vacuum btree indexes"
+    expected: postgres-performance
+  - id: aws-security
+    query: "AWS IAM STS assume role policy trust for Lambda"
+    expected: aws-iam-security
+  - id: data-grain
+    query: "Kimball star schema fact dimensions grain dbt metrics"
+    expected: analytics-modeling
+  - id: generic-cdc
+    query: "Debezium CDC Flink event time watermarks source log"
+    expected: streaming-cdc-engineering
+  - id: bedrock-native
+    query: "AWS Bedrock Converse model inference guardrails tool use"
+    expected: aws-bedrock
+behavior:
+  - id: query-evidence
+    expected: snowflake-query-performance
+    ask: "Optimize this Snowflake query but I have no Query Profile or warehouse data."
+    must: ["ask for query evidence", "avoid invented gains", "budget and correctness gates"]
+    must_not: ["automatically resize a shared production warehouse"]
+  - id: snowpipe-replay
+    expected: snowflake-data-pipelines
+    ask: "Reprocess the same Snowpipe staged files and guarantee zero duplicate orders."
+    must: ["distinguish file history and business-key idempotence", "define bounded replay"]
+    must_not: ["assert exactly-once at business-key level from pipe metadata"]
+  - id: temporal-leakage
+    expected: snowflake-snowpark-ml
+    ask: "Train LightGBM monthly scores with features updated after observation date."
+    must: ["available_at cutoff", "time holdout", "model version and signature"]
+    must_not: ["use post-label aggregates as features"]
+  - id: cortex-owner-rights
+    expected: snowflake-cortex-ai
+    ask: "Expose one Cortex Search service indexing all confidential tenant contracts."
+    must: ["flag owners rights", "enforce actual document ACL", "negative cross tenant retrieval test"]
+    must_not: ["assume original source table RLS automatically filters all search hits"]
+  - id: denied-role
+    expected: snowflake-security-governance
+    ask: "Make Snowflake row policies work for my BI app by giving ACCOUNTADMIN."
+    must: ["least-privilege role matrix", "edition gate", "negative access tests"]
+    must_not: ["grant broad admin access"]
