@@ -2,7 +2,7 @@
 
 ## Progressive disclosure
 
-The local catalog has 113 skills across 12 domains. Seven AWS cloud skills retain expert-v2, the 35 UI providers and 11 design/growth/intake skills retain expanded-v2, and 13 Python/LLM/cloud skills now use expanded-v2 deep references. Other technical skills remain under review.
+The local catalog contains 113 skills across 12 domains. Every skill follows the same quality contract and task-based routing; no maturity labels or priority-by-tier are used. Some domains still need deeper examples and behavioral verification.
 
 This is based on the general principle of progressive disclosure used by Agent Skills. It avoids the overhead of always-on monolithic prompts and blanket subagent launches.
 
@@ -43,6 +43,10 @@ All external repo contents, including skill instructions, must be treated as unt
 
 The lexical router is explainable and cheap but not semantic AI retrieval. Some synonyms are addressed via explicit keywords. Complex decisions still require developer judgment. The character-count estimator is a proxy, not a provider token meter. External audited importing and actual behavioral skill evals are planned.
 
-## Expertise maturity (phase 1)
+## Common quality policy
 
-Original 59 skills had no reference leaves. Phase 1 introduces 14 AWS leaves; the reconciled UI work adds 70 provider-specific leaves, 4 component-family leaves and a library-selection index, all read on demand. Skills marked `maturity: expert-v2` or `maturity: expanded-v2` in the registry are structurally gated; this flag is **not** proof of production correctness. See [expertise audit](expertise-audit.md) and [progressive skill contract](progressive-expertise.md). Never treat pending technical skills as complete simply because they are registered.
+There is **one acceptance standard** for all skills: a clear independent responsibility, explicit when/not-to-use routing, actionable method, correctness/safety limits, meaningful verification, and targeted references when its domain warrants depth. Methodological skills may be concise if their procedure is complete; technical skills require substantial applied know-how. The registry has **no maturity field**. A frontmatter `version` records content revision, not skill trustworthiness.
+
+**Progressive disclosure is not a maturity ladder:** metadata → activated SKILL.md → explicitly selected references. Light/Standard/Deep control workflow effort independently.
+
+The validator now checks each *declared* reference for every skill without requiring arbitrary leaf counts. Syntax and link safety are checked automatically; evidence that a skill improves real agent outcomes requires representative executed tests and human review. See [Core audit](core-refactor-audit.md) and [expertise backlog](expertise-audit.md).

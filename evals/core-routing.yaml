@@ -1,0 +1,45 @@
+# Deterministic lexical baseline. Host-agent behavior requires separate real evals.
+version: 1
+selection:
+  - query: "triage workflow routing light mode"
+    expected: task-routing
+    intent: routing
+  - query: "debug traceback exception reproduce root cause"
+    expected: systematic-debugging
+    intent: diagnosis
+  - query: "verification evidence checks proof completion"
+    expected: verification-before-done
+    intent: proof
+  - query: "authoring registry governance skill metadata"
+    expected: skill-authoring
+    intent: authoring
+  - query: "grill requirements interview acceptance"
+    expected: requirements-discovery
+    intent: elicitation
+  # Domain neighbors that must NOT be swallowed by Core
+  - query: "FastAPI Pydantic endpoint"
+    expected: fastapi-service
+    intent: negative-core
+  - query: "AWS Bedrock Converse inference"
+    expected: aws-bedrock
+    intent: negative-core
+  - query: "SQLAlchemy AsyncSession Alembic transaction"
+    expected: python-persistence
+    intent: negative-core
+  - query: "find external skills import provenance audit"
+    expected: external-skill-audit
+    intent: negative-core
+  - query: "ADR architecture decision tradeoff"
+    expected: architecture-decision
+    intent: negative-core
+workflows:
+  - query: "correct a typo in documentation"
+    expected: light
+  - query: "build a backend API"
+    expected: standard
+  - query: "migrate production database permissions"
+    expected: deep
+no_match:
+  - "zzzxxyyqq"
+  - ""
+# Important: these fixtures test lexical rank only, not semantic correctness.

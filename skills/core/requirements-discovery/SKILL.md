@@ -1,26 +1,60 @@
 ---
 name: requirements-discovery
 domain: core
-version: "2.0.0"
+version: "2.1.0"
 description: >-
-  Use when the user explicitly wants to clarify, pressure-test or scope an ambiguous product idea, feature or software specification before implementation. Do not interrogate users for routine well-specified edits or block urgent safe execution.
+  Use when explicitly asked to clarify, pressure-test or scope an ambiguous
+  idea, feature or software specification, or when one truly blocking business
+  decision prevents safe implementation. Do not interrogate the user for
+  adequately specified edits or repeat information already supplied.
 ---
 
-# requirements-discovery
+# Requirements discovery — high-information questions, minimal friction
 
-## Role and boundaries
-A short, opt-in requirements interview and adversarial clarification method. It is **not** architecture-decision (selecting technology), task-routing (selecting skills) or project management. Mode LIGHT: state assumptions and act. STANDARD: resolve critical unknowns in a concise exchange. DEEP: map roles, invariants, misuse, operations and acceptance scenarios. Never turn a simple request into a compulsory questionnaire.
+## Purpose and entry rule
 
-## Routing decisions
-1. Read the request and existing specification/repo context before asking anything. Separate stated facts, inferences and truly unknown decisions.
-2. If implementation is already feasible and user asked for execution, proceed with explicitly labeled safe assumptions; do not demand a grill session.
-3. If the user requested /grill-me, wants a product spec or a key decision could materially change the solution, enter discovery mode: ask a small ordered set of high-information questions, one at a time unless batching is expressly useful.
-4. Challenge assumptions constructively: who has this problem, why now, how success is measured, what can go wrong, how to handle exceptional states, what is outside scope.
-5. Stop when remaining questions have low decision impact. Produce a compact spec with open decisions and acceptance tests; do not invent agreement or claim user signoff.
+A user may explicitly ask for /grill-me or clarification, but an ordinary
+implementation request is not automatic permission to delay work with a
+questionnaire. First inspect the full brief/repo context. Distinguish user
+facts, reasoned assumptions, open decisions and explicitly excluded scope.
 
-## Selective expertise
-- [Problem framing and question priority](references/problem-framing.md) — **read when** the idea, target user or scope is ambiguous, or competing assumptions need pressure-testing.
-- [Acceptance examples and decision log](references/acceptance-and-decision-log.md) — **read when** translating an interview into an implementation-ready specification, risk register or handoff.
+## Decision process
 
-## Definition of done
-State confirmed facts vs assumptions, scope/non-goals, two or more concrete acceptance examples where warranted, risks and unresolved blockers. Avoid aggressive or shaming tone. Never replace explicit user constraints with your own product preference.
+1. Identify intended user/job, trigger and observable outcome; record already
+   specified constraints before deciding if anything is missing.
+2. Classify unknowns by **decision impact × irreversibility**. If safe
+   reversible assumptions suffice, state them and implement; otherwise ask
+   the smallest blocking question, one at a time unless the user prefers a batch.
+3. For requested discovery, pressure-test real use cases and failures:
+   authorization, duplicate/partial input, timing, cost, privacy, scaling,
+   data retention, human approval and manual recovery where relevant.
+4. Convert answers into scope/non-goals, acceptance scenarios including
+   at least one meaningful negative path, stakeholders/deciders, outstanding
+   decisions and testable success measures.
+5. Stop when additional questions have little effect on the next decision.
+   Hand off to `architecture-decision` for technology choices or task-routing
+   for implementation workflow. Do not invent agreement or silently approve
+   irreversible choices.
+
+## Examples
+
+| Task | Behavior |
+|---|---|
+| User says "fix typo in header" | Implement directly; don't ask for personas |
+| User says "grill my SaaS idea" | Focused interview about users, workflow, willingness to pay and risks |
+| User requests auto-send email but review policy unknown | Ask whether sending is authorized or draft safely |
+| Ticket triage workflow | Clarify classification suggestion vs state-changing autonomous action |
+
+## References
+
+- [Question priority and problem framing](references/problem-framing.md) —
+  **read when** user intent, actors, constraints or business scope are uncertain.
+- [Acceptance scenarios and decision log](references/acceptance-and-decision-log.md) —
+  **read when** producing a testable specification or review handoff.
+
+## Exit
+
+Confirmed facts vs assumptions, measurable outcome, normal/error paths,
+non-goals, decisions needing approval, and only questions that genuinely
+block progress. Respect user's preference for direct implementation and
+avoid adversarial or patronizing questioning.

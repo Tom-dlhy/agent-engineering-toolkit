@@ -4,7 +4,7 @@
 
 The inherited `feat/modular-skill-engine` branch has **59 first-party skills**, approximately **1.1 KiB/skill on average**, with **zero local reference files or examples**. This is a capable routing foundation, **not** a technically exhaustive skill library. At this historical phase-1 snapshot, UI [PR #9](https://github.com/Tom-dlhy/agent-engineering-toolkit/pull/9) was still open; it has since merged into main.
 
-Phase 1 keeps the original 59 entries, refactors the broad `aws-integration` skill into a cross-service coordinator, and adds six independently activated service skills. Therefore at the phase-1 snapshot the branch contained **65 catalog entries**, but **only seven are marked `expert-v2`**. That snapshot did **not** claim all 65 met the final standard. Later phases are recorded below.
+Phase 1 keeps the original 59 entries, refactors the broad `aws-integration` skill into a cross-service coordinator, and adds six independently activated service skills. Therefore at the phase-1 snapshot the branch contained **65 catalog entries**, with seven AWS specialist skills having substantial references at that snapshot. That snapshot did **not** claim all 65 met the final standard. Later phases are recorded below.
 
 ## Audit verdict by domain
 
@@ -21,11 +21,11 @@ Phase 1 keeps the original 59 entries, refactors the broad `aws-integration` ski
 | quality (7) | Operational checklists are adequate starting points, not deep testing/security guides | Enrich testing strategies, security review payloads, reproducible code checks and measurable criteria |
 | stacks (3) | Decision-only skills, reasonable to keep compact | Strengthen decision matrices, actual framework compatibility and cost/risk evidence |
 
-## Definition of an expert-v2 skill
+## Uniform definition of an acceptable skill
 
 - Narrow, uniquely activated scope with an explicit exclusion.
 - A `SKILL.md` **capable of deciding**, not merely linking to documentation.
-- At least two **real, locally present** deep leaves with clearly differentiated triggers.
+- Real, locally present targeted leaves **as needed by its responsibility**, with explicitly differentiated read conditions.
 - Leaves contain specific mechanisms, runnable/adaptable examples, failure modes and negative tests, not just general advice.
 - Version-sensitive claims refer to official vendor docs; current deployment/model support still must be checked.
 - Static validation checks presence/index/path safety, never treats bytes alone as expertise.
@@ -41,21 +41,21 @@ Phase 1 keeps the original 59 entries, refactors the broad `aws-integration` ski
 5. **Cloud rest + quality:** GCP/Azure service-based splits, Cloudflare D1/R2/Access, Terraform/K8s, security, SRE, CI/CD, release and tests.
 6. **Global review:** consolidate duplicate knowledge, benchmark skill selection/reference reads in actual Codex and Claude, measure actual token usage where host surfaces it.
 
-Review each refactor on its own merits; no mechanical mass-generation or blanket `expert-v2` badges. Promotion to `expert-v2` requires human technical review in addition to static CI.
+Review each refactor on its own merits; no mass-generated placeholders or skill maturity badges. All skills require the same acceptance contract, and structural CI alone cannot prove applied expertise.
 
 ## Phase 2 historical snapshot — UI integration (PR #9)
 
-The original PR #9 is now reconciled with main after PR #5 and PR #10 merged. At the phase-2 snapshot, the repository contained **101 unique skills**, including **35 opt-in UI library providers**, one shared `ui-component-research` and exactly one `ui-library-selection` under `skills/stacks`. UI-specific references: **70 local provider leaves + 4 shared component-family leaves + 1 selector map**. Existing seven AWS `expert-v2` specialists remain unchanged.
+The original PR #9 is now reconciled with main after PR #5 and PR #10 merged. At the phase-2 snapshot, the repository contained **101 unique skills**, including **35 opt-in UI library providers**, one shared `ui-component-research` and exactly one `ui-library-selection` under `skills/stacks`. UI-specific references: **70 local provider leaves + 4 shared component-family leaves + 1 selector map**. Existing seven AWS specialists retain their references.
 
-The 35 UI providers are marked `expanded-v2` (distinct from `expert-v2`): all have version-checking implementation and integration playbooks, but static validation is not evidence that every vendor API, full production workflow or accessibility behavior was tested against a live app. Some providers remain broad and need further version-pinned component examples and agent behavioral evaluation. Treat source citations as directions for freshness, not permission to assume current props.
+The 35 UI providers have version-checking implementation and integration playbooks, but static validation is not evidence that every vendor API, full production workflow or accessibility behavior was tested against a live app. Some providers remain broad and need further version-pinned component examples and agent behavioral evaluation. Treat source citations as directions for freshness, not permission to assume current props.
 
-Follow-up work: run representative benchmark apps for web, Vue/Angular/Svelte, React Native and Flutter, test a form/overlay/data table from each selected provider under the installed release, measure skill-selection errors, and promote selectively after review. Do not force all 35 into standard install profiles.
+Follow-up work: run representative benchmark apps for web, Vue/Angular/Svelte, React Native and Flutter, test a form/overlay/data table from each selected provider under the installed release, measure skill-selection errors, and close specific capability gaps after review. Do not force all 35 into standard install profiles.
 
 ## Phase 3 — curated design craft and Growth (PR #11)
 
 Current PR #11 increases the catalog to **106 unique skills across 12 domains** by introducing five independently activated skills: `core/requirements-discovery`, `design/brand-identity-visualization`, and `growth/content-strategy`, `growth/technical-seo`, `growth/ai-search-visibility`. Six existing skills are extended rather than duplicated: `interaction-motion`, `frontend-design`, `ux-audit`, `design-system`, `typography-layout` and `external-skill-audit`.
 
-A total of **24 new local reference leaves** were authored with narrow read conditions. The 11 affected skills are classified `expanded-v2` rather than `expert-v2` until real agent behavioral evaluations and domain-specific runtime/browsing tests support promotion. The original seven AWS `expert-v2` and 35 UI `expanded-v2` skills remain intact. All external source decisions and immutable revisions are documented in [source review](design-growth-source-review.md); scripts, hooks and datasets were not copied.
+A total of **24 new local reference leaves** were authored with narrow read conditions. The 11 affected skills follow the same acceptance contract as the rest of the catalog; actual browser/runtime tests and behavioral evaluations remain necessary. The AWS and UI specialists remain intact. All external source decisions and immutable revisions are documented in [source review](design-growth-source-review.md); scripts, hooks and datasets were not copied.
 
 **Remaining coverage gaps:** backend and databases still lack deep references; GCP/Azure/Cloudflare specialization, full framework coverage and rigorous evaluation remain future phases. Documented SEO methods do not guarantee public indexing, rich results or AI-answer citations.
 
@@ -63,6 +63,12 @@ A total of **24 new local reference leaves** were authored with narrow read cond
 
 This branch starts from a merged 106-skill main and reaches **113 skills / 16 profiles**. It creates seven narrowly triggered specialists: `python-project-architecture`, `python-http-clients`, `python-persistence`, `python-observability`, `python-llm-gateways`, `gcp-vertex-ai`, `azure-ai-foundry`. It substantively rewrites `modern-python`, `fastapi-service`, `background-jobs`, `python-ddd`, `hexagonal-architecture` and `llm-integration` — not duplicated.
 
-35 local leaves include typed Python/package/async/settings/architecture guidance, FastAPI/Pydantic/HTTPX, SQLAlchemy and transactions, JSON logs/OpenTelemetry, LLM contracts/production risk, LiteLLM/LangChain/LangGraph, GCP Google Gen AI, Microsoft Foundry and Python DDD/ports/jobs. The existing AWS Bedrock specialist is reused rather than recreated. All new or substantially revised skills are marked `expanded-v2` until true integration/agent evals verify behavior and model versions.
+35 local leaves include typed Python/package/async/settings/architecture guidance, FastAPI/Pydantic/HTTPX, SQLAlchemy and transactions, JSON logs/OpenTelemetry, LLM contracts/production risk, LiteLLM/LangChain/LangGraph, GCP Google Gen AI, Microsoft Foundry and Python DDD/ports/jobs. The existing AWS Bedrock specialist is reused rather than recreated. All skills share the same acceptance contract; real integration and agent evaluations are required to verify behavior and model-version compatibility.
 
 See [Python decision matrix](python-engineering-v2.md) and source notes. Static checks validate routing/leaf paths/context safety, **not** real credentials, production scaling, correctness of every vendor variant or cost/quality; examples require target-version verification.
+
+## Phase 5 — Core category and unified skill-quality contract
+
+All **five Core skills** were audited and refactored in place: task-routing, systematic-debugging, verification-before-done, skill-authoring and requirements-discovery. Four previously short skills gained **eight targeted procedural leaves**; requirements-discovery retains its two substantial leaves with clearer activation boundaries. No new skill was registered.
+
+The registry's **66 historical maturity fields were removed** without adding replacement tiers or ranks. All reference paths declared by any skill now receive the same structural safety validation; no arbitrary two-leaf minimum is imposed on methodological skills. Exact-depth and behavioral evidence are still needed per technical domain before claiming individual task readiness. See [Core audit and test matrix](core-refactor-audit.md).

@@ -12,12 +12,10 @@ skills:
   - name: llm-integration
     domain: ai
     path: skills/ai/llm-integration
-    maturity: expanded-v2
     keywords: ["llm", "structured", "output", "tool", "calling", "providers", "production", "pydantic"]
   - name: python-llm-gateways
     domain: ai
     path: skills/ai/python-llm-gateways
-    maturity: expanded-v2
     keywords: ["litellm", "langchain", "langgraph", "gateway", "router", "multi", "provider", "proxy", "python", "orchestration"]
   - name: rag-evaluation
     domain: ai
@@ -38,7 +36,6 @@ skills:
   - name: hexagonal-architecture
     domain: architecture
     path: skills/architecture/hexagonal-architecture
-    maturity: expanded-v2
     keywords: ["hexagonal", "ports", "adapters", "clean", "architecture", "python", "protocol"]
   - name: modular-monolith
     domain: architecture
@@ -47,12 +44,10 @@ skills:
   - name: python-project-architecture
     domain: architecture
     path: skills/architecture/python-project-architecture
-    maturity: expanded-v2
     keywords: ["python", "project", "architecture", "layout", "layered", "feature", "modular", "monolith", "structure", "scale"]
   - name: python-ddd
     domain: architecture
     path: skills/architecture/python-ddd
-    maturity: expanded-v2
     keywords: ["python", "ddd", "domain", "aggregate", "bounded", "contexts", "invariants", "events"]
   - name: technology-tradeoffs
     domain: architecture
@@ -61,32 +56,26 @@ skills:
   - name: background-jobs
     domain: backend
     path: skills/backend/background-jobs
-    maturity: expanded-v2
     keywords: ["jobs", "queue", "celery", "rq", "dramatiq", "workers", "retry", "background"]
   - name: fastapi-service
     domain: backend
     path: skills/backend/fastapi-service
-    maturity: expanded-v2
     keywords: ["fastapi", "python", "pydantic", "route", "endpoint", "lifespan", "dependency", "api"]
   - name: modern-python
     domain: backend
     path: skills/backend/modern-python
-    maturity: expanded-v2
     keywords: ["python", "uv", "pyproject", "typing", "ruff", "pytest", "packaging", "settings", "asyncio"]
   - name: python-http-clients
     domain: backend
     path: skills/backend/python-http-clients
-    maturity: expanded-v2
     keywords: ["python", "httpx", "asyncclient", "outbound", "http", "client", "retry", "timeout", "external", "api"]
   - name: python-persistence
     domain: backend
     path: skills/backend/python-persistence
-    maturity: expanded-v2
     keywords: ["python", "sqlalchemy", "orm", "asyncsession", "transaction", "repository", "alembic", "persistence"]
   - name: python-observability
     domain: backend
     path: skills/backend/python-observability
-    maturity: expanded-v2
     keywords: ["python", "observability", "logging", "json", "correlation", "opentelemetry", "tracing", "metrics", "contextvars"]
   - name: typescript-api
     domain: backend
@@ -95,37 +84,30 @@ skills:
   - name: aws-integration
     domain: cloud
     path: skills/cloud/aws-integration
-    maturity: expert-v2
     keywords: ["aws","s3","iam","bedrock","lambda","ecs","sqs","sns","boto3"]
   - name: aws-iam-security
     domain: cloud
     path: skills/cloud/aws-iam-security
-    maturity: expert-v2
     keywords: ["aws", "iam", "roles", "policy", "policies", "trust", "sts", "oidc", "permissions", "authorization", "accessdenied", "crossaccount"]
   - name: aws-s3-storage
     domain: cloud
     path: skills/cloud/aws-s3-storage
-    maturity: expert-v2
     keywords: ["aws", "s3", "bucket", "object", "storage", "presigned", "upload", "download", "multipart", "encryption"]
   - name: aws-sqs-messaging
     domain: cloud
     path: skills/cloud/aws-sqs-messaging
-    maturity: expert-v2
     keywords: ["aws", "sqs", "queue", "messaging", "fifo", "dlq", "visibility", "batch", "message", "deduplication"]
   - name: aws-lambda-runtime
     domain: cloud
     path: skills/cloud/aws-lambda-runtime
-    maturity: expert-v2
     keywords: ["aws", "lambda", "serverless", "handler", "cold", "start", "event", "runtime", "concurrency", "trigger"]
   - name: aws-bedrock
     domain: cloud
     path: skills/cloud/aws-bedrock
-    maturity: expert-v2
     keywords: ["aws", "bedrock", "converse", "tooluse", "inference", "guardrails", "llm", "foundation", "model"]
   - name: aws-ecs-deployment
     domain: cloud
     path: skills/cloud/aws-ecs-deployment
-    maturity: expert-v2
     keywords: ["aws", "ecs", "fargate", "task", "container", "deployment", "alb", "service", "scaling"]
   - name: ui-component-research
     domain: ui
@@ -134,182 +116,146 @@ skills:
   - name: shadcn-ui
     domain: ui
     path: skills/ui/shadcn-ui
-    maturity: expanded-v2
     keywords: ["shadcn-ui", "shadcn", "components.json", "registry", "tailwind", "baseui"]
   - name: base-ui
     domain: ui
     path: skills/ui/base-ui
-    maturity: expanded-v2
     keywords: ["base-ui", "base", "baseui", "render", "headless", "popover"]
   - name: radix-primitives
     domain: ui
     path: skills/ui/radix-primitives
-    maturity: expanded-v2
     keywords: ["radix-primitives", "primitives", "aschild", "slot"]
   - name: radix-themes
     domain: ui
     path: skills/ui/radix-themes
-    maturity: expanded-v2
     keywords: ["radix-themes", "themes", "colors", "scale"]
   - name: react-aria-components
     domain: ui
     path: skills/ui/react-aria-components
-    maturity: expanded-v2
     keywords: ["react-aria-components", "aria", "components", "reactaria", "adobe", "i18n", "accessibility"]
   - name: heroui
     domain: ui
     path: skills/ui/heroui
-    maturity: expanded-v2
     keywords: ["heroui"]
   - name: mantine
     domain: ui
     path: skills/ui/mantine
-    maturity: expanded-v2
     keywords: ["mantine", "hooks", "modals"]
   - name: chakra-ui
     domain: ui
     path: skills/ui/chakra-ui
-    maturity: expanded-v2
     keywords: ["chakra-ui", "chakra", "recipes", "panda"]
   - name: mui
     domain: ui
     path: skills/ui/mui
-    maturity: expanded-v2
     keywords: ["mui", "material", "xgrid", "sx"]
   - name: ant-design
     domain: ui
     path: skills/ui/ant-design
-    maturity: expanded-v2
     keywords: ["ant-design", "ant", "antd", "form"]
   - name: primereact
     domain: ui
     path: skills/ui/primereact
-    maturity: expanded-v2
     keywords: ["primereact", "datatable"]
   - name: fluent-ui
     domain: ui
     path: skills/ui/fluent-ui
-    maturity: expanded-v2
     keywords: ["fluent-ui", "fluent"]
   - name: flowbite-react
     domain: ui
     path: skills/ui/flowbite-react
-    maturity: expanded-v2
     keywords: ["flowbite-react", "flowbite"]
   - name: headless-ui
     domain: ui
     path: skills/ui/headless-ui
-    maturity: expanded-v2
     keywords: ["headless-ui", "headless"]
   - name: vuetify
     domain: ui
     path: skills/ui/vuetify
-    maturity: expanded-v2
     keywords: ["vuetify"]
   - name: primevue
     domain: ui
     path: skills/ui/primevue
-    maturity: expanded-v2
     keywords: ["primevue"]
   - name: quasar
     domain: ui
     path: skills/ui/quasar
-    maturity: expanded-v2
     keywords: ["quasar"]
   - name: element-plus
     domain: ui
     path: skills/ui/element-plus
-    maturity: expanded-v2
     keywords: ["element-plus", "element", "plus"]
   - name: ant-design-vue
     domain: ui
     path: skills/ui/ant-design-vue
-    maturity: expanded-v2
     keywords: ["ant-design-vue", "ant"]
   - name: angular-material
     domain: ui
     path: skills/ui/angular-material
-    maturity: expanded-v2
     keywords: ["angular-material", "material"]
   - name: primeng
     domain: ui
     path: skills/ui/primeng
-    maturity: expanded-v2
     keywords: ["primeng"]
   - name: ng-zorro
     domain: ui
     path: skills/ui/ng-zorro
-    maturity: expanded-v2
     keywords: ["ng-zorro", "ng", "zorro"]
   - name: bits-ui
     domain: ui
     path: skills/ui/bits-ui
-    maturity: expanded-v2
     keywords: ["bits-ui", "bits"]
   - name: skeleton
     domain: ui
     path: skills/ui/skeleton
-    maturity: expanded-v2
     keywords: ["skeleton"]
   - name: flowbite-svelte
     domain: ui
     path: skills/ui/flowbite-svelte
-    maturity: expanded-v2
     keywords: ["flowbite-svelte", "flowbite"]
   - name: daisyui
     domain: ui
     path: skills/ui/daisyui
-    maturity: expanded-v2
     keywords: ["daisyui"]
   - name: bootstrap
     domain: ui
     path: skills/ui/bootstrap
-    maturity: expanded-v2
     keywords: ["bootstrap"]
   - name: web-awesome
     domain: ui
     path: skills/ui/web-awesome
-    maturity: expanded-v2
     keywords: ["web-awesome", "web", "awesome"]
   - name: ionic
     domain: ui
     path: skills/ui/ionic
-    maturity: expanded-v2
     keywords: ["ionic"]
   - name: react-native-paper
     domain: ui
     path: skills/ui/react-native-paper
-    maturity: expanded-v2
     keywords: ["react-native-paper", "paper"]
   - name: tamagui
     domain: ui
     path: skills/ui/tamagui
-    maturity: expanded-v2
     keywords: ["tamagui"]
   - name: gluestack-ui
     domain: ui
     path: skills/ui/gluestack-ui
-    maturity: expanded-v2
     keywords: ["gluestack-ui", "gluestack"]
   - name: rneui
     domain: ui
     path: skills/ui/rneui
-    maturity: expanded-v2
     keywords: ["rneui"]
   - name: flutter-material
     domain: ui
     path: skills/ui/flutter-material
-    maturity: expanded-v2
     keywords: ["flutter-material", "material"]
   - name: flutter-cupertino
     domain: ui
     path: skills/ui/flutter-cupertino
-    maturity: expanded-v2
     keywords: ["flutter-cupertino", "cupertino"]
   - name: azure-ai-foundry
     domain: cloud
     path: skills/cloud/azure-ai-foundry
-    maturity: expanded-v2
     keywords: ["azure", "foundry", "openai", "v1", "responses", "entra", "llm", "inference", "deployment"]
   - name: azure-integration
     domain: cloud
@@ -338,7 +284,6 @@ skills:
   - name: gcp-vertex-ai
     domain: cloud
     path: skills/cloud/gcp-vertex-ai
-    maturity: expanded-v2
     keywords: ["gcp", "vertex", "google", "genai", "gemini", "adc", "llm", "inference", "sdk"]
   - name: gcp-integration
     domain: cloud
@@ -359,24 +304,23 @@ skills:
   - name: requirements-discovery
     domain: core
     path: skills/core/requirements-discovery
-    maturity: expanded-v2
-    keywords: ["grill", "requirements", "discovery", "clarify", "scope", "ambiguous", "specification", "interview", "questions", "stakeholders", "acceptance"]
+    keywords: ["grill","requirements","discovery","clarify","scope","specification","interview","stakeholders","acceptance","elicitation"]
   - name: skill-authoring
     domain: core
     path: skills/core/skill-authoring
-    keywords: ["write","create","skill","frontmatter","authoring","documentation","prompt","template"]
+    keywords: ["skill","authoring","frontmatter","registry","duplicate","reference","governance","provenance","create","modify"]
   - name: systematic-debugging
     domain: core
     path: skills/core/systematic-debugging
-    keywords: ["debug","bug","exception","error","traceback","root","cause","panne","echec"]
+    keywords: ["debug","bug","exception","traceback","reproduce","regression","root","cause","panne","echec"]
   - name: task-routing
     domain: core
     path: skills/core/task-routing
-    keywords: ["classify","triage","complexity","difficulty","workflow","light","standard","deep"]
+    keywords: ["triage","workflow","routing","skills","activation","light","standard","deep","scope","risk"]
   - name: verification-before-done
     domain: core
     path: skills/core/verification-before-done
-    keywords: ["verify","evidence","build","tests","completed","done","validation"]
+    keywords: ["verify","verification","evidence","completion","tests","checks","proof","done","validation"]
   - name: data-pipeline-quality
     domain: data
     path: skills/data/data-pipeline-quality
@@ -400,7 +344,6 @@ skills:
   - name: brand-identity-visualization
     domain: design
     path: skills/design/brand-identity-visualization
-    maturity: expanded-v2
     keywords: ["brandkit", "brand", "identity", "logo", "visualization", "moodboard", "board", "concept", "visual", "art", "direction"]
   - name: bento-grid
     domain: design
@@ -413,12 +356,10 @@ skills:
   - name: design-system
     domain: design
     path: skills/design/design-system
-    maturity: expanded-v2
     keywords: ["design", "system", "tokens", "palette", "theme", "variants", "components"]
   - name: frontend-design
     domain: design
     path: skills/design/frontend-design
-    maturity: expanded-v2
     keywords: ["frontend", "visual", "aesthetic", "distinctive", "design", "page", "polish", "anti-ai-slop"]
   - name: glassmorphism
     domain: design
@@ -427,7 +368,6 @@ skills:
   - name: interaction-motion
     domain: design
     path: skills/design/interaction-motion
-    maturity: expanded-v2
     keywords: ["animation", "motion", "microinteractions", "transitions", "easing", "gestures", "timing", "animate"]
   - name: landing-page-design
     domain: design
@@ -440,12 +380,10 @@ skills:
   - name: typography-layout
     domain: design
     path: skills/design/typography-layout
-    maturity: expanded-v2
     keywords: ["typography", "fonts", "grid", "editorial", "spacing", "hierarchy", "pairing"]
   - name: ux-audit
     domain: design
     path: skills/design/ux-audit
-    maturity: expanded-v2
     keywords: ["ux", "usability", "audit", "ergonomics", "interface", "review", "guidelines"]
   - name: nextjs-application
     domain: frontend
@@ -466,17 +404,14 @@ skills:
   - name: ai-search-visibility
     domain: growth
     path: skills/growth/ai-search-visibility
-    maturity: expanded-v2
     keywords: ["ai", "seo", "search", "visibility", "citations", "mentions", "geo", "aeo", "answer", "engine", "attribution", "llm"]
   - name: content-strategy
     domain: growth
     path: skills/growth/content-strategy
-    maturity: expanded-v2
     keywords: ["content", "editorial", "strategy", "calendar", "topics", "audience", "pillars", "marketing", "planning"]
   - name: technical-seo
     domain: growth
     path: skills/growth/technical-seo
-    maturity: expanded-v2
     keywords: ["seo", "technical", "indexing", "crawl", "robots", "canonical", "sitemap", "redirect", "schema", "markup"]
   - name: dependency-supply-chain
     domain: quality
@@ -485,7 +420,6 @@ skills:
   - name: external-skill-audit
     domain: quality
     path: skills/quality/external-skill-audit
-    maturity: expanded-v2
     keywords: ["external", "import", "find", "discover", "skills", "github", "license", "security", "audit", "provenance"]
   - name: git-pr-workflow
     domain: quality

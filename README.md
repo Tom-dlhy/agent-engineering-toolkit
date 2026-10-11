@@ -4,7 +4,7 @@
 
 A growing library of **113 first-party skills across 12 domains**, with **16 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status: progressive expertise refactor underway. Seven AWS skills use expert-v2 structure; 35 UI provider skills and 11 design/growth/intake skills and 13 Python/LLM specialists use expanded-v2 structure. Remaining skills are still scheduled for deeper content review. Static validation is not proof of real agent expertise.
+> Status: a single skill-quality contract applies to all 113 catalog entries. Depth and real-world verification remain uneven across domains; inclusion in the catalog and passing structural CI are not evidence of production expertise. Refactoring proceeds domain by domain without maturity tiers.
 
 ## Why
 

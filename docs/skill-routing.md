@@ -2,7 +2,7 @@
 
 This toolkit distinguishes **library size**, **installation profile size** and **activation size**.
 
-1. The library holds 59 local `SKILL.md` files and may grow to hundreds.
+1. The library holds 113 local `SKILL.md` files and may grow to hundreds.
 2. A profile installs only a curated subset (5–20 skills).
 3. The model sees a brief name/description, not a full skill body.
 4. Only 1–3 directly relevant skill bodies should be read for ordinary tasks.
@@ -50,3 +50,7 @@ CI rejects profiles if this rough core + metadata estimate exceeds 2500 tokens o
 - The keyword registry is edited and reviewed alongside a new skill.
 - Negative triggers in each skill description remain authoritative: a high lexical score alone should not force an invocation.
 - The CLI is intentionally non-mutating. It never installs tools, executes skill scripts or makes network calls.
+
+## Quality and selection
+
+No skill maturity/rank metadata influences discovery. The registry's lexical scores indicate candidate relevance only and cannot assert competence or justify automatic installation. All skills use the same quality contract, while selected reference depth depends on the task. See [Core audit](core-refactor-audit.md).
