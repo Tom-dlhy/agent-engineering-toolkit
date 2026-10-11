@@ -1,5 +1,7 @@
 # Component library candidates — curated selection index
 
+**Read when:** Comparing potential providers for a new project or an explicit UI-library migration. Do not open when the existing library is already chosen.
+
 This catalog is **not** a version compatibility oracle. Verify current package versions, official docs, licenses and package status at selection time. The selector should use this index *without loading 35 vendor SKILL.md bodies*.
 
 | Library (skill name) | Ecosystem | Best-fit signal | Official docs |

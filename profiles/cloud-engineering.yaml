@@ -1,13 +1,17 @@
 name: cloud-engineering
-description: Multi-provider cloud integrations and security.
+description: Multi-cloud architecture, infrastructure, secure deployment and operations.
 skills:
   - task-routing
   - verification-before-done
-  - architecture-decision
   - cloud-provider-selection
+  - terraform-iac
+  - ci-cd-engineering
+  - container-hardening
   - aws-integration
   - gcp-integration
   - azure-integration
-  - test-strategy
+  - kubernetes-deployment
+  - observability-sre
+  - finops-engineering
   - secure-code-review
   - external-skill-audit

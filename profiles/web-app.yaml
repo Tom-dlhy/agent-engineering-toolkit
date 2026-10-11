@@ -1,16 +1,20 @@
 name: web-app
-description: Frontend design, UI/UX and web product engineering.
+description: Modern web applications with UI, UX, backend, data and quality.
 skills:
   - task-routing
   - verification-before-done
   - systematic-debugging
+  - stack-advisor
   - architecture-decision
+  - api-contract-design
+  - react-architecture
   - frontend-design
   - ui-library-selection
   - ui-component-research
-  - glassmorphism
+  - design-system
   - ux-audit
+  - accessibility-wcag
+  - responsive-visual-qa
   - database-design
   - secure-code-review
   - test-strategy
-  - external-skill-audit

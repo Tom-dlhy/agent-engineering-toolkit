@@ -1,7 +1,7 @@
 ---
 name: ui-component-research
 domain: ui
-version: "0.1.0"
+version: "2.0.0"
 description: >-
   Use when implementing, debugging or reviewing nontrivial UI components and their exact documented APIs, states, accessibility and integration across component libraries. Do not use for simple CSS copy changes or generic visual design.
 ---
@@ -21,10 +21,10 @@ This complements one selected provider skill and `frontend-design`. It does **no
 
 ## Family references (open only what is needed)
 
-- `references/inputs-and-forms.md` — validation, field wiring, picker semantics.
-- `references/overlays-and-navigation.md` — focus, portals, menus, dialogs and routing.
-- `references/data-display.md` — tables, grids, async and virtualization.
-- `references/feedback-and-theme.md` — loading, toasts, accessibility and tokens.
+- [Inputs and forms](references/inputs-and-forms.md) — validation, field wiring, picker semantics.
+- [Overlays and navigation](references/overlays-and-navigation.md) — focus, portals, menus, dialogs and routing.
+- [Data display](references/data-display.md) — tables, grids, async and virtualization.
+- [Feedback and theme](references/feedback-and-theme.md) — loading, toasts, accessibility and tokens.
 
 ## Boundary
 

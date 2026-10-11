@@ -6,7 +6,7 @@ Choose the right UI library for the existing stack and exercise its **actual doc
 
 ## Layers
 
-1. `ui-library-selection` makes technology decisions from a catalog and evaluates existing project dependencies.
+1. `skills/stacks/ui-library-selection` makes technology decisions from a catalog and evaluates existing project dependencies.
 2. **35 opt-in provider skills** represent the library-specific architecture, advanced component families, documentation, theme and integration pitfalls.
 3. `ui-component-research` provides per-component deep research and four focused references for forms, overlays, data and feedback. Open **only relevant** material and consult version-matched provider documentation; do not assume all component names share implementation rules.
 
@@ -36,6 +36,10 @@ python scripts/install_profile.py --skill shadcn-ui --skill ui-component-researc
 ```
 
 After inspecting output add `--apply` to execute. The installer will not overwrite existing skills. No external installer or third-party script is executed; provider docs are linked, not vendored.
+
+## V2 integration policy
+
+The existing selector remains at `skills/stacks/ui-library-selection`. No duplicate `ui-library-selection` is registered. Provider skills live under `skills/ui/` and should supply targeted local deep references beyond links to vendor websites. The set of providers is **available** but is not part of default profiles; the platform profiles are opt-in. Only claim expert maturity for skills whose content and behavior have been evaluated, not by file count. Full operational depth is improved incrementally; current version-sensitive APIs must be checked against installed packages.
 
 ## External source and maintenance
 

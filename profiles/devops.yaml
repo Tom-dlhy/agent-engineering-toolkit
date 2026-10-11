@@ -1,0 +1,16 @@
+name: devops
+description: CI/CD, platform engineering, IaC and release engineering.
+skills:
+  - task-routing
+  - verification-before-done
+  - ci-cd-engineering
+  - terraform-iac
+  - container-hardening
+  - kubernetes-deployment
+  - cloudflare-platform
+  - observability-sre
+  - finops-engineering
+  - release-readiness
+  - git-pr-workflow
+  - secure-code-review
+  - test-strategy
