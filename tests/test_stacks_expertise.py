@@ -30,7 +30,7 @@ class StacksExpertiseTests(unittest.TestCase):
         cls.stacks = {n: s for n, s in cls.catalog.items() if s.domain == "stacks"}
 
     def test_domain_inventory_no_provider_duplication(self):
-        self.assertEqual(len(self.catalog), 151)
+        self.assertEqual(len(self.catalog), 163)
         self.assertEqual(set(self.stacks), set(STACKS))
         self.assertEqual(sum(len(indexed_references(x, ROOT)) for x in self.stacks.values()), 12)
         self.assertEqual(len([x for x in self.catalog.values() if x.domain == "ui"]), 36)

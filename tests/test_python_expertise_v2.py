@@ -38,7 +38,7 @@ class PythonExpertiseV2Tests(unittest.TestCase):
         )
 
     def test_skills_and_count(self):
-        self.assertEqual(len(self.catalog), 151)
+        self.assertEqual(len(self.catalog), 163)
         self.assertIn("aws-bedrock", self.catalog)
         for name in self.new + self.extended:
             self.assertIn(name, self.catalog)
