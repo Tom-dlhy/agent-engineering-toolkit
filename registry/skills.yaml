@@ -461,6 +461,14 @@ skills:
     domain: design
     path: skills/design/bento-grid
     keywords: ["bento","tiles","grid","spans","mosaic"]
+  - name: content-design
+    domain: design
+    path: skills/design/content-design
+    keywords: ["microcopy","labels","wording","ui-text","errors","empty-state","terminology","localization"]
+  - name: data-visualization-design
+    domain: design
+    path: skills/design/data-visualization-design
+    keywords: ["chart","charts","visualization","dashboard","kpi","axes","legend","uncertainty","graph"]
   - name: dark-mode-theming
     domain: design
     path: skills/design/dark-mode-theming
@@ -477,6 +485,14 @@ skills:
     domain: design
     path: skills/design/glassmorphism
     keywords: ["glassmorphism","frosted","glass","translucent","blur","backdrop"]
+  - name: information-architecture
+    domain: design
+    path: skills/design/information-architecture
+    keywords: ["information","architecture","taxonomy","navigation","sitemap","findability","facets","menus"]
+  - name: interaction-flow-design
+    domain: design
+    path: skills/design/interaction-flow-design
+    keywords: ["onboarding","flow","journey","wizard","step","recovery","states","transitions"]
   - name: interaction-motion
     domain: design
     path: skills/design/interaction-motion

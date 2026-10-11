@@ -36,11 +36,11 @@ class QualityRefactorTests(unittest.TestCase):
             {s.name for s in self.catalog.values() if s.domain == "quality"},
             EXPECTED,
         )
-        self.assertEqual(len(self.catalog), 144)
+        self.assertEqual(len(self.catalog), 148)
 
     def test_uniform_quality_without_maturity_tiers(self):
         entries = yaml.safe_load((ROOT / "registry" / "skills.yaml").read_text())["skills"]
-        self.assertEqual(len(entries), 144)
+        self.assertEqual(len(entries), 148)
         self.assertFalse(any("maturity" in e for e in entries))
 
     def test_references_have_real_content_and_selective_triggers(self):

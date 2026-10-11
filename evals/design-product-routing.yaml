@@ -1,0 +1,47 @@
+version: 1
+# Human/agent behavioral scenarios. Not automatically proof of model output.
+scenarios:
+  - id: dataviz-chart-choice
+    query: "Design a trustworthy dashboard chart for conversion percentages by month"
+    expected: data-visualization-design
+    references: [references/chart-selection-and-encoding.md, references/truthful-metrics-and-uncertainty.md]
+    accept: ["identifies denominator and data owner", "chooses readable comparison", "asks for existing provider before code"]
+    reject: ["new visualization package installed by default", "fake sample data represented as production"]
+  - id: dataviz-existing-shadcn
+    query: "A React project already has shadcn Chart and Recharts; improve the dashboard visual interpretation"
+    expected: data-visualization-design
+    references: [references/provider-reuse-and-accessibility.md]
+    accept: ["reuses shadcn Chart", "defers Recharts API to UI specialist", "provides chart textual alternative"]
+    reject: ["duplicate chart wrapper", "new MUI X package", "invented Base UI Chart"]
+  - id: component-only
+    query: "Fix shadcn Chart tooltip implementation using the installed version"
+    expected: shadcn-ui
+    accept: ["library API/version chosen first", "design skill optional and only for interpretation"]
+    reject: ["chart design skill replaces installed provider knowledge"]
+  - id: base-ui-dialog
+    query: "Fix Base UI Dialog render composition"
+    expected: base-ui
+    accept: ["provider APIs reused", "no chart-related skills loaded"]
+  - id: data-truth
+    query: "Define a dbt mart grain and denominator for daily revenue"
+    expected: analytics-modeling
+    accept: ["fact grain and calculation owners clear", "chart not triggered"]
+  - id: form-flow
+    query: "Design multi-step onboarding with retry, permission denial and draft recovery"
+    expected: interaction-flow-design
+    references: [references/flow-state-contracts.md]
+    accept: ["states/guards/recovery", "no new dialog library"]
+  - id: taxonomy
+    query: "Reorganize project navigation taxonomy and search facets"
+    expected: information-architecture
+    references: [references/search-and-facets.md]
+    accept: ["source route mapping", "tree-test hypotheses labeled", "not code module architecture"]
+  - id: microcopy
+    query: "Rewrite UI form validation errors and empty state labels"
+    expected: content-design
+    references: [references/microcopy-and-states.md]
+    accept: ["specific actionable text", "links copy to state and control"]
+  - id: irrelevant
+    query: "Fix FastAPI endpoint validation and SQL transaction rollback"
+    expected_not: [data-visualization-design, content-design, information-architecture, interaction-flow-design]
+    accept: ["no design specialists loaded"]

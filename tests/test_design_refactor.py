@@ -48,8 +48,8 @@ class DesignRefactorTests(unittest.TestCase):
                       if skill.domain == "design"}
 
     def test_all_twelve_existing_skills_and_catalog_preserved(self):
-        self.assertEqual(len(self.catalog), 144)
-        self.assertEqual(len(self.design), 12)
+        self.assertEqual(len(self.catalog), 148)
+        self.assertEqual(len(self.design), 16)
         self.assertTrue(set(REFS).issubset(self.design))
         self.assertIn("frontend-design", self.design)
         self.assertIn("design-system", self.design)
@@ -74,7 +74,7 @@ class DesignRefactorTests(unittest.TestCase):
 
     def test_design_full_reference_count_and_read_is_path_safe(self):
         self.assertEqual(sum(len(indexed_references(skill, ROOT))
-                             for skill in self.design.values()), 26)
+                             for skill in self.design.values()), 38)
         for text in ("../SKILL.md", "references/../SKILL.md",
                      "references/nope.md", "SKILL.md"):
             with self.subTest(path=text), self.assertRaises(ValueError):

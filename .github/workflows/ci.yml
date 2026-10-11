@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main, feat/modular-skill-engine]
   push:
-    branches: [main, 'refactor/**']
+    branches: [main, 'refactor/**', 'feat/**']
   workflow_dispatch:
 
 permissions:
