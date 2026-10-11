@@ -30,6 +30,7 @@
 - Auto-suspend can reduce idle credits, but repeated resume minimum billing must be considered; account spend is broader than warehouse credits. Official: https://docs.snowflake.com/en/user-guide/warehouses-considerations and https://docs.snowflake.com/en/user-guide/cost-controlling-controls
 
 **Pipelines**
+- Dynamic Tables TARGET_LAG is a **best-effort freshness target**, not a cron interval or guaranteed SLO. Source: https://docs.snowflake.com/en/user-guide/dynamic-tables/target-lag
 - Snowpipe is staged-file micro-batch ingestion. File-order is not guaranteed; load metadata is not an application business-key uniqueness constraint. Official: https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro
 - Dynamic Tables support eligible SELECT-based declarative transformations. Streams/Tasks handle procedural MERGE/side effects, and target lag is best-effort freshness rather than fixed interval. Official: https://docs.snowflake.com/en/user-guide/dynamic-tables-limitations and https://docs.snowflake.com/en/user-guide/dynamic-tables/target-lag
 - Heavy replay can reinitialize dynamic outputs or exceed stream retention; never auto-run CREATE OR REPLACE/DROP/large backfill. Official: https://docs.snowflake.com/en/user-guide/streams-intro
@@ -67,3 +68,5 @@
 **Evaluation requirements:** registry / profile integrity, safe progressive references, non-collision routing, synthetic temporal/replay proof, ordinary CI; follow up with authorized real Snowflake integration (SQL/Python/AI/role tests), cost measurements, feature/version checks, and outcome-based held-out real-agent evaluation. Neither the offline examples nor YAML imply Snowflake account access or production deployment.
 
 Next provider: Databricks, only after its own reuse/extend/create review; no automatic platform skill creation.
+
+**Evidence limitation:** Behavioral scenarios in evals/snowflake-routing.yaml are intentionally **unexecuted**. No Snowflake service connection, data access, warehouse charge, model registration or Cortex inference has been performed by this PR.
