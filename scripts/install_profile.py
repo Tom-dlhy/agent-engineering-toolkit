@@ -1,4 +1,4 @@
-"""Safely copy first-party skills into a project; dry-run by default."""
+"""Safely copy first-party skills into an EXISTING project; dry-run by default."""
 from __future__ import annotations
 
 import argparse
@@ -12,6 +12,8 @@ AGENTS = {"codex": ".agents/skills", "claude": ".claude/skills", "generic": ".ag
 
 
 def planned_sources(profile: str, root: Path = ROOT) -> list[Path]:
+    if not profile or not all(c.islower() or c.isdigit() or c == "-" for c in profile):
+        raise ValueError("invalid profile name")
     path = root / "profiles" / f"{profile}.yaml"
     if not path.is_file():
         raise ValueError(f"unknown profile: {profile}")
@@ -21,21 +23,40 @@ def planned_sources(profile: str, root: Path = ROOT) -> list[Path]:
     return [sources[name] for name in data["skills"]]
 
 
+def _reject_symlinks(root: Path) -> None:
+    if root.is_symlink() or any(item.is_symlink() for item in root.rglob("*")):
+        raise ValueError(f"skill includes a symlink; manual audit required: {root}")
+
+
 def install(profile: str, agent: str, project: Path, apply: bool = False, root: Path = ROOT) -> list[Path]:
     if agent not in AGENTS:
         raise ValueError(f"unsupported agent: {agent}")
-    target = project.expanduser().resolve() / AGENTS[agent]
+    if not project.expanduser().is_dir():
+        raise ValueError(f"target project must be an existing directory: {project}")
+    project_root = project.expanduser().resolve()
+    target = project_root / AGENTS[agent]
+    if any(p.is_symlink() for p in (target, target.parent)):
+        raise ValueError(f"installation destination uses a symlink: {target}")
     sources = planned_sources(profile, root)
     if not sources or any(not (p / "SKILL.md").is_file() for p in sources):
         raise ValueError("profile contains missing or invalid skills")
+    for source in sources:
+        _reject_symlinks(source)
     destinations = [target / source.name for source in sources]
     existing = [p for p in destinations if p.exists() or p.is_symlink()]
     if existing:
         raise FileExistsError("refusing to overwrite existing skills: " + ", ".join(map(str, existing)))
     if apply:
         target.mkdir(parents=True, exist_ok=True)
-        for source, destination in zip(sources, destinations):
-            shutil.copytree(source, destination, symlinks=False)
+        created = []
+        try:
+            for source, destination in zip(sources, destinations):
+                shutil.copytree(source, destination, symlinks=False)
+                created.append(destination)
+        except (OSError, shutil.Error):
+            for destination in reversed(created):
+                shutil.rmtree(destination)
+            raise
     return destinations
 
 

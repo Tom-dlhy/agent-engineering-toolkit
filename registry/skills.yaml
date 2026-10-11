@@ -1,21 +1,239 @@
 version: 1
+# Explicit first-party catalog; only names/descriptions are exposed by search.
 skills:
-  - {name: task-routing, domain: core, path: skills/core/task-routing}
-  - {name: verification-before-done, domain: core, path: skills/core/verification-before-done}
-  - {name: systematic-debugging, domain: core, path: skills/core/systematic-debugging}
-  - {name: skill-authoring, domain: core, path: skills/core/skill-authoring}
-  - {name: architecture-decision, domain: architecture, path: skills/architecture/architecture-decision}
-  - {name: python-ddd, domain: architecture, path: skills/architecture/python-ddd}
-  - {name: fastapi-service, domain: backend, path: skills/backend/fastapi-service}
-  - {name: cloud-provider-selection, domain: cloud, path: skills/cloud/cloud-provider-selection}
-  - {name: aws-integration, domain: cloud, path: skills/cloud/aws-integration}
-  - {name: gcp-integration, domain: cloud, path: skills/cloud/gcp-integration}
-  - {name: azure-integration, domain: cloud, path: skills/cloud/azure-integration}
-  - {name: frontend-design, domain: design, path: skills/design/frontend-design}
-  - {name: glassmorphism, domain: design, path: skills/design/glassmorphism}
-  - {name: ux-audit, domain: design, path: skills/design/ux-audit}
-  - {name: secure-code-review, domain: quality, path: skills/quality/secure-code-review}
-  - {name: test-strategy, domain: quality, path: skills/quality/test-strategy}
-  - {name: external-skill-audit, domain: quality, path: skills/quality/external-skill-audit}
-  - {name: llm-integration, domain: ai, path: skills/ai/llm-integration}
-  - {name: database-design, domain: data, path: skills/data/database-design}
+  - name: agent-tool-safety
+    domain: ai
+    path: skills/ai/agent-tool-safety
+    keywords: ["agent","tool","mcp","security","prompt","injection"]
+  - name: llm-evaluation
+    domain: ai
+    path: skills/ai/llm-evaluation
+    keywords: ["llm","eval","prompt","benchmarks","quality"]
+  - name: llm-integration
+    domain: ai
+    path: skills/ai/llm-integration
+    keywords: ["llm","ai","genai","bedrock","openai","anthropic","agent","provider"]
+  - name: rag-evaluation
+    domain: ai
+    path: skills/ai/rag-evaluation
+    keywords: ["rag","embedding","search","retrieval","chunking","evaluation"]
+  - name: api-contract-design
+    domain: architecture
+    path: skills/architecture/api-contract-design
+    keywords: ["api","rest","graphql","openapi","contract","versioning"]
+  - name: architecture-decision
+    domain: architecture
+    path: skills/architecture/architecture-decision
+    keywords: ["ADR","architecture","record","decision","tradeoff"]
+  - name: event-driven-design
+    domain: architecture
+    path: skills/architecture/event-driven-design
+    keywords: ["event","driven","kafka","queue","messaging","pubsub","outbox"]
+  - name: hexagonal-architecture
+    domain: architecture
+    path: skills/architecture/hexagonal-architecture
+    keywords: ["hexagonal","ports","adapters","clean","architecture","vendor","lockin"]
+  - name: modular-monolith
+    domain: architecture
+    path: skills/architecture/modular-monolith
+    keywords: ["modular","monolith","bounded","contexts","microservice","modules"]
+  - name: python-ddd
+    domain: architecture
+    path: skills/architecture/python-ddd
+    keywords: ["ddd","domain","driven","design","python","ports","adapters","clean","architecture"]
+  - name: technology-tradeoffs
+    domain: architecture
+    path: skills/architecture/technology-tradeoffs
+    keywords: ["choose","compare","decision","dependency","library","stack"]
+  - name: background-jobs
+    domain: backend
+    path: skills/backend/background-jobs
+    keywords: ["async","workers","queue","jobs","celery","rq","scheduled"]
+  - name: fastapi-service
+    domain: backend
+    path: skills/backend/fastapi-service
+    keywords: ["fastapi","python","rest","api","pydantic","route","endpoint"]
+  - name: modern-python
+    domain: backend
+    path: skills/backend/modern-python
+    keywords: ["python","uv","pyproject","typing","ruff","pytest","packaging"]
+  - name: typescript-api
+    domain: backend
+    path: skills/backend/typescript-api
+    keywords: ["typescript","node","nestjs","express","fastify","backend"]
+  - name: aws-integration
+    domain: cloud
+    path: skills/cloud/aws-integration
+    keywords: ["aws","s3","iam","bedrock","lambda","ecs","sqs","sns","boto3"]
+  - name: azure-integration
+    domain: cloud
+    path: skills/cloud/azure-integration
+    keywords: ["azure","microsoft","servicebus","functions","blob","container"]
+  - name: ci-cd-engineering
+    domain: cloud
+    path: skills/cloud/ci-cd-engineering
+    keywords: ["github","actions","pipeline","ci","cd","tests","deployment"]
+  - name: cloud-provider-selection
+    domain: cloud
+    path: skills/cloud/cloud-provider-selection
+    keywords: ["aws","gcp","azure","compare","multicloud","provider","cloud"]
+  - name: cloudflare-platform
+    domain: cloud
+    path: skills/cloud/cloudflare-platform
+    keywords: ["cloudflare","workers","pages","r2","d1","access"]
+  - name: container-hardening
+    domain: cloud
+    path: skills/cloud/container-hardening
+    keywords: ["docker","containers","image","security","oci"]
+  - name: finops-engineering
+    domain: cloud
+    path: skills/cloud/finops-engineering
+    keywords: ["finops","cloud","cost","pricing","billing","optimisation"]
+  - name: gcp-integration
+    domain: cloud
+    path: skills/cloud/gcp-integration
+    keywords: ["gcp","google","cloud","run","iam","pubsub","bigquery","vertex"]
+  - name: kubernetes-deployment
+    domain: cloud
+    path: skills/cloud/kubernetes-deployment
+    keywords: ["kubernetes","k8s","cluster","deployments","helm"]
+  - name: observability-sre
+    domain: cloud
+    path: skills/cloud/observability-sre
+    keywords: ["observability","logs","traces","metrics","opentelemetry","sre"]
+  - name: terraform-iac
+    domain: cloud
+    path: skills/cloud/terraform-iac
+    keywords: ["terraform","opentofu","infrastructure","as","code","modules","cloud"]
+  - name: skill-authoring
+    domain: core
+    path: skills/core/skill-authoring
+    keywords: ["write","create","skill","frontmatter","authoring","documentation","prompt","template"]
+  - name: systematic-debugging
+    domain: core
+    path: skills/core/systematic-debugging
+    keywords: ["debug","bug","exception","error","traceback","root","cause","panne","echec"]
+  - name: task-routing
+    domain: core
+    path: skills/core/task-routing
+    keywords: ["classify","triage","complexity","difficulty","workflow","light","standard","deep"]
+  - name: verification-before-done
+    domain: core
+    path: skills/core/verification-before-done
+    keywords: ["verify","evidence","build","tests","completed","done","validation"]
+  - name: data-pipeline-quality
+    domain: data
+    path: skills/data/data-pipeline-quality
+    keywords: ["etl","elt","pipeline","airbyte","dagster","ingestion","airflow"]
+  - name: database-design
+    domain: data
+    path: skills/data/database-design
+    keywords: ["database","sql","relational","postgres","schema","transactions"]
+  - name: postgres-performance
+    domain: data
+    path: skills/data/postgres-performance
+    keywords: ["postgres","postgresql","index","query","optimize","sql"]
+  - name: schema-migrations
+    domain: data
+    path: skills/data/schema-migrations
+    keywords: ["migration","alembic","drizzle","backfill","database"]
+  - name: accessibility-wcag
+    domain: design
+    path: skills/design/accessibility-wcag
+    keywords: ["accessibility","a11y","wcag","keyboard","screenreader"]
+  - name: bento-grid
+    domain: design
+    path: skills/design/bento-grid
+    keywords: ["bento","cards","grid","modern","design"]
+  - name: dark-mode-theming
+    domain: design
+    path: skills/design/dark-mode-theming
+    keywords: ["dark","mode","light","theme","colors"]
+  - name: design-system
+    domain: design
+    path: skills/design/design-system
+    keywords: ["design","system","tokens","components","branding"]
+  - name: frontend-design
+    domain: design
+    path: skills/design/frontend-design
+    keywords: ["ui","design","frontend","react","beautiful","web","site"]
+  - name: glassmorphism
+    domain: design
+    path: skills/design/glassmorphism
+    keywords: ["frosted","glass","transparent","blur","backdrop","css","liquid","glass"]
+  - name: interaction-motion
+    domain: design
+    path: skills/design/interaction-motion
+    keywords: ["animation","motion","microinteractions","transitions","framer"]
+  - name: landing-page-design
+    domain: design
+    path: skills/design/landing-page-design
+    keywords: ["landing","page","site","website","marketing","conversion"]
+  - name: responsive-visual-qa
+    domain: design
+    path: skills/design/responsive-visual-qa
+    keywords: ["responsive","mobile","tablet","screenshots","visual","qa"]
+  - name: typography-layout
+    domain: design
+    path: skills/design/typography-layout
+    keywords: ["typography","fonts","grid","editorial","spacing","hierarchy"]
+  - name: ux-audit
+    domain: design
+    path: skills/design/ux-audit
+    keywords: ["ux","usability","audit","ergonomics","user","interface"]
+  - name: nextjs-application
+    domain: frontend
+    path: skills/frontend/nextjs-application
+    keywords: ["nextjs","next","react","server","components","routing"]
+  - name: react-architecture
+    domain: frontend
+    path: skills/frontend/react-architecture
+    keywords: ["react","hooks","components","state","rendering"]
+  - name: tanstack-start
+    domain: frontend
+    path: skills/frontend/tanstack-start
+    keywords: ["tanstack","start","server","functions","react","router"]
+  - name: vue-svelte-patterns
+    domain: frontend
+    path: skills/frontend/vue-svelte-patterns
+    keywords: ["vue","nuxt","svelte","sveltekit","reactive"]
+  - name: dependency-supply-chain
+    domain: quality
+    path: skills/quality/dependency-supply-chain
+    keywords: ["dependency","npm","pip","security","sbom","vulnerability"]
+  - name: external-skill-audit
+    domain: quality
+    path: skills/quality/external-skill-audit
+    keywords: ["import","external","third","party","github","skill","license","security"]
+  - name: git-pr-workflow
+    domain: quality
+    path: skills/quality/git-pr-workflow
+    keywords: ["git","github","pr","branch","pull","request","review","merge"]
+  - name: performance-profiling
+    domain: quality
+    path: skills/quality/performance-profiling
+    keywords: ["performance","optimize","profiling","latency","web","vitals"]
+  - name: release-readiness
+    domain: quality
+    path: skills/quality/release-readiness
+    keywords: ["release","prod","go","live","deployment","readiness"]
+  - name: secure-code-review
+    domain: quality
+    path: skills/quality/secure-code-review
+    keywords: ["security","audit","review","vulnerability","authentication","authorization"]
+  - name: test-strategy
+    domain: quality
+    path: skills/quality/test-strategy
+    keywords: ["test","pytest","unit","integration","coverage","tdd","qa"]
+  - name: database-selection
+    domain: stacks
+    path: skills/stacks/database-selection
+    keywords: ["database","selection","postgres","sqlite","redis","mysql","neon"]
+  - name: stack-advisor
+    domain: stacks
+    path: skills/stacks/stack-advisor
+    keywords: ["stack","advisor","choose","framework","tech","technologies","saas"]
+  - name: ui-library-selection
+    domain: stacks
+    path: skills/stacks/ui-library-selection
+    keywords: ["components","library","ui","shadcn","mui","radix","tailwind"]

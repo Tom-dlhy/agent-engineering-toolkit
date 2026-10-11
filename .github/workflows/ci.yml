@@ -26,13 +26,18 @@ jobs:
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
-      - name: Dependencies
+      - name: Install validation dependencies
         run: python -m pip install -r requirements-dev.txt
-      - name: Validate catalog and profiles
+      - name: Validate catalog, skills and profiles
         run: python scripts/validate_skills.py
       - name: Unit tests
         run: python -m unittest discover -s tests -v
-      - name: Approximate core context-budget check
-        run: python scripts/context_budget.py --profile minimal --budget 2500
-      - name: Python syntax
-        run: python -m compileall -q scripts tests
+      - name: Smoke test skill finder
+        run: |
+          python scripts/skillctl.py profiles
+          python scripts/skillctl.py search "AWS S3 IAM permissions" --profile cloud-engineering --json
+          python scripts/skillctl.py recommend "production database migration" --profile python-backend
+      - name: Enforce metadata budget across all profiles
+        run: python scripts/context_budget.py --all --budget 2500
+      - name: Check Python syntax
+        run: python -m compileall -q toolkit scripts tests

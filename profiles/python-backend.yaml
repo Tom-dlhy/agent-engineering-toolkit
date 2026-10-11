@@ -1,13 +1,17 @@
 name: python-backend
-description: Python API work, DDD, data and tests.
+description: Production Python APIs, domain design, persistence and testing.
 skills:
   - task-routing
   - verification-before-done
   - systematic-debugging
-  - architecture-decision
+  - modern-python
   - python-ddd
+  - hexagonal-architecture
   - fastapi-service
+  - api-contract-design
+  - background-jobs
   - database-design
+  - postgres-performance
+  - schema-migrations
   - test-strategy
   - secure-code-review
-  - external-skill-audit
