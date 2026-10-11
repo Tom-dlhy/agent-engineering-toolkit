@@ -39,7 +39,7 @@ class ArchitectureRefactorTests(unittest.TestCase):
         self.assertEqual(
             {x.name for x in self.catalog.values() if x.domain == "architecture"}, ARCH
         )
-        self.assertEqual(len(self.catalog), 113)
+        self.assertEqual(len(self.catalog), 116)
 
     def test_one_uniform_contract_no_maturity(self):
         reg = yaml.safe_load((ROOT / "registry/skills.yaml").read_text())

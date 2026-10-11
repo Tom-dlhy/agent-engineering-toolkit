@@ -33,8 +33,8 @@ class BackendExpertiseTests(unittest.TestCase):
         cls.catalog = load_catalog(ROOT)
         cls.cases = yaml.safe_load((ROOT / "evals/backend-routing.yaml").read_text())
 
-    def test_catalog_remains_113_and_backend_7(self):
-        self.assertEqual(len(self.catalog), 113)
+    def test_catalog_remains_116_and_backend_7(self):
+        self.assertEqual(len(self.catalog), 116)
         self.assertEqual({v.name for v in self.catalog.values() if v.domain == "backend"},
                          set(BACKEND))
 

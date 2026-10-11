@@ -321,22 +321,34 @@ skills:
     domain: core
     path: skills/core/verification-before-done
     keywords: ["verify","verification","evidence","completion","tests","checks","proof","done","validation"]
+  - name: analytics-modeling
+    domain: data
+    path: skills/data/analytics-modeling
+    keywords: ["analytics","dbt","dimensional","fact","dimension","star","grain","scd","metrics","mart"]
   - name: data-pipeline-quality
     domain: data
     path: skills/data/data-pipeline-quality
-    keywords: ["etl","elt","pipeline","airbyte","dagster","ingestion","airflow"]
+    keywords: ["etl","elt","pipeline","airflow","dbt","quality","freshness","lineage","backfill","replay"]
   - name: database-design
     domain: data
     path: skills/data/database-design
-    keywords: ["database","sql","relational","postgres","schema","transactions"]
+    keywords: ["database","relational","schema","constraints","normalization","tenant","rls","transactions","oltp"]
+  - name: lakehouse-engineering
+    domain: data
+    path: skills/data/lakehouse-engineering
+    keywords: ["lakehouse","iceberg","parquet","snowflake","bigquery","warehouse","columnar","partition","catalog"]
   - name: postgres-performance
     domain: data
     path: skills/data/postgres-performance
-    keywords: ["postgres","postgresql","index","query","optimize","sql"]
+    keywords: ["postgres","postgresql","index","explain","analyze","vacuum","query","plan","locks","performance"]
   - name: schema-migrations
     domain: data
     path: skills/data/schema-migrations
-    keywords: ["migration","alembic","drizzle","backfill","database"]
+    keywords: ["migration","schema","alembic","drizzle","expand","contract","backfill","rollback","ddl"]
+  - name: streaming-cdc-engineering
+    domain: data
+    path: skills/data/streaming-cdc-engineering
+    keywords: ["cdc","debezium","flink","watermark","eventtime","streaming","kafka","wal","checkpoint"]
   - name: accessibility-wcag
     domain: design
     path: skills/design/accessibility-wcag

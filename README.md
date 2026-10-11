@@ -2,15 +2,15 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **113 first-party skills across 12 domains**, with **16 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **116 first-party skills across 12 domains**, with **16 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status: a single skill-quality contract applies to all 113 catalog entries. Depth and real-world verification remain uneven across domains; inclusion in the catalog and passing structural CI are not evidence of production expertise. Refactoring proceeds domain by domain without maturity tiers.
+> Status: a single skill-quality contract applies to all 116 catalog entries. Depth and real-world verification remain uneven across domains; inclusion in the catalog and passing structural CI are not evidence of production expertise. Refactoring proceeds domain by domain without maturity tiers.
 
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **113 skills stored** in the library; only **5–20 installed** in a project profile.
+- **116 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
@@ -161,3 +161,25 @@ python -m unittest discover -s tests -p 'test_backend_expertise.py' -v
 current provider semantics from illustrative code and unverified deployment
 claims. The Node example requires a separate strict TypeScript typecheck
 before production and is deliberately not a real authenticated service.
+
+## Data engineering — source-verified domain expertise
+
+Data contains **7 focused skills**: four strengthened (pipeline quality,
+relational design, PostgreSQL performance, schema migration) plus three
+new independent specialists (analytics modeling, lakehouse/warehouses,
+CDC and stateful streaming). Each activates only the relevant skill and
+reference leaves. **22 local references** cover dbt, Airflow, GX,
+PostgreSQL, Iceberg/Parquet, Snowflake, BigQuery, Debezium and Flink.
+
+~~~bash
+python scripts/skillctl.py search "dbt dimensional grain metrics"
+python scripts/skillctl.py references streaming-cdc-engineering
+python scripts/skillctl.py read-ref streaming-cdc-engineering references/debezium-cdc-and-wal.md
+python -m unittest discover -s tests -p 'test_data_replay_contract.py' -v
+# Disposable PostgreSQL integration tests also run in GitHub CI
+~~~
+
+The [Data audit](docs/data-refactor-audit.md) records first-party official
+sources, tested contract semantics and unverified production/cloud work.
+A green route test, DAG parse or SQL schema check is **not** proof of
+live Snowflake/BigQuery pricing, CDC recovery or universal correctness.
