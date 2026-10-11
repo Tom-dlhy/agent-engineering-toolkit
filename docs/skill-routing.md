@@ -47,10 +47,12 @@ CI rejects profiles if this rough core + metadata estimate exceeds 2500 tokens o
 
 ## Router failure modes
 
-- A purely lexical query may miss synonymous technical terms.
-- No match should yield **no recommendation**, not a fabricated match.
-- The keyword registry is edited and reviewed alongside a new skill.
-- Negative triggers in each skill description remain authoritative: a high lexical score alone should not force an invocation.
+- The current skill finder is an **English-oriented lexical scorer**, not a multilingual semantic retriever. It normalizes accents but does **not** translate `données` into `database`, `authentification` into `authentication`, or infer a complete task intention from French syntax.
+- A documented **known regression**: a natural query such as `choisir une base de données pour mon SaaS` can rank `base-ui` above `database-selection` because `base` matches the UI library name. Other French questions can produce no useful match. This is **not resolved** by this documentation-only change; it is a separate implementation/evaluation priority in [the roadmap](roadmap.md).
+- Overlapping generic terms (`base`, `react`, `ui`) can make irrelevant provider skills score highly on compound technology-choice requests. Inspect the request's intent, user-selected stack and negative activation triggers **before** applying recommendations.
+- No match should yield **no recommendation**, not a fabricated match. A score indicates only lexical overlap; it is not a confidence percentage, guarantee of expertise or authorization to activate/install.
+- The keyword registry is edited and reviewed alongside a new skill. Maintain positive, negative, ambiguity and natural-language test cases in relevant language(s); do not bulk-add synonyms without measuring collateral false positives.
+- Negative triggers in each skill description remain authoritative: a high lexical score alone should not force an invocation. Domain-specific skill selection can require explicit user/agent judgment until the router is improved.
 - The CLI is intentionally non-mutating. It never installs tools, executes skill scripts or makes network calls.
 
 ## Quality and selection

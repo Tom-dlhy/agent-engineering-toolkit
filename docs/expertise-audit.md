@@ -1,12 +1,14 @@
 # Skill depth audit — phased history and current backlog
 
+> **Reading guide (current as of 2026-10-11):** This document preserves the **historical observations and plans** made during each refactor. Counts such as 59, 113, 119, 141 and 144 refer to the explicitly described phase snapshots, **not** today's inventory. After merged PR #25, the live inventory is **151 skills in 12 domains, 382 local references and 20 profiles**. All domains have been source-reviewed; the outstanding work is primarily real-agent and real-platform evaluation, not the earlier planned category splits. See the [current roadmap](roadmap.md).
+
 ## Phase 1 historical baseline (2026-10-11)
 
 The inherited `feat/modular-skill-engine` branch has **59 first-party skills**, approximately **1.1 KiB/skill on average**, with **zero local reference files or examples**. This is a capable routing foundation, **not** a technically exhaustive skill library. At this historical phase-1 snapshot, UI [PR #9](https://github.com/Tom-dlhy/agent-engineering-toolkit/pull/9) was still open; it has since merged into main.
 
 Phase 1 keeps the original 59 entries, refactors the broad `aws-integration` skill into a cross-service coordinator, and adds six independently activated service skills. Therefore at the phase-1 snapshot the branch contained **65 catalog entries**, with seven AWS specialist skills having substantial references at that snapshot. That snapshot did **not** claim all 65 met the final standard. Later phases are recorded below.
 
-## Audit verdict by domain
+## Phase 1 audit verdict by domain (historical)
 
 | Existing domain | Finding | Recommended evolution |
 |---|---|---|
@@ -32,7 +34,7 @@ Phase 1 keeps the original 59 entries, refactors the broad `aws-integration` ski
 - Routing tests show one positive, one negative and ambiguity across sibling skills.
 - Context test proves metadata remains within profile budgets while leaf contents are omitted until explicitly chosen.
 
-## Phase roadmap
+## Phase 1 proposed roadmap (historical; later phases recorded below)
 
 1. **This PR (AWS vertical slice):** 1 coordinator + 6 specialist skills; 14 deep references; safe targeted CLI reading; link validation; tests and context audit.
 2. **Backend and data:** FastAPI and Python async/auth/SQL migration references; PostgreSQL, schema migrations; evaluate split of TypeScript web frameworks.
@@ -167,8 +169,67 @@ React, Next.js, TanStack Start upgraded with three practical deep leaves each; t
 Refined 35 provider SKILL.md files, eight high-risk integration leaves,
 ui-component-research (five leaves) and frontend-design (three leaves).
 Official references include shadcn, Base, HeroUI, Chakra, MUI,
-PrimeVue, Bits, Skeleton, W3C, Anthropic and Vercel. The toolkit still
-has **144 skills / 20 profiles** without graded maturity levels.
+PrimeVue, Bits, Skeleton, W3C, Anthropic and Vercel. At this **Phase 13 snapshot**, the toolkit still
+had **144 skills / 20 profiles** without graded maturity levels.
 No vendor sample was automatically installed. See
 [UI refactor audit](ui-refactor-audit.md) and
 [production visual rubric](ui-production-quality.md).
+
+## Phase 14 — Design refactor (merged PR #22)
+
+The existing 12 Design skills were reviewed without introducing new style
+micro-skills. Six were selectively extended and eleven targeted reference
+leaves added; bento and glass remain opt-in rather than being imposed on
+generic UI profiles. See [Design governance audit](design-refactor-audit.md).
+This establishes authored decision guidance and static coverage, **not**
+observed visual usability or accessibility conformity.
+
+## Phase 15 — Design product UX specialization (merged PR #23)
+
+Four independent product-design responsibilities were added:
+`interaction-flow-design`, `information-architecture`, `content-design`
+and `data-visualization-design`. The Design domain reached **16 skills /
+38 references**, with chart implementation still delegated to the installed
+UI provider and metric definitions to Data. See
+[Design product skill decisions](design-product-skills.md). The model-driven
+held-out scenarios remain unevaluated on real agents.
+
+## Phase 16 — Growth operational refactor (merged PR #24)
+
+Three existing specialists (`technical-seo`, `content-strategy` and
+`ai-search-visibility`) were enriched; two distinct specialists
+(`growth-experimentation` and `lifecycle-retention`) were created.
+Growth reached **5 skills / 18 references**; the full catalog reached
+**150 skills**. Offline assignment/suppression examples do not prove
+actual conversion uplift, consent compliance or email delivery. See
+[Growth governance audit](growth-refactor-audit.md).
+
+## Phase 17 — Stacks selection refactor (merged PR #25)
+
+`stack-advisor`, `database-selection` and `ui-library-selection` were
+extended. `authentication-solution-selection` was added for a standalone
+user-identity decision, rather than duplicating cloud IAM or framework
+implementation skills. Stacks now has **4 skills / 12 references**, bringing
+the overall catalog to **151 skills / 382 references / 20 profiles**.
+No providers or frameworks were installed by this refactor. See
+[Stacks governance audit](stacks-refactor-audit.md).
+
+## Current cross-domain evaluation backlog (after Phase 17)
+
+- **P0 — discoverability:** exercise the existing lexical selector against
+  natural French/English, negative, ambiguous and multi-domain requests.
+  An observed French database-choice query can over-rank `base-ui` through
+  the token `base`. Improving retrieval is a **separate planned code PR**,
+  not a solved consequence of this documentation refresh.
+- **P0 — causal evidence:** run held-out baseline-vs-toolkit tests with
+  identical tasks and controlled context; score routing, functional tests,
+  defects, human corrections, time and actual tokens if exposed.
+- **P1 — external validity:** use permissioned, pinned real framework,
+  database, cloud, UI and authentication integrations, with recovery and
+  negative authorization tests where appropriate.
+- **P1 — upkeep:** periodically verify mutable vendor claims, links,
+  SDK versions and quotas using official sources. Preserve dated snapshot
+  counts rather than retroactively rewriting historical reports.
+
+Passing current CI demonstrates specific structural and fixture checks,
+not universally correct agent behavior or production security.

@@ -39,7 +39,7 @@ After inspecting output add `--apply` to execute. The installer will not overwri
 
 ## V2 integration policy
 
-The existing selector remains at `skills/stacks/ui-library-selection`, with no duplicate. Provider skills under `skills/ui/` are opt-in and use targeted local leaves. Each must meet the common quality contract, with version-specific API claims checked against actual installed packages. No maturity labels determine routing or trust.
+The existing selector remains at `skills/stacks/ui-library-selection`, with no duplicate. It has three targeted references (including the preserved provider index), while actual component integration remains in the selected UI provider skill. Provider skills under `skills/ui/` are opt-in and use targeted local leaves. Each must meet the common quality contract, with version-specific API claims checked against actual installed packages. No maturity labels determine routing or trust.
 
 ## External source and maintenance
 
@@ -53,4 +53,4 @@ Use `python scripts/validate_skills.py`, `python -m unittest discover -s tests -
 
 ## Verification and remaining evidence
 
-The existing deterministic suite covers 35 local provider leaf pairs, four shared component-research leaves, safe installation, context budgets and routing. These checks do not establish that every provider API or accessibility behavior has been validated in a live app; keep the missing evidence as a QA backlog rather than a maturity tier. See `docs/expertise-audit.md`.
+The existing deterministic suite covers 35 local provider leaf pairs, five shared component-research leaves, safe installation, context budgets and routing. These checks do not establish that every provider API or accessibility behavior has been validated in a live app; keep the missing evidence as a QA backlog rather than a maturity tier. See `docs/expertise-audit.md`.
