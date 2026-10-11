@@ -2,7 +2,7 @@
 
 ## Progressive disclosure
 
-The local catalog has 101 skills: seven AWS specialists marked expert-v2, 35 opt-in UI providers marked expanded-v2 and remaining methodological/technical skills. A project profile installs at most 20; the model loads only short descriptions during skill discovery. Skills are activated on demand, and optional reference files are never automatically included.
+The local catalog has 106 skills across 12 domains: seven AWS specialists marked expert-v2, 35 opt-in UI providers and 11 new or enriched design/growth/intake skills marked expanded-v2. Others remain under review.
 
 This is based on the general principle of progressive disclosure used by Agent Skills. It avoids the overhead of always-on monolithic prompts and blanket subagent launches.
 

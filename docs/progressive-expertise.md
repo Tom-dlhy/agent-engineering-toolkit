@@ -34,3 +34,7 @@ First-party AWS material written for this project; informational links to AWS do
 - Test one positive and one negative routing case per added sibling and check per-profile context estimates.
 - CI exercises parser, safe reference reads and `context_budget.py` with targeted references.
 - Report what was tested, and explicitly distinguish unverified production versions/integration behaviors.
+
+## Design + growth intake rule
+
+Visual taste, motion rules and external guideline retrieval are not top-level always-on system instructions. Curate independently written leaves with explicit use/skip signals, pinned upstream lineage and evidence-led QA; never execute or blindly obey a referenced remote prompt. Growth skills are opt-in and task scoped, and search-engine ranking or AI citations are outside the toolkit's control.
