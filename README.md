@@ -2,15 +2,15 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **148 first-party skills across 12 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **150 first-party skills across 12 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status: a single skill-quality contract applies to all 148 catalog entries. Depth and real-world verification remain uneven across domains; inclusion in the catalog and passing structural CI are not evidence of production expertise. Refactoring proceeds domain by domain without maturity tiers.
+> Status: a single skill-quality contract applies to all 150 catalog entries. Depth and real-world verification remain uneven across domains; inclusion in the catalog and passing structural CI are not evidence of production expertise. Refactoring proceeds domain by domain without maturity tiers.
 
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **148 skills stored** in the library; only **5–20 installed** in a project profile.
+- **150 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
@@ -57,6 +57,7 @@ The installer writes only when `--apply` is provided. It copies selected skills 
 - [Progressive expertise refactor and quality standard](docs/progressive-expertise.md)
 - [Expertise depth audit / migration backlog](docs/expertise-audit.md)
 - [Design refactor decision matrix and evidence](docs/design-refactor-audit.md)
+- [Growth skill audit, experimentation and lifecycle governance](docs/growth-refactor-audit.md)
 - [Design product experience specialists and chart-provider boundaries](docs/design-product-skills.md)
 - [Catalog and authoring conventions](docs/catalog.md)
 - [Progressive disclosure and token budgets](docs/skill-routing.md)

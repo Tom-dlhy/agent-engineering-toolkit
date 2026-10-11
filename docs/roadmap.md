@@ -2,7 +2,7 @@
 
 ## Current state
 
-- 148 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
+- 150 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
 - The AWS split, 35 UI provider branches and design/growth/refined methodology work use selective references.
 - Additional skills remain condensed methodological overviews and are scheduled for deeper technical coverage.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
@@ -148,3 +148,17 @@ navigation and microcopy guidance; visualization is opt-in by individual skill.
 See [Design product skills](design-product-skills.md) for boundaries and held-out
 agent/browser verification backlog. This is a content/CI refactor, not yet an
 observed improvement in user research or chart usability.
+
+## Growth operational refactor — source-reviewed and provider-neutral
+
+The existing SEO, content and AI-search specialists were deepened with six
+new targeted leaves (four leaves each). Two independent opt-in growth skills
+cover controlled experimentation and permissioned lifecycle/retention journeys
+with three additional leaves each (18 Growth leaves total). No marketing
+platform, tracking SDK or email service was installed; providers and legal
+requirements remain project-specific. See [Growth refactor audit](growth-refactor-audit.md).
+Deterministic fixture tests enforce selected event/assignment and suppression
+invariants but **do not** establish real campaign or experiment outcomes.
+Next category: Stacks; final evidence phase: held-out agent tasks, live
+crawl/analytics integrations (authorized only), production browser and provider
+simulations, consent review and measured business impact.
