@@ -3,18 +3,17 @@
 ## Current state
 
 - 151 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
-- The AWS split, 35 UI provider branches and design/growth/refined methodology work use selective references.
-- Additional skills remain condensed methodological overviews and are scheduled for deeper technical coverage.
+- All 12 domains have undergone source-reviewed refactors (through merged PR #25); the catalog contains **382 selectively readable local references** and **20 installation profiles**.
+- The AWS split, 35 UI provider branches and Design/Growth/Stacks selection skills use targeted references. Practical depth and real-world integration evidence still vary by skill.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
 - No imported third-party executable content, no self-updating prompts, no automatic merges.
 
-## Priority: become operational experts
+## Next priorities — validate behavior, not grow the catalog
 
-1. Backend and data: real FastAPI/Pydantic/SQLAlchemy/Alembic patterns, PostgreSQL transactions/performance, migrations and negative integration tests.
-2. Frontend/frameworks: React/Next/TanStack app architectures; split Vue and Svelte; actual SSR and browser validation.
-3. AI/agents: separate provider APIs, tool safety, evaluation and RAG from overly broad umbrella descriptions.
-4. Cloud remainder: GCP/Azure/Cloudflare specialized paths, deployment/operations, IAM/network, Terraform and SRE depth.
-5. Design/growth: verify motion and UI recommendations on real apps, test claims about search visibility against repeatable query sets; improve version-pinned examples.
+1. **Discovery/routing:** address the observed lexical router's weak handling of natural French queries, synonyms and ambiguous tokens (for example `base` matching `base-ui` for a database-selection question). Benchmark positive, negative and multi-domain routing before considering a more complex retrieval system. **This is a separate code change; it is not fixed by documentation updates.**
+2. **Held-out agent evaluations:** compare the same real engineering tasks with and without toolkit skills; measure correct activation, unnecessary loading, task completion, introduced defects, human corrections, latency and actual tokens where available. Current `evals/*.yaml` are mostly **unexecuted scenario specifications**, not success results.
+3. **Real integrations:** use authorized version-pinned apps to validate frontend SSR/keyboard/assistive technology, API and cloud SDK behavior, database migrations/restore, identity boundaries and safe deployment paths. Differentiate passing offline fixtures from working production stacks.
+4. **Claims and maintenance:** recheck version-sensitive official docs, hosting limits, feature entitlements and legal requirements before use; capture test provenance and update only the skills whose real failures justify changes.
 
 ## Planned: external Skill Package Manager
 
@@ -159,9 +158,7 @@ platform, tracking SDK or email service was installed; providers and legal
 requirements remain project-specific. See [Growth refactor audit](growth-refactor-audit.md).
 Deterministic fixture tests enforce selected event/assignment and suppression
 invariants but **do not** establish real campaign or experiment outcomes.
-Next category: Stacks; final evidence phase: held-out agent tasks, live
-crawl/analytics integrations (authorized only), production browser and provider
-simulations, consent review and measured business impact.
+Stacks was subsequently completed in merged [PR #25](https://github.com/Tom-dlhy/agent-engineering-toolkit/pull/25). The next phase is held-out agent evaluation and authorized real browser/crawler/provider checks; no observed ranking, conversion or message-delivery outcome is asserted here.
 
 ## Stacks final domain refactor — composable selection
 

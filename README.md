@@ -4,7 +4,7 @@
 
 A growing library of **151 first-party skills across 12 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status: a single skill-quality contract applies to all 151 catalog entries. Depth and real-world verification remain uneven across domains; inclusion in the catalog and passing structural CI are not evidence of production expertise. Refactoring proceeds domain by domain without maturity tiers.
+> Status (2026-10-11, after PR #25): all **12 domains** have undergone source-reviewed refactors; the catalog has **151 skills, 382 local reference leaves and 20 installation profiles**. A single authoring contract applies to every skill, without maturity tiers. This is a **documentation and deterministic-CI milestone**, not proof of production correctness, skill-routing quality or improvement in real agent outcomes. Next: fix observed discovery limitations and run held-out baseline-vs-toolkit evaluations.
 
 ## Why
 
@@ -55,7 +55,7 @@ The installer writes only when `--apply` is provided. It copies selected skills 
 ## Explore
 
 - [Progressive expertise refactor and quality standard](docs/progressive-expertise.md)
-- [Expertise depth audit / migration backlog](docs/expertise-audit.md)
+- [Historical expertise audit and current evaluation backlog](docs/expertise-audit.md)
 - [Design refactor decision matrix and evidence](docs/design-refactor-audit.md)
 - [Growth skill audit, experimentation and lifecycle governance](docs/growth-refactor-audit.md)
 - [Stack selection audit and identity solution boundaries](docs/stacks-refactor-audit.md)
@@ -71,7 +71,7 @@ The library covers Python DDD and hexagonal architecture, API design, modern Pyt
 
 ## Development policy
 
-Open a focused feature branch and PR. CI validates all skill metadata/profile references, runs unit tests and enforces a **rough** context-budget guardrail. Never push directly to main. Merge only after required checks pass.
+Open a focused feature branch and PR. CI validates skill metadata/profile references, runs unit and selected integration tests, and enforces a **rough** context-budget guardrail; it does **not** validate every provider API, deployed behavior or model-agent outcome. Never push directly to `main`. **A green CI and mergeable PR are necessary checks, not merge authorization: merge into `main` only after the repository owner's explicit approval.** See [Contributing](CONTRIBUTING.md) and the [evaluation roadmap](docs/roadmap.md).
 
 Original content is MIT licensed. Third-party sources such as [ECC](https://github.com/affaan-m/ECC), [Superpowers](https://github.com/obra/superpowers), [Anthropic Cybersecurity Skills](https://github.com/mukul975/Anthropic-Cybersecurity-Skills) and [Brag](https://github.com/latent-spaces/brag) inspired the architecture; **none of their skills are copied into the project at this stage**.
 
