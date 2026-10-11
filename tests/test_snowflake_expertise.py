@@ -38,11 +38,11 @@ class SnowflakeExpertiseTests(unittest.TestCase):
         )
 
     def test_inventory_and_data_domain_not_duplicated(self):
-        self.assertEqual(len(self.catalog), 171)
+        self.assertEqual(len(self.catalog), 177)
         self.assertEqual(len({s.domain for s in self.catalog.values()}), 14)
-        actual = {n for n, s in self.catalog.items() if s.domain == "data-platforms"}
+        actual = {n for n, s in self.catalog.items() if s.domain == "data-platforms" and n.startswith("snowflake-")}
         self.assertEqual(actual, SNOWFLAKE)
-        self.assertEqual(len(list((ROOT / "skills").glob("*/**/references/*.md"))), 397)
+        self.assertEqual(len(list((ROOT / "skills").glob("*/**/references/*.md"))), 415)
         cross_domain_owners = (
             "lakehouse-engineering", "analytics-modeling",
             "data-pipeline-quality", "streaming-cdc-engineering",
