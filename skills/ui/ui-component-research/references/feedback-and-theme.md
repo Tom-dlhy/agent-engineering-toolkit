@@ -1,12 +1,31 @@
-# Feedback, tokens and visual consistency
+# Feedback, tokens, theme and resilient UX
 
-Consult only for badges, alerts, skeletons, loaders, notifications, theming or responsive states.
+**Read when:** implementing notification, loading, error, toast, badge, skeleton, progress, dark-mode, responsive state or design-system integration.
 
-1. Reuse semantic tokens (surface, foreground, muted, accent, danger, success) from the existing provider. Respect light/dark/high-contrast themes without raw per-control palette overrides.
-2. Loading skeletons should resemble content geometry, announce long waits as appropriate and avoid layout shift; keep cancel/retry actions for recoverable errors.
-3. Distinguish status feedback (inline alert), transient success (toast/snackbar), destructive confirmation (dialog), progress and validation error. Use provider conventions and avoid duplicate notification providers.
-4. Audit icon library and sizing conventions; do not assume shadcn Lucide, Material Icons and Fluent Icons are interchangeable.
-5. Verify contrast, reduced motion, touch targets, density, color-blind cues and screen reader messaging; test the exact theme/SSR environment.
-6. In source-owned libraries, prefer updating documented variants/tokens rather than accumulating arbitrary one-off component overrides.
+## Status feedback is a product contract
 
-**Examples to research:** shadcn Alert/Skeleton/Badge, Chakra recipes, Mantine Notifications, MUI ThemeProvider, FluentProvider, Web Awesome themes, Flutter ThemeData, Tamagui Theme.
+- **Inline error** is appropriate for a recoverable failed section or form field; include a next step/retry.
+- **Toast/snackbar** indicates a transient completion; it must not be the only place critical data appears, and duration/focus behavior should be tested.
+- **Confirmation dialog** is for consequential actions; block double submission, preserve context and confirm authorization server-side.
+- **Progress** needs a meaningful unit/indeterminate state; do not invent percentages.
+- **Skeleton** matches approximate final layout to reduce shift; long loading should expose screen-reader status without repeatedly announcing every skeleton.
+
+## Semantic theme tokens
+
+Prefer application semantic primitives such as `surface`, `foreground`, `muted`, `primary`, `danger`, `focus` over per-control hardcoded colors. Map them into the installed library's *actual* system: Radix Themes scales, Chakra semantic tokens/recipes, MUI ThemeProvider, Ant Design ConfigProvider, MantineTheme, Prime UI presets, CSS parts for Web Components, Tamagui theme, Flutter ThemeData. Those mechanisms are not drop-in compatible.
+
+Respect dark/light and forced-colors modes. A `color-scheme` style affects native widgets but does not automatically theme vendor components. SSR frameworks require an initial-theme strategy to reduce flash/hydration mismatch.
+
+## Notification sequence and async example
+
+```ts
+type SaveState = 'idle' | 'saving' | 'saved' | 'error'
+```
+
+A Save button is disabled while `saving`; on success show durable UI state and optionally a short noncritical toast; on error display retry and error. A network timeout is an **unknown outcome**: do not promise it was not saved if the server may have committed. Use idempotency or re-fetch as appropriate.
+
+## QA invariants
+
+Keyboard focus visible and not obscured, 200% zoom/reflow, RTL/long translated labels, reduced motion, contrast and non-color status, screen-reader live-region announcement, accessible error summary, touch target size, responsive safe areas, and dark-mode persistence. Preserve the existing icon library convention and do not install icons solely for aesthetic novelty.
+
+Confirm which checks ran in browser/real device; documentation claims are not observed QA.

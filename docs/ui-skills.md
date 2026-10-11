@@ -50,3 +50,7 @@ Keep the catalog useful but its claims modest: compatibility, props, licenses an
 ## Testing and context cost
 
 Use `python scripts/validate_skills.py`, `python -m unittest discover -s tests -v`, and `python scripts/context_budget.py --profile minimal --budget 2500`; also inspect `--profile web-app` estimates and validate the target installation in dry-run mode. Context-budget estimates are character heuristics, not measured model tokens.
+
+## Verification and remaining maturity work
+
+The PR includes deterministic tests for all 35 local leaf pairs, four component research leaves, safe installer selection, metadata budgets, routing and security. Verify individual providers against **installed SDK/package major versions**; actual real-device/browser accessibility and component code are not exercised by markdown validation. Promote `expanded-v2` to `expert-v2` only after hands-on representative implementation and measured agent-evaluation results. See `docs/expertise-audit.md`.

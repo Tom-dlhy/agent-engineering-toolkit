@@ -21,10 +21,10 @@ This complements one selected provider skill and `frontend-design`. It does **no
 
 ## Family references (open only what is needed)
 
-- [Inputs and forms](references/inputs-and-forms.md) — validation, field wiring, picker semantics.
-- [Overlays and navigation](references/overlays-and-navigation.md) — focus, portals, menus, dialogs and routing.
-- [Data display](references/data-display.md) — tables, grids, async and virtualization.
-- [Feedback and theme](references/feedback-and-theme.md) — loading, toasts, accessibility and tokens.
+- [Inputs and forms](references/inputs-and-forms.md) — **read when** dealing with field validation, select, autocomplete or dates. — validation, field wiring, picker semantics.
+- [Overlays and navigation](references/overlays-and-navigation.md) — **read when** dealing with focus, modal, menus, tabs or routing. — focus, portals, menus, dialogs and routing.
+- [Data display](references/data-display.md) — **read when** dealing with tables, grids, virtualization or server pagination. — tables, grids, async and virtualization.
+- [Feedback and theme](references/feedback-and-theme.md) — **read when** dealing with notifications, errors, loading or tokens. — loading, toasts, accessibility and tokens.
 
 ## Boundary
 

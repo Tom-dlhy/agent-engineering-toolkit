@@ -2,7 +2,7 @@
 
 ## Progressive disclosure
 
-The local catalog has 65 skills, seven marked expert-v2 in the first AWS refactor slice. A project profile installs at most 20; the model loads only short descriptions during skill discovery. Skills are activated on demand, and optional reference files are never automatically included.
+The local catalog has 101 skills: seven AWS specialists marked expert-v2, 35 opt-in UI providers marked expanded-v2 and remaining methodological/technical skills. A project profile installs at most 20; the model loads only short descriptions during skill discovery. Skills are activated on demand, and optional reference files are never automatically included.
 
 This is based on the general principle of progressive disclosure used by Agent Skills. It avoids the overhead of always-on monolithic prompts and blanket subagent launches.
 
@@ -45,4 +45,4 @@ The lexical router is explainable and cheap but not semantic AI retrieval. Some 
 
 ## Expertise maturity (phase 1)
 
-Original 59 skills had no reference leaves. Phase 1 introduces 14 deep leaves for seven AWS skills and a safe explicit reference reader. Only skills marked `maturity: expert-v2` in registry are structurally gated; this flag is **not** proof of production correctness. See [expertise audit](expertise-audit.md) and [progressive skill contract](progressive-expertise.md). Never treat pending technical skills as complete simply because they are registered.
+Original 59 skills had no reference leaves. Phase 1 introduces 14 AWS leaves; the reconciled UI work adds 70 provider-specific leaves, 4 component-family leaves and a library-selection index, all read on demand. Skills marked `maturity: expert-v2` or `maturity: expanded-v2` in the registry are structurally gated; this flag is **not** proof of production correctness. See [expertise audit](expertise-audit.md) and [progressive skill contract](progressive-expertise.md). Never treat pending technical skills as complete simply because they are registered.

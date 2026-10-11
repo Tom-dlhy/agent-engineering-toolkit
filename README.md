@@ -2,7 +2,7 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **101 first-party skills across 10 domains**, with **13 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **101 first-party skills across 11 domains**, with **13 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
  > Status: progressive expertise refactor underway. Seven AWS skills are deep V2; the other 58 entries retain their original scope and are scheduled for content review. This is not an autonomous agent runtime, model-independent execution engine, third-party skill marketplace or exact token meter.
 

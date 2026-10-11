@@ -1,12 +1,42 @@
-# Data tables, lists, grids and async display
+# Data tables, grids, lists and async display
 
-Consult only for Table/DataGrid/TreeTable, lists, cards, charts, virtualization or similar.
+**Read when:** the UI contains tables/grids, filterable lists, pagination, virtualization, tree views or async data cards.
 
-1. Classify requirements: static table, sort/filter/paginate, selectable rows, grouping, tree, inline editing, infinite scrolling, virtualized large datasets and server-side controls.
-2. Confirm whether the provider ships this functionality or delegates to an extension/third-party engine. Example: MUI DataGrid has separate X licensing; Mantine's core Table is not a built-in advanced DataTable.
-3. Define stable keys, typed columns, row actions, loading/empty/error, accessibility, focus navigation, sort indicators and screen reader table semantics.
-4. For remote data, keep pagination/sorting/filtering as explicit app state and align server contracts with UI state; avoid mixing client and server sorting.
-5. Virtualization requires measured row heights, accessible fallback and careful sticky headers/focus retention. Check layout overflow on mobile before choosing horizontal scrolling.
-6. For charts, provide accessible labels, units and non-color encodings; inspect provider integration and licensing.
+## Match feature requirement to component
 
-**Examples to research:** MUI X DataGrid, PrimeReact/PrimeVue/PrimeNG DataTable, Ant Design Table, Quasar QTable, Angular MatTable, Mantine Table and Flutter DataTable.
+| Need | Candidate | What must be implemented |
+|---|---|---|
+| Small static table | Native `table`, provider Table | `caption`, `th scope`, responsive overflow |
+| Sort/filter/page on small in-memory dataset | Provider table + local state | Stable row keys, explicit sort state, no hidden filter surprises |
+| Remote searchable/paginated data | Provider advanced DataGrid/Table | Backend query contract, total count, loading, error, stale-response cancellation |
+| Massive scrolling lists | Virtualized list/row component | Stable IDs, measured heights, keyboard continuity and accessible fallback |
+| Editable grid | Purpose-built component | Validation, row save/cancel, conflict resolution and optimistic rollback |
+
+Material UI's advanced DataGrid is a separate MUI X product with tier-specific features. Mantine core Table is not a full enterprise grid. PrimeReact, PrimeVue, PrimeNG and Quasar each expose their own lazy/server contracts—do not reuse event payload names from another provider.
+
+## Server pagination example: state is not data
+
+```ts
+type Query = {
+  page: number
+  pageSize: number
+  sortField?: string
+  sortDirection?: 'asc' | 'desc'
+  filter?: string
+}
+type Page<Row> = { rows: Row[]; totalRows: number }
+```
+
+The UI must keep `query` stable and request a new `Page<Row>` whenever query changes. On quick sorting/filter changes, cancel or discard superseded responses, preserve the correct loading state, and reset the page to a valid index. If total rows are unknown, use an API-supported cursor/hasMore model rather than inventing an exact count.
+
+### Row identity
+
+Use a stable server ID or compound key, not the array index, particularly when sorting, paging, editing or selecting. Selection state may refer to rows not present in the current page; decide whether cross-page selection is allowed.
+
+## Accessibility and virtualization
+
+For tables ensure meaningful column headings/sort state. An interactive row must expose keyboard functionality rather than click-only. Virtualized grids can reuse DOM nodes; ensure focus remains on logical cell/row and screen-reader announcements are still intelligible. Large row height variability, sticky columns and portals can break scroll geometry.
+
+## Test matrix
+
+Empty response, loading skeleton vs actual table header, HTTP failure, unauthorized action, stale response on filter change, sort by nulls/locale, selection across pages, 10k rows, offline recovery, small screens and column overflow. Record exact backend and provider contracts rather than guessing.
