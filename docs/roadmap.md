@@ -2,7 +2,7 @@
 
 ## Current state
 
-- 144 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
+- 148 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
 - The AWS split, 35 UI provider branches and design/growth/refined methodology work use selective references.
 - Additional skills remain condensed methodological overviews and are scheduled for deeper technical coverage.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
@@ -135,3 +135,16 @@ users can still install them explicitly. See
 requires held-out real-agent routing, actual browser and assistive-tech journeys,
 and measured context consumption; static tests cannot establish visual
 originality, WCAG conformance or conversion gains.
+
+## Design product UX expansion — provider-neutral decisions
+
+Four distinct specialists extend the Design domain: interaction-flow-design,
+information-architecture, content-design and data-visualization-design.
+The visualization skill chooses truthful, accessible encodings while the
+installed shadcn/Recharts, MUI X or other selected UI/provider owns actual
+component APIs and rendering. No automatic chart library addition or parallel
+visualization framework. General profiles gain only the applicable flow,
+navigation and microcopy guidance; visualization is opt-in by individual skill.
+See [Design product skills](design-product-skills.md) for boundaries and held-out
+agent/browser verification backlog. This is a content/CI refactor, not yet an
+observed improvement in user research or chart usability.
