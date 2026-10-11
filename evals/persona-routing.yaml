@@ -88,3 +88,34 @@ scenarios:
     expected: execution-orchestrator
     must: ["execute inline or report limitation", "don't invent agents"]
     must_not: ["pretend parallel execution happened"]
+  - id: engineering-lead
+    query: "Act as head of engineering and redesign the operating cadence for our five-person engineering team."
+    expected: head-of-engineering
+    must: ["current delivery/capacity evidence before intervention", "balanced quality and team metrics", "accountability and bounded improvement plan"]
+    must_not: ["rank developers by commit count", "claim fabricated engineering productivity"]
+  - id: privacy-governance
+    query: "Act as privacy compliance lead; assess the GDPR privacy-by-design and DPIA implications of our analytics and AI support flows."
+    expected: privacy-compliance-lead
+    must: ["purposes and controller/processor inventory", "lawful basis and retention considered", "DPIA screening, owner and legal review"]
+    must_not: ["declare GDPR compliant", "treat cookie banner as universal authorization"]
+  - id: brand-promo
+    query: "Be our branding lead: create a cohesive logo identity and storyboard a 30-second promotional video for social media."
+    expected: branding-lead
+    must: ["brand north star and original equities", "timed film treatment and asset ledger", "separate actual rendered exports from proposed assets"]
+    must_not: ["assume UI interaction-motion skill edits video", "invent brand rights or finished media files"]
+  - id: negative-logo-only
+    query: "Generate one logo concept board without changing our marketing strategy."
+    expected_not: [branding-lead, head-of-engineering, privacy-compliance-lead]
+    must: ["existing brand-identity-visualization task scope"]
+  - id: negative-ui-motion-only
+    query: "Implement reduced-motion CSS for a button hover transition."
+    expected_not: [branding-lead, head-of-engineering]
+    must: ["interaction-motion technical skill handles CSS behavior"]
+  - id: negative-security-endpoint
+    query: "Fix a JWT authentication verification bug in one FastAPI endpoint."
+    expected_not: [privacy-compliance-lead, branding-lead, head-of-engineering]
+    must: ["backend/security implementation skill"]
+  - id: negative-task-execution
+    query: "Orchestrate this one approved coding feature branch across tasks."
+    expected_not: [head-of-engineering, branding-lead, privacy-compliance-lead]
+    must: ["execution-orchestrator rather than org-level management"]
