@@ -1,21 +1,31 @@
 ---
 name: frontend-design
 domain: design
-version: "0.1.0"
+version: "2.0.0"
 description: >-
-  Use when designing or implementing a distinct web interface, design system, landing page or app view. Do not use to impose a new aesthetic on a mature interface with established design tokens.
+  Use when establishing or significantly improving the visual direction, composition and distinctive UI craft of a web interface or landing page. Do not replace an established brand or add generic visual trends to a small bug fix.
 ---
 
-# frontend-design
+# Frontend design — visual intent before styling
 
-## Creative direction first
-Understand audience, product goal, brand personality and content hierarchy. Choose a deliberate visual language: typography, scale, layout, density, color, shape, texture and motion. Avoid generic SaaS gradients and repeated cards when the content calls for a different composition.
+## Discovery and decisions
 
-## Build responsive systems
-Define tokens for spacing, typography, surfaces, borders and interactive states. Use semantic HTML, keyboard navigation, focus states, mobile-first layouts and reduced-motion preferences. Keep controls legible and hit targets reachable on touch devices. Reuse the project's current component system instead of adding dependencies without need.
+1. Inspect actual brand guidelines, content, target reader, existing screens and component tokens; preserve visual identity and verified business details.
+2. Classify task: new page, redesign, incremental polish or audit. A redesign should preserve user workflows and validated strengths unless requested otherwise.
+3. Name the target design language in concrete terms: typography behavior, grid, color roles, image direction, density, hierarchy and interaction tone. Explain how it serves audience and product.
+4. Reject template-shaped work that doesn't serve the brief: gratuitous dark dashboards, enormous repeated cards, meaningless purple gradients, invented testimonials or decorative charts.
+5. Build using the installed component library and layout system. Ensure semantic HTML, contrast, keyboard, state feedback, responsive content and performance.
+6. Validate real screen sizes and loading/empty/error states; a code-only review is not visual QA.
 
-## Review at real breakpoints
-Inspect desktop, tablet and narrow mobile; check overflow, content length, loading/empty/error states, contrast and perceived hierarchy. Verify with a real browser or screenshots where possible; code inspection is not visual QA.
+## Deep routing
 
-## Deliver
-Explain the visual rationale, changed components and accessibility/performance checks; do not invent browser test results.
+- [Visual direction, brand specificity and anti-template diagnosis](references/visual-direction-and-anti-slop.md) — **read when** a page feels generic, when deriving visual direction, or when designing/revising a marketing/product surface.
+- [Compositional execution and visual QA](references/composition-and-critique.md) — **read when** implementing layout/hierarchy, reviewing screenshots, avoiding visual regressions or explaining polish improvements.
+
+## Collaboration
+
+Use design-system for token architecture, typography-layout for type/grid tuning, interaction-motion for motion, ux-audit for usability evidence, and brand-identity-visualization for requested identity boards.
+
+## Completion standard
+
+A grounded design rationale, interface changes that reuse project constraints, concrete states, and an honest report of screen/browser checks actually performed. No forced aesthetic, no unapproved brand overhaul.

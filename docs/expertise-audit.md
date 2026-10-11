@@ -1,10 +1,10 @@
-# Skill depth audit — phase 1, 2026-10-11
+# Skill depth audit — phased history and current backlog
 
-## Baseline and scope
+## Phase 1 historical baseline (2026-10-11)
 
-The inherited `feat/modular-skill-engine` branch has **59 first-party skills**, approximately **1.1 KiB/skill on average**, with **zero local reference files or examples**. This is a capable routing foundation, **not** a technically exhaustive skill library. The UI-specific [PR #9](https://github.com/Tom-dlhy/agent-engineering-toolkit/pull/9) remains open independently and is **not** included in this branch.
+The inherited `feat/modular-skill-engine` branch has **59 first-party skills**, approximately **1.1 KiB/skill on average**, with **zero local reference files or examples**. This is a capable routing foundation, **not** a technically exhaustive skill library. At this historical phase-1 snapshot, UI [PR #9](https://github.com/Tom-dlhy/agent-engineering-toolkit/pull/9) was still open; it has since merged into main.
 
-Phase 1 keeps the original 59 entries, refactors the broad `aws-integration` skill into a cross-service coordinator, and adds six independently activated service skills. Therefore this branch contains **65 catalog entries**, but **only seven are marked `expert-v2`**. Every other technical skill is explicitly pending deeper work. This document does **not** claim that all 65 meet the final standard.
+Phase 1 keeps the original 59 entries, refactors the broad `aws-integration` skill into a cross-service coordinator, and adds six independently activated service skills. Therefore at the phase-1 snapshot the branch contained **65 catalog entries**, but **only seven are marked `expert-v2`**. That snapshot did **not** claim all 65 met the final standard. Later phases are recorded below.
 
 ## Audit verdict by domain
 
@@ -43,10 +43,18 @@ Phase 1 keeps the original 59 entries, refactors the broad `aws-integration` ski
 
 Review each refactor on its own merits; no mechanical mass-generation or blanket `expert-v2` badges. Promotion to `expert-v2` requires human technical review in addition to static CI.
 
-## Phase 2 addendum — UI integration into current main (PR #9)
+## Phase 2 historical snapshot — UI integration (PR #9)
 
-The original PR #9 is now reconciled with main after PR #5 and PR #10 merged. The repository contains **101 unique skills**, including **35 opt-in UI library providers**, one shared `ui-component-research` and exactly one `ui-library-selection` under `skills/stacks`. UI-specific references: **70 local provider leaves + 4 shared component-family leaves + 1 selector map**. Existing seven AWS `expert-v2` specialists remain unchanged.
+The original PR #9 is now reconciled with main after PR #5 and PR #10 merged. At the phase-2 snapshot, the repository contained **101 unique skills**, including **35 opt-in UI library providers**, one shared `ui-component-research` and exactly one `ui-library-selection` under `skills/stacks`. UI-specific references: **70 local provider leaves + 4 shared component-family leaves + 1 selector map**. Existing seven AWS `expert-v2` specialists remain unchanged.
 
 The 35 UI providers are marked `expanded-v2` (distinct from `expert-v2`): all have version-checking implementation and integration playbooks, but static validation is not evidence that every vendor API, full production workflow or accessibility behavior was tested against a live app. Some providers remain broad and need further version-pinned component examples and agent behavioral evaluation. Treat source citations as directions for freshness, not permission to assume current props.
 
 Follow-up work: run representative benchmark apps for web, Vue/Angular/Svelte, React Native and Flutter, test a form/overlay/data table from each selected provider under the installed release, measure skill-selection errors, and promote selectively after review. Do not force all 35 into standard install profiles.
+
+## Phase 3 — curated design craft and Growth (PR #11)
+
+Current PR #11 increases the catalog to **106 unique skills across 12 domains** by introducing five independently activated skills: `core/requirements-discovery`, `design/brand-identity-visualization`, and `growth/content-strategy`, `growth/technical-seo`, `growth/ai-search-visibility`. Six existing skills are extended rather than duplicated: `interaction-motion`, `frontend-design`, `ux-audit`, `design-system`, `typography-layout` and `external-skill-audit`.
+
+A total of **24 new local reference leaves** were authored with narrow read conditions. The 11 affected skills are classified `expanded-v2` rather than `expert-v2` until real agent behavioral evaluations and domain-specific runtime/browsing tests support promotion. The original seven AWS `expert-v2` and 35 UI `expanded-v2` skills remain intact. All external source decisions and immutable revisions are documented in [source review](design-growth-source-review.md); scripts, hooks and datasets were not copied.
+
+**Remaining coverage gaps:** backend and databases still lack deep references; GCP/Azure/Cloudflare specialization, full framework coverage and rigorous evaluation remain future phases. Documented SEO methods do not guarantee public indexing, rich results or AI-answer citations.

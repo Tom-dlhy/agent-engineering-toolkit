@@ -315,6 +315,11 @@ skills:
     domain: cloud
     path: skills/cloud/terraform-iac
     keywords: ["terraform","opentofu","infrastructure","as","code","modules","cloud"]
+  - name: requirements-discovery
+    domain: core
+    path: skills/core/requirements-discovery
+    maturity: expanded-v2
+    keywords: ["grill", "requirements", "discovery", "clarify", "scope", "ambiguous", "specification", "interview", "questions", "stakeholders", "acceptance"]
   - name: skill-authoring
     domain: core
     path: skills/core/skill-authoring
@@ -351,6 +356,11 @@ skills:
     domain: design
     path: skills/design/accessibility-wcag
     keywords: ["accessibility","a11y","wcag","keyboard","screenreader"]
+  - name: brand-identity-visualization
+    domain: design
+    path: skills/design/brand-identity-visualization
+    maturity: expanded-v2
+    keywords: ["brandkit", "brand", "identity", "logo", "visualization", "moodboard", "board", "concept", "visual", "art", "direction"]
   - name: bento-grid
     domain: design
     path: skills/design/bento-grid
@@ -362,11 +372,13 @@ skills:
   - name: design-system
     domain: design
     path: skills/design/design-system
-    keywords: ["design","system","tokens","components","branding"]
+    maturity: expanded-v2
+    keywords: ["design", "system", "tokens", "palette", "theme", "variants", "components"]
   - name: frontend-design
     domain: design
     path: skills/design/frontend-design
-    keywords: ["ui","design","frontend","react","beautiful","web","site"]
+    maturity: expanded-v2
+    keywords: ["frontend", "visual", "aesthetic", "distinctive", "design", "page", "polish", "anti-ai-slop"]
   - name: glassmorphism
     domain: design
     path: skills/design/glassmorphism
@@ -374,7 +386,8 @@ skills:
   - name: interaction-motion
     domain: design
     path: skills/design/interaction-motion
-    keywords: ["animation","motion","microinteractions","transitions","framer"]
+    maturity: expanded-v2
+    keywords: ["animation", "motion", "microinteractions", "transitions", "easing", "gestures", "timing", "animate"]
   - name: landing-page-design
     domain: design
     path: skills/design/landing-page-design
@@ -386,11 +399,13 @@ skills:
   - name: typography-layout
     domain: design
     path: skills/design/typography-layout
-    keywords: ["typography","fonts","grid","editorial","spacing","hierarchy"]
+    maturity: expanded-v2
+    keywords: ["typography", "fonts", "grid", "editorial", "spacing", "hierarchy", "pairing"]
   - name: ux-audit
     domain: design
     path: skills/design/ux-audit
-    keywords: ["ux","usability","audit","ergonomics","user","interface"]
+    maturity: expanded-v2
+    keywords: ["ux", "usability", "audit", "ergonomics", "interface", "review", "guidelines"]
   - name: nextjs-application
     domain: frontend
     path: skills/frontend/nextjs-application
@@ -407,6 +422,21 @@ skills:
     domain: frontend
     path: skills/frontend/vue-svelte-patterns
     keywords: ["vue","nuxt","svelte","sveltekit","reactive"]
+  - name: ai-search-visibility
+    domain: growth
+    path: skills/growth/ai-search-visibility
+    maturity: expanded-v2
+    keywords: ["ai", "seo", "search", "visibility", "citations", "mentions", "geo", "aeo", "answer", "engine", "attribution", "llm"]
+  - name: content-strategy
+    domain: growth
+    path: skills/growth/content-strategy
+    maturity: expanded-v2
+    keywords: ["content", "editorial", "strategy", "calendar", "topics", "audience", "pillars", "marketing", "planning"]
+  - name: technical-seo
+    domain: growth
+    path: skills/growth/technical-seo
+    maturity: expanded-v2
+    keywords: ["seo", "technical", "indexing", "crawl", "robots", "canonical", "sitemap", "redirect", "schema", "markup"]
   - name: dependency-supply-chain
     domain: quality
     path: skills/quality/dependency-supply-chain
@@ -414,7 +444,8 @@ skills:
   - name: external-skill-audit
     domain: quality
     path: skills/quality/external-skill-audit
-    keywords: ["import","external","third","party","github","skill","license","security"]
+    maturity: expanded-v2
+    keywords: ["external", "import", "find", "discover", "skills", "github", "license", "security", "audit", "provenance"]
   - name: git-pr-workflow
     domain: quality
     path: skills/quality/git-pr-workflow

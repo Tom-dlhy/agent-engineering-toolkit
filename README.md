@@ -2,15 +2,15 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **101 first-party skills across 11 domains**, with **13 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **106 first-party skills across 12 domains**, with **15 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
- > Status: progressive expertise refactor underway. Seven AWS skills are deep V2; the other 58 entries retain their original scope and are scheduled for content review. This is not an autonomous agent runtime, model-independent execution engine, third-party skill marketplace or exact token meter.
+> Status: progressive expertise refactor underway. Seven AWS skills use expert-v2 structure; 35 UI provider skills and 11 design/growth/intake skills use expanded-v2 structure. Remaining skills are still scheduled for deeper content review. Static validation is not proof of real agent expertise.
 
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **101 skills stored** in the library; only **5–20 installed** in a project profile.
+- **106 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
@@ -70,3 +70,16 @@ The library covers Python DDD and hexagonal architecture, API design, modern Pyt
 Open a focused feature branch and PR. CI validates all skill metadata/profile references, runs unit tests and enforces a **rough** context-budget guardrail. Never push directly to main. Merge only after required checks pass.
 
 Original content is MIT licensed. Third-party sources such as [ECC](https://github.com/affaan-m/ECC), [Superpowers](https://github.com/obra/superpowers), [Anthropic Cybersecurity Skills](https://github.com/mukul975/Anthropic-Cybersecurity-Skills) and [Brag](https://github.com/latent-spaces/brag) inspired the architecture; **none of their skills are copied into the project at this stage**.
+
+## Design craft and growth (optional)
+
+Source-curated visual craft and motion references enhance existing design skills; new opt-in content strategy, technical SEO, AI search visibility, brand-board visualization and requirements discovery skills have narrow independent triggers. Install via a focused profile or individual --skill:
+
+~~~bash
+python scripts/install_profile.py --profile design-craft --agent codex --project /path/to/project
+python scripts/install_profile.py --profile growth-marketing --agent claude --project /path/to/project
+python scripts/skillctl.py references interaction-motion
+python scripts/skillctl.py read-ref interaction-motion references/easing-and-implementation.md
+~~~
+
+All commands preview installations by default. No external scripts are executed or external source data copied; see [selection and pinned provenance](docs/design-growth-source-review.md). Do not treat AI visibility as a guaranteed ranking or inclusion mechanism.
