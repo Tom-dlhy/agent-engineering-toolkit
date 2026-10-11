@@ -35,6 +35,9 @@ PERSONAS = (
     "incident-commander",
     "decision-arbiter",
     "learning-mentor",
+    "head-of-engineering",
+    "privacy-compliance-lead",
+    "branding-lead",
 )
 
 
@@ -44,8 +47,8 @@ class PersonaProtocolTests(unittest.TestCase):
         cls.catalog = load_catalog(ROOT)
         cls.examples = yaml.safe_load((ROOT / "evals" / "persona-routing.yaml").read_text())
 
-    def test_12_independent_personas_and_unchanged_technical_leaves(self):
-        self.assertEqual(len(self.catalog), 163)
+    def test_15_independent_personas_and_unchanged_technical_leaves(self):
+        self.assertEqual(len(self.catalog), 166)
         actual = {name for name, s in self.catalog.items() if s.domain == "personas"}
         self.assertEqual(actual, set(PERSONAS))
         self.assertEqual(len({s.domain for s in self.catalog.values()}), 13)
@@ -176,6 +179,62 @@ class PersonaProtocolTests(unittest.TestCase):
         self.assertIn("explicit", self.catalog["execution-orchestrator"].description.lower())
         self.assertEqual(search("/grill-me", self.catalog, limit=1)[0].skill.name,
                          "grill-master")
+
+    def test_leadership_personas_have_independent_specialist_protocols(self):
+        contracts = {
+            "head-of-engineering": (
+                "capacity", "ownership", "delivery", "developer", "quality",
+                "30/60/90", "stop criteria", "execution-orchestrator",
+            ),
+            "privacy-compliance-lead": (
+                "controller", "processor", "lawful basis", "DPIA",
+                "retention", "rights", "legal", "stop criteria",
+            ),
+            "branding-lead": (
+                "logo", "video", "storyboard", "asset ledger", "rights",
+                "interaction-motion", "design-system", "stop conditions",
+            ),
+        }
+        for name, concepts in contracts.items():
+            with self.subTest(persona=name):
+                body = (ROOT / self.catalog[name].path / "SKILL.md").read_text().lower()
+                for term in concepts:
+                    self.assertIn(term.lower(), body, (name, term))
+                self.assertNotIn("http://", body)
+                self.assertNotIn("https://", body)
+                self.assertFalse((ROOT / self.catalog[name].path / "references").exists())
+
+    def test_new_leaders_remain_opt_in_without_hijacking_technical_queries(self):
+        for name in ("head-of-engineering", "privacy-compliance-lead", "branding-lead"):
+            with self.subTest(persona=name):
+                self.assertEqual(
+                    search("use persona " + name.replace("-", " "), self.catalog, limit=1)[0].skill.name,
+                    name,
+                )
+        existing = {
+            "brand-identity-visualization logo concept board": "brand-identity-visualization",
+            "interaction-motion CSS transition reduced motion": "interaction-motion",
+            "FastAPI Pydantic endpoint": "fastapi-service",
+            "AWS IAM STS trust policy permissions": "aws-iam-security",
+        }
+        for query, expected in existing.items():
+            with self.subTest(query=query):
+                self.assertEqual(search(query, self.catalog, limit=1)[0].skill.name, expected)
+
+    def test_leadership_behavioral_scenarios_and_role_boundaries(self):
+        rows = {case["id"]: case for case in self.examples["scenarios"]}
+        for key, owner in (
+            ("engineering-lead", "head-of-engineering"),
+            ("privacy-governance", "privacy-compliance-lead"),
+            ("brand-promo", "branding-lead"),
+        ):
+            self.assertEqual(rows[key]["expected"], owner)
+            self.assertGreaterEqual(len(rows[key]["must"]), 3)
+            self.assertTrue(rows[key]["must_not"])
+        for key in ("negative-logo-only", "negative-ui-motion-only",
+                    "negative-security-endpoint", "negative-task-execution"):
+            self.assertIn("expected_not", rows[key])
+            self.assertTrue(rows[key]["must"])
 
     def test_repository_validation(self):
         self.assertEqual(validate_repository(ROOT), [])
