@@ -89,3 +89,17 @@ authorization/idempotency fixture. Real penetration/load tests, provider
 environments and agent behavioral evaluations remain unperformed.
 Every skill continues to obey the same **uniform** quality contract; no
 maturity ranks.
+
+## Phase 7 — Architecture source-verified refactor
+
+Eight existing Architecture skills were audited in place, with
+**17 new detailed references** plus 7 retained leaves = 24 total.
+API contract version/toolchain support, RFC 9110/RFC 9457,
+modular monolith versus microservices, DDD contexts and hexagonal
+ports, event delivery/outbox/saga, ADR and TCO decisions are
+explicit and sourced. See [Architecture audit](architecture-refactor-audit.md).
+
+A dependency-boundary CLI fixture and its negative tests, plus
+lexical routing and reference tests, verify selected properties;
+live deployment/concurrency/load and real-agent semantic selection
+remain unverified. One quality standard, no per-skill ranks.

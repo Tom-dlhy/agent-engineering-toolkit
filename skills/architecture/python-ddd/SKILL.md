@@ -1,22 +1,52 @@
 ---
 name: python-ddd
 domain: architecture
-version: "2.0.0"
+version: "2.1.0"
 description: >-
-  Use when Python business complexity justifies bounded contexts, domain aggregates, value objects, consistency invariants or domain events. Do not impose entities, factories and repositories on a simple CRUD service.
+  Use when Python domain complexity requires bounded contexts, aggregates,
+  value objects, lifecycle invariants, business events and explicit
+  consistency boundaries. Do not require DDD for a simple CRUD API.
 ---
 
-# Python DDD — domain modeling only when justified
+# Python domain-driven design — consistency and language first
 
-## Decide
-1. Is domain language contested, are invariants complex or multiple teams share different meanings? If not, prefer layered/feature-first Python application.
-2. Draw context map and aggregate ownership from actual business capabilities. Keep domain entities/value objects free of FastAPI, SQLAlchemy and HTTPX.
-3. Enforce invariants in domain methods and DB constraints; application use case orchestrates transaction, auth and external ports.
-4. Map transport DTO, domain types and ORM models at appropriate boundaries; don't create a useless generic mapper for trivial cases.
-5. Test domain invariant failure and concurrent persistence; remember fake repository tests cannot prove database isolation.
+## Procedure
+1. Establish ubiquitous language with domain experts and discover where
+   business terms have different meanings (bounded contexts). Don't
+   equate every package/table/REST resource with a bounded context.
+2. Find invariants that must hold atomically; group entities into
+   aggregates accordingly. Smaller aggregates reduce contention, but
+   splitting an invariant across aggregates changes consistency needs.
+3. Use meaningful immutable value objects and behavior methods; keep
+   domain independent from FastAPI, Pydantic transport DTO, SQLAlchemy
+   ORM and provider SDK details unless deliberately justified.
+4. Place authorization/orchestration/unit-of-work in application boundary,
+   transaction atomicity in infrastructure and domain rules in domain.
+5. Domain events record meaningful facts, not ORM row changes. For
+   external publishing use transactional outbox and idempotent consumers;
+   don't imply events are exactly once.
+6. Test business invalid transitions, boundaries and concurrency
+   against actual database when persistence isolation matters.
+7. For simple domains, prefer feature-first or layered service with
+   fewer classes; DDD ceremonies are not mandatory.
 
-## References
-- [Bounded contexts, entities, value objects and invariants](references/domain-modeling.md) — read when modeling complex business behavior and consistency boundaries.
-- [Use cases, ports, UoW and domain event publishing](references/application-and-events.md) — read when coordinating domain changes, DB transactions and external side effects.
+## Targeted references
+- [Bounded contexts, aggregates and value objects](references/domain-modeling.md)
+  — **read when** identifying rich domain behavior or consistency units.
+- [Application/use case UoW and domain events](references/application-and-events.md)
+  — **read when** implementing domain transitions, repositories and
+  reliable event boundaries.
+- [Context maps, tactical patterns and evolution](references/context-mapping-and-consistency.md)
+  — **read when** negotiating integration between contexts, defining
+  translation layers and assessing aggregate/concurrency choices.
 
-For overall architecture choice use python-project-architecture; hexagonal-architecture owns ports/adapters principle, python-persistence owns DB session and outbox mechanism.
+## Boundaries
+python-project-architecture chooses project style;
+modular-monolith defines module ownership;
+hexagonal-architecture provides ports/adapters when needed;
+python-persistence handles session/locking/DB details.
+
+## Exit
+Glossary/context map, invariants and consistency boundaries,
+negative/concurrent tests, no leaking infrastructure into domain,
+no unjustified aggregate/repository scaffolding.

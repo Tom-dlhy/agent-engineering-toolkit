@@ -118,3 +118,25 @@ python -m unittest discover -s tests -p 'test_quality_contract_examples.py' -v
 See [Quality audit, citations and evidence limitations](docs/quality-refactor-audit.md).
 Source guidance is linked, not executed. A green structural CI is not
 proof of a production penetration test, load SLO or live cloud IAM.
+
+## Architecture expertise (source-reviewed)
+
+Eight existing Architecture skills were refactored without adding generic
+or duplicate skills. **24 selectively indexed local references** cover
+API/RFC/OpenAPI/AsyncAPI contracts, ADRs, domain boundaries, DDD,
+ports/adapters, modular monoliths, event delivery/outbox/sagas,
+technology decisions, benchmark evidence and reversible migrations.
+
+~~~bash
+python scripts/skillctl.py search "transactional outbox event saga"
+python scripts/skillctl.py references event-driven-design
+python scripts/skillctl.py read-ref event-driven-design references/outbox-inbox-and-idempotency.md
+python scripts/check_architecture_boundaries.py --root examples/architecture_boundaries --config examples/architecture_boundaries/boundaries.json
+python -m unittest discover -s tests -p 'test_architecture_boundaries.py' -v
+~~~
+
+Official source decisions and limitations:
+[Architecture category audit](docs/architecture-refactor-audit.md).
+The checker is for explicit Python import restrictions, **not a
+general proof of software architecture**. No user-count-based
+"microservices required" rule exists.

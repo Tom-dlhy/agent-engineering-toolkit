@@ -1,0 +1,19 @@
+{
+  "rules": [
+    {
+      "source": "app.modules.orders",
+      "forbidden": [
+        "app.modules.billing.persistence",
+        "app.modules.billing.domain"
+      ]
+    },
+    {
+      "source": "app.modules.billing.domain",
+      "forbidden": [
+        "fastapi",
+        "sqlalchemy",
+        "httpx"
+      ]
+    }
+  ]
+}

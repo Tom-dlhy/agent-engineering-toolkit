@@ -24,35 +24,35 @@ skills:
   - name: api-contract-design
     domain: architecture
     path: skills/architecture/api-contract-design
-    keywords: ["api","rest","graphql","openapi","contract","versioning"]
+    keywords: ["api","contract","openapi","graphql","http","versioning","pagination","compatibility","etag","rfc"]
   - name: architecture-decision
     domain: architecture
     path: skills/architecture/architecture-decision
-    keywords: ["ADR","architecture","record","decision","tradeoff"]
+    keywords: ["adr","architecture","decision","record","tradeoffs","quality","attributes","alternatives"]
   - name: event-driven-design
     domain: architecture
     path: skills/architecture/event-driven-design
-    keywords: ["event","driven","kafka","queue","messaging","pubsub","outbox"]
+    keywords: ["event","driven","outbox","inbox","saga","asyncapi","idempotency","message","replay","queue"]
   - name: hexagonal-architecture
     domain: architecture
     path: skills/architecture/hexagonal-architecture
-    keywords: ["hexagonal", "ports", "adapters", "clean", "architecture", "python", "protocol"]
+    keywords: ["hexagonal","ports","adapters","clean","python","protocol","boundary","dependency","inversion"]
   - name: modular-monolith
     domain: architecture
     path: skills/architecture/modular-monolith
-    keywords: ["modular","monolith","bounded","contexts","microservice","modules"]
+    keywords: ["modular","monolith","modules","boundaries","ownership","coupling","extract","migration"]
   - name: python-project-architecture
     domain: architecture
     path: skills/architecture/python-project-architecture
-    keywords: ["python", "project", "architecture", "layout", "layered", "feature", "modular", "monolith", "structure", "scale"]
+    keywords: ["python","project","architecture","layout","layered","feature","package","structure","scale"]
   - name: python-ddd
     domain: architecture
     path: skills/architecture/python-ddd
-    keywords: ["python", "ddd", "domain", "aggregate", "bounded", "contexts", "invariants", "events"]
+    keywords: ["python","ddd","domain","aggregate","bounded","contexts","invariants","events"]
   - name: technology-tradeoffs
     domain: architecture
     path: skills/architecture/technology-tradeoffs
-    keywords: ["choose","compare","decision","dependency","library","stack"]
+    keywords: ["technology","choose","compare","framework","library","tradeoff","benchmark","tco","lockin"]
   - name: background-jobs
     domain: backend
     path: skills/backend/background-jobs
