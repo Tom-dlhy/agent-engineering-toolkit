@@ -1,0 +1,15 @@
+name: data-engineering
+description: Data pipelines, schema and database engineering.
+skills:
+  - task-routing
+  - verification-before-done
+  - data-pipeline-quality
+  - database-design
+  - database-selection
+  - postgres-performance
+  - schema-migrations
+  - event-driven-design
+  - architecture-decision
+  - test-strategy
+  - observability-sre
+  - secure-code-review

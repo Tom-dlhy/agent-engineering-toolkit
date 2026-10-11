@@ -1,0 +1,15 @@
+name: ai-engineering
+description: LLM integration, RAG, agents, risk boundaries and evals.
+skills:
+  - task-routing
+  - verification-before-done
+  - llm-integration
+  - llm-evaluation
+  - rag-evaluation
+  - agent-tool-safety
+  - api-contract-design
+  - architecture-decision
+  - data-pipeline-quality
+  - secure-code-review
+  - test-strategy
+  - external-skill-audit

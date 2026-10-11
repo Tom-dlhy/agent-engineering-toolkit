@@ -1,0 +1,14 @@
+name: security-audit
+description: Defensive review, supply-chain and agent tool security.
+skills:
+  - task-routing
+  - verification-before-done
+  - secure-code-review
+  - dependency-supply-chain
+  - agent-tool-safety
+  - external-skill-audit
+  - container-hardening
+  - ci-cd-engineering
+  - terraform-iac
+  - accessibility-wcag
+  - test-strategy
