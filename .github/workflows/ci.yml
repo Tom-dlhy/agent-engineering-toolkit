@@ -2,9 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, feat/modular-skill-engine]
   push:
-    branches: [main]
+    branches: [main, 'refactor/**']
   workflow_dispatch:
 
 permissions:
@@ -32,6 +32,11 @@ jobs:
         run: python scripts/validate_skills.py
       - name: Unit tests
         run: python -m unittest discover -s tests -v
+      - name: Smoke test progressive references
+        run: |
+          python scripts/skillctl.py references aws-bedrock
+          python scripts/skillctl.py read-ref aws-bedrock references/converse-api.md > /dev/null
+          python scripts/context_budget.py --profile aws-platform --activated aws-bedrock --reference aws-bedrock:references/converse-api.md
       - name: Smoke test skill finder
         run: |
           python scripts/skillctl.py profiles

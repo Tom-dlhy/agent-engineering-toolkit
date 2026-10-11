@@ -2,15 +2,15 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **59 first-party skills across 10 domains**, with **11 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **65 first-party skills across 10 domains**, with **12 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status: framework foundation and initial curated catalog. This is not an autonomous agent runtime, model-independent execution engine, third-party skill marketplace or exact token meter.
+ > Status: progressive expertise refactor underway. Seven AWS skills are deep V2; the other 58 entries retain their original scope and are scheduled for content review. This is not an autonomous agent runtime, model-independent execution engine, third-party skill marketplace or exact token meter.
 
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **59 skills stored** in the library; only **5–20 installed** in a project profile.
+- **65 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
@@ -30,6 +30,11 @@ python scripts/skillctl.py search "Python DDD clean architecture" --profile pyth
 python scripts/skillctl.py recommend "AWS IAM migration" --profile cloud-engineering
 python scripts/skillctl.py profiles
 python scripts/skillctl.py show python-ddd
+python scripts/skillctl.py references aws-bedrock
+python scripts/skillctl.py read-ref aws-bedrock references/converse-api.md
+
+# Measure only the reference that is explicitly opened
+python scripts/context_budget.py --profile aws-platform --activated aws-bedrock --reference aws-bedrock:references/converse-api.md
 
 # Compare approximate always-on context sizes
 python scripts/context_budget.py --all
@@ -45,6 +50,8 @@ The installer writes only when `--apply` is provided. It copies selected skills 
 
 ## Explore
 
+- [Progressive expertise refactor and quality standard](docs/progressive-expertise.md)
+- [Expertise depth audit / migration backlog](docs/expertise-audit.md)
 - [Catalog and authoring conventions](docs/catalog.md)
 - [Progressive disclosure and token budgets](docs/skill-routing.md)
 - [Architecture](docs/architecture.md)

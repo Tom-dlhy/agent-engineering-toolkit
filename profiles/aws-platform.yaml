@@ -1,0 +1,17 @@
+name: aws-platform
+description: Optional AWS-specific installation with deep IAM, S3, SQS, Lambda, ECS and Bedrock expertise; only selected references load on demand.
+skills:
+  - task-routing
+  - verification-before-done
+  - systematic-debugging
+  - aws-integration
+  - aws-iam-security
+  - aws-s3-storage
+  - aws-sqs-messaging
+  - aws-lambda-runtime
+  - aws-ecs-deployment
+  - aws-bedrock
+  - terraform-iac
+  - observability-sre
+  - test-strategy
+  - secure-code-review

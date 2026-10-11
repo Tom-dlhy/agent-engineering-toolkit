@@ -6,6 +6,11 @@ from pathlib import Path
 
 import yaml
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from toolkit.catalog import Skill
+from toolkit.knowledge import indexed_references, resolve_reference
+
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_NAME = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 FRONTMATTER = re.compile(r"\A---[ \t]*\n(.*?)\n---[ \t]*(?:\n|\Z)", re.DOTALL)
@@ -76,6 +81,32 @@ def validate_repository(root: Path = ROOT) -> list[str]:
             problems.append(f"{relpath}: description must state 'Use when'")
         if len(body.strip()) < 120:
             problems.append(f"{relpath}: skill body is too short")
+
+        # Expert V2 is opt-in while historic skills are progressively rewritten.
+        if item.get("maturity") == "expert-v2":
+            skill = Skill(name=name, domain=domain, path=relpath,
+                          description=description, keywords=tuple(item.get("keywords", [])))
+            try:
+                refs = indexed_references(skill, root)
+            except (OSError, ValueError) as exc:
+                problems.append(f"{relpath}: cannot index references: {exc}")
+                continue
+            if len(refs) < 2:
+                problems.append(f"{relpath}: expert-v2 needs at least two targeted leaves")
+            for ref in refs:
+                try:
+                    resolved = resolve_reference(skill, ref, root)
+                    leaf = resolved.read_text(encoding="utf-8")
+                except (OSError, ValueError) as exc:
+                    problems.append(f"{relpath}: invalid leaf {ref}: {exc}")
+                    continue
+                if not leaf.lstrip().startswith("# ") or not any(
+                    trigger in leaf[:700].lower() for trigger in ("read when", "open when")
+                ):
+                    problems.append(f"{relpath}: missing leaf heading or read trigger: {ref}")
+                # This is a structural hygiene check, NOT a proof of expertise.
+                if "## " not in leaf or "http" not in leaf:
+                    problems.append(f"{relpath}: leaf needs depth and official source: {ref}")
 
     skill_dir = root / "skills"
     actual_paths = {

@@ -64,7 +64,38 @@ skills:
   - name: aws-integration
     domain: cloud
     path: skills/cloud/aws-integration
+    maturity: expert-v2
     keywords: ["aws","s3","iam","bedrock","lambda","ecs","sqs","sns","boto3"]
+  - name: aws-iam-security
+    domain: cloud
+    path: skills/cloud/aws-iam-security
+    maturity: expert-v2
+    keywords: ["aws", "iam", "roles", "policy", "policies", "trust", "sts", "oidc", "permissions", "authorization", "accessdenied", "crossaccount"]
+  - name: aws-s3-storage
+    domain: cloud
+    path: skills/cloud/aws-s3-storage
+    maturity: expert-v2
+    keywords: ["aws", "s3", "bucket", "object", "storage", "presigned", "upload", "download", "multipart", "encryption"]
+  - name: aws-sqs-messaging
+    domain: cloud
+    path: skills/cloud/aws-sqs-messaging
+    maturity: expert-v2
+    keywords: ["aws", "sqs", "queue", "messaging", "fifo", "dlq", "visibility", "batch", "message", "deduplication"]
+  - name: aws-lambda-runtime
+    domain: cloud
+    path: skills/cloud/aws-lambda-runtime
+    maturity: expert-v2
+    keywords: ["aws", "lambda", "serverless", "handler", "cold", "start", "event", "runtime", "concurrency", "trigger"]
+  - name: aws-bedrock
+    domain: cloud
+    path: skills/cloud/aws-bedrock
+    maturity: expert-v2
+    keywords: ["aws", "bedrock", "converse", "tooluse", "inference", "guardrails", "llm", "foundation", "model"]
+  - name: aws-ecs-deployment
+    domain: cloud
+    path: skills/cloud/aws-ecs-deployment
+    maturity: expert-v2
+    keywords: ["aws", "ecs", "fargate", "task", "container", "deployment", "alb", "service", "scaling"]
   - name: azure-integration
     domain: cloud
     path: skills/cloud/azure-integration
