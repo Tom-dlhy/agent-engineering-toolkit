@@ -1,0 +1,37 @@
+version: 1
+# Lexical routing checks, NOT autonomous agent behavior measurements.
+selection:
+  - query: "React hooks JSX useEffect useState components rendering clientstate"
+    expected: react-architecture
+  - query: "NextJS App-Router ServerComponents ServerActions cache revalidate RSC"
+    expected: nextjs-application
+  - query: "TanStack Start serverfunctions router middleware csrf loader react"
+    expected: tanstack-start
+  - query: "Vue Nuxt CompositionAPI ref computed watch useFetch SSR"
+    expected: vue-application
+  - query: "Svelte SvelteKit runes state derived Kit formactions load"
+    expected: sveltekit-application
+  - query: "Angular signals standalone DI router RenderMode hydration"
+    expected: angular-application
+  - query: "Astro islands prerender clientvisible serverdefer contentcollections"
+    expected: astro-application
+negative_neighbors:
+  - query: "UI libraries component libraries compare stack"
+    expected: ui-library-selection
+  - query: "shadcn ui radix Base UI component"
+    expected: shadcn-ui
+  - query: "WCAG accessibility contrast screen reader keyboard"
+    expected: accessibility-wcag
+  - query: "SEO robots sitemap canonical metadata structured data"
+    expected: technical-seo
+  - query: "FastAPI lifespan endpoint Pydantic dependency"
+    expected: fastapi-service
+  - query: "TypeScript Node.js API runtime validation"
+    expected: typescript-api
+  - query: "Cloudflare Workers Pages Wrangler runtime bindings"
+    expected: cloudflare-workers-runtime
+  - query: "pytest property concurrency test strategy"
+    expected: test-strategy
+no_match:
+  - ""
+  - "zzunknownfrxxfrontend"

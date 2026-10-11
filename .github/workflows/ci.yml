@@ -63,6 +63,8 @@ jobs:
           node-version: "24"
       - name: Run TypeScript backend runtime contract tests
         run: node --test examples/backend-typescript/tests/*.test.ts
+      - name: Run frontend SSR and direct RPC boundary tests
+        run: node --test examples/frontend-boundaries/tests/*.test.mjs
       - name: Smoke test progressive references
         run: |
           python scripts/skillctl.py references aws-bedrock

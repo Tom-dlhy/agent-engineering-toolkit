@@ -500,19 +500,31 @@ skills:
   - name: nextjs-application
     domain: frontend
     path: skills/frontend/nextjs-application
-    keywords: ["nextjs","next","react","server","components","routing"]
+    keywords: ["nextjs","app-router","servercomponents","serveractions","next","cache","revalidate","rsc"]
   - name: react-architecture
     domain: frontend
     path: skills/frontend/react-architecture
-    keywords: ["react","hooks","components","state","rendering"]
+    keywords: ["react","hooks","jsx","useeffect","usestate","components","rendering","clientstate"]
   - name: tanstack-start
     domain: frontend
     path: skills/frontend/tanstack-start
-    keywords: ["tanstack","start","server","functions","react","router"]
-  - name: vue-svelte-patterns
+    keywords: ["tanstack","start","serverfunctions","router","middleware","csrf","loader","react"]
+  - name: vue-application
     domain: frontend
-    path: skills/frontend/vue-svelte-patterns
-    keywords: ["vue","nuxt","svelte","sveltekit","reactive"]
+    path: skills/frontend/vue-application
+    keywords: ["vue","nuxt","compositionapi","ref","computed","watch","usefetch","ssr"]
+  - name: sveltekit-application
+    domain: frontend
+    path: skills/frontend/sveltekit-application
+    keywords: ["svelte","sveltekit","runes","state","derived","kit","formactions","load"]
+  - name: angular-application
+    domain: frontend
+    path: skills/frontend/angular-application
+    keywords: ["angular","signals","standalone","di","router","renderMode","hydration"]
+  - name: astro-application
+    domain: frontend
+    path: skills/frontend/astro-application
+    keywords: ["astro","islands","prerender","clientvisible","serverdefer","contentcollections"]
   - name: ai-search-visibility
     domain: growth
     path: skills/growth/ai-search-visibility

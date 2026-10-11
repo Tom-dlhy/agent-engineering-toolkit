@@ -107,3 +107,7 @@ GCP Cloud Tasks/Eventarc/Firestore, Azure Cosmos/Event Grid/SQL,
 Cloudflare KV/Queues/Durable Objects/Workflows and provider-specific
 managed Kubernetes EKS/GKE/AKS and monitoring dashboards.
 Avoid mass-importing a generic cloud services inventory.
+
+## Frontend category refactor — source-verified implementation guidance
+
+Seven frontend specialists with 21 references and an 18-skill optional discovery profile. A framework-neutral Node test fixture covers SSR serialization and direct API authorization. Future proof requires pinned React/Next/TanStack/Nuxt/SvelteKit/Angular/Astro project builds, Playwright browser hydration and security cases, web performance measurement and held-out agent activation evaluation. React Router full-stack specialist remains an individually assessed future candidate. Next proposed domain refactor: UI libraries.
