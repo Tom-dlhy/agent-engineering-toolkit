@@ -544,15 +544,23 @@ skills:
   - name: ai-search-visibility
     domain: growth
     path: skills/growth/ai-search-visibility
-    keywords: ["ai", "seo", "search", "visibility", "citations", "mentions", "geo", "aeo", "answer", "engine", "attribution", "llm"]
+    keywords: ["ai", "seo", "search", "visibility", "citations", "mentions", "geo", "aeo", "answer", "engine", "attribution", "llm", "benchmark"]
   - name: content-strategy
     domain: growth
     path: skills/growth/content-strategy
-    keywords: ["content", "editorial", "strategy", "calendar", "topics", "audience", "pillars", "marketing", "planning"]
+    keywords: ["content", "editorial", "strategy", "calendar", "topics", "audience", "pillars", "marketing", "planning", "inventory"]
+  - name: growth-experimentation
+    domain: growth
+    path: skills/growth/growth-experimentation
+    keywords: ["growth","experiment","experimentation","abtest","randomization","srm","guardrail","conversion"]
+  - name: lifecycle-retention
+    domain: growth
+    path: skills/growth/lifecycle-retention
+    keywords: ["lifecycle","retention","reengagement","activation","unsubscribe","suppression","deliverability","crm"]
   - name: technical-seo
     domain: growth
     path: skills/growth/technical-seo
-    keywords: ["seo", "technical", "indexing", "crawl", "robots", "canonical", "sitemap", "redirect", "schema", "markup"]
+    keywords: ["seo", "technical", "indexing", "crawl", "robots", "canonical", "sitemap", "redirect", "schema", "markup", "rendering"]
   - name: dependency-supply-chain
     domain: quality
     path: skills/quality/dependency-supply-chain

@@ -1,0 +1,65 @@
+version: 1
+# Held-out, manually executed agent evaluation plan. Not observed model results.
+scenarios:
+  - id: seo-canonical
+    query: "Diagnose why canonical URL and Google-selected canonical differ for multilingual page"
+    expected: technical-seo
+    leaf: references/crawl-index-and-routing.md
+    must: ["separates HTTP header and search console evidence", "does not guarantee indexation"]
+  - id: seo-js
+    query: "Investigate SSR SEO rendering of a JavaScript-only public route"
+    expected: technical-seo
+    leaf: references/javascript-rendering-and-migrations.md
+    must: ["checks HTTP GET content", "does not recommend dynamic rendering as routine workaround"]
+  - id: editorial-inventory
+    query: "Audit outdated articles, consolidate overlapping content and build refresh plan"
+    expected: content-strategy
+    leaf: references/content-inventory-and-decay.md
+    must: ["keep/update/consolidate/retire/create decisions", "verified sources"]
+  - id: editorial-plan
+    query: "Plan editorial topics for audience intent and content calendar"
+    expected: content-strategy
+    leaf: references/audience-and-topics.md
+    must: ["reader questions first", "no fake search volumes"]
+  - id: ai-citation-benchmark
+    query: "Evaluate GEO AI search citations and brand mentions in repeated answer engine queries"
+    expected: ai-search-visibility
+    leaf: references/benchmark-contract-and-sanity-checks.md
+    must: ["frozen denominator", "engine mode and citation availability separated"]
+  - id: ai-no-hack
+    query: "Check whether llms.txt is required to rank in Google AI Overviews"
+    expected: ai-search-visibility
+    leaf: references/engine-boundaries-and-policies.md
+    must: ["states no Google special optimization requirement", "no guaranteed citation"]
+  - id: abtest
+    query: "Design a randomized conversion A/B experiment with SRM and guardrail metric"
+    expected: growth-experimentation
+    leaf: references/experiment-diagnostics-and-decisions.md
+    must: ["assignment unit", "SRM and peeking", "no invented statistical significance"]
+  - id: event-privacy
+    query: "Design a consent-aware funnel event contract for conversion tracking"
+    expected: growth-experimentation
+    leaf: references/event-instrumentation-and-privacy.md
+    must: ["real outcome vs clicks", "consent gate and missingness"]
+  - id: retention-trigger
+    query: "Plan onboarding re-engagement lifecycle journey with cancellation and suppression"
+    expected: lifecycle-retention
+    leaf: references/lifecycle-state-and-journey-contracts.md
+    must: ["rechecks opt-out at send time", "never autonomously sends"]
+  - id: email-permissions
+    query: "Audit unsubscribe hard bounce and ESP suppression in retention campaign"
+    expected: lifecycle-retention
+    leaf: references/permission-and-deliverability.md
+    must: ["separate marketing from service", "jurisdiction-dependent consent"]
+  - id: negative-library
+    query: "Implement shadcn Chart tooltip Recharts in React"
+    expected_not: [technical-seo, growth-experimentation, lifecycle-retention]
+    must: ["use UI provider"]
+  - id: negative-backend
+    query: "Fix FastAPI SQLAlchemy rollback on production endpoint"
+    expected_not: [technical-seo, content-strategy, ai-search-visibility, growth-experimentation, lifecycle-retention]
+    must: ["activate relevant backend/quality skills"]
+  - id: negative-content
+    query: "Rewrite a form inline error message with accessible label"
+    expected_not: [content-strategy, lifecycle-retention]
+    must: ["use content-design and provider semantics"]

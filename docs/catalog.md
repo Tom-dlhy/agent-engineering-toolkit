@@ -1,6 +1,6 @@
 # Skill catalog and design conventions
 
-The source of truth is `registry/skills.yaml`: 148 first-party skills grouped into 12 domains.
+The source of truth is `registry/skills.yaml`: 150 first-party skills grouped into 12 domains.
 
 | Domain | Focus |
 | --- | --- |
@@ -15,7 +15,7 @@ The source of truth is `registry/skills.yaml`: 148 first-party skills grouped in
 | `ai` | LLM adapters, RAG evaluation, model evals and secure agents |
 | `quality` | Testing, code review, dependencies, releases and PR workflows |
 | `ui` | Provider-specific React/Vue/Angular/Svelte/mobile component guidance |
-| `growth` | Editorial strategy, technical SEO and AI answer visibility |
+| `growth` | Editorial governance, SEO/AI search observation, experiments and lifecycle retention |
 
 ## Minimal interface of a skill
 
