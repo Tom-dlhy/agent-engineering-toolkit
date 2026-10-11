@@ -19,3 +19,40 @@ skills:
   - {name: external-skill-audit, domain: quality, path: skills/quality/external-skill-audit}
   - {name: llm-integration, domain: ai, path: skills/ai/llm-integration}
   - {name: database-design, domain: data, path: skills/data/database-design}
+  - {name: ui-library-selection, domain: ui, path: skills/ui/ui-library-selection}
+  - {name: ui-component-research, domain: ui, path: skills/ui/ui-component-research}
+  - {name: shadcn-ui, domain: ui, path: skills/ui/shadcn-ui}
+  - {name: base-ui, domain: ui, path: skills/ui/base-ui}
+  - {name: radix-primitives, domain: ui, path: skills/ui/radix-primitives}
+  - {name: radix-themes, domain: ui, path: skills/ui/radix-themes}
+  - {name: react-aria-components, domain: ui, path: skills/ui/react-aria-components}
+  - {name: heroui, domain: ui, path: skills/ui/heroui}
+  - {name: mantine, domain: ui, path: skills/ui/mantine}
+  - {name: chakra-ui, domain: ui, path: skills/ui/chakra-ui}
+  - {name: mui, domain: ui, path: skills/ui/mui}
+  - {name: ant-design, domain: ui, path: skills/ui/ant-design}
+  - {name: primereact, domain: ui, path: skills/ui/primereact}
+  - {name: fluent-ui, domain: ui, path: skills/ui/fluent-ui}
+  - {name: flowbite-react, domain: ui, path: skills/ui/flowbite-react}
+  - {name: headless-ui, domain: ui, path: skills/ui/headless-ui}
+  - {name: vuetify, domain: ui, path: skills/ui/vuetify}
+  - {name: primevue, domain: ui, path: skills/ui/primevue}
+  - {name: quasar, domain: ui, path: skills/ui/quasar}
+  - {name: element-plus, domain: ui, path: skills/ui/element-plus}
+  - {name: ant-design-vue, domain: ui, path: skills/ui/ant-design-vue}
+  - {name: angular-material, domain: ui, path: skills/ui/angular-material}
+  - {name: primeng, domain: ui, path: skills/ui/primeng}
+  - {name: ng-zorro, domain: ui, path: skills/ui/ng-zorro}
+  - {name: bits-ui, domain: ui, path: skills/ui/bits-ui}
+  - {name: skeleton, domain: ui, path: skills/ui/skeleton}
+  - {name: flowbite-svelte, domain: ui, path: skills/ui/flowbite-svelte}
+  - {name: daisyui, domain: ui, path: skills/ui/daisyui}
+  - {name: bootstrap, domain: ui, path: skills/ui/bootstrap}
+  - {name: web-awesome, domain: ui, path: skills/ui/web-awesome}
+  - {name: ionic, domain: ui, path: skills/ui/ionic}
+  - {name: react-native-paper, domain: ui, path: skills/ui/react-native-paper}
+  - {name: tamagui, domain: ui, path: skills/ui/tamagui}
+  - {name: gluestack-ui, domain: ui, path: skills/ui/gluestack-ui}
+  - {name: rneui, domain: ui, path: skills/ui/rneui}
+  - {name: flutter-material, domain: ui, path: skills/ui/flutter-material}
+  - {name: flutter-cupertino, domain: ui, path: skills/ui/flutter-cupertino}

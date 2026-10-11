@@ -48,6 +48,12 @@ Codex installs to .agents/skills; Claude Code installs to .claude/skills. Never 
 
 Profiles: minimal, web-app, python-backend, cloud-engineering, fullstack. Installation is only a curated set; it does not imply every installed skill must run.
 
+## UI library and component intelligence
+
+The toolkit provides `ui-library-selection`, `ui-component-research` and 35 opt-in library specialists across React, Vue, Angular, Svelte, framework-agnostic UI, mobile and Flutter. Use `--skill <name>` to install one library skill on demand rather than installing them all.
+
+See [docs/ui-skills.md](docs/ui-skills.md) for routing, component research and installation examples.
+
 ## Contribution and security
 
 Open a feature/fix/docs branch, submit a PR, and merge only after CI checks pass. Never commit directly to main. See CONTRIBUTING.md, SECURITY.md and docs/roadmap.md.
