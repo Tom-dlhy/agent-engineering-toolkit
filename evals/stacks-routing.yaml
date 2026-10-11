@@ -1,0 +1,53 @@
+version: 1
+# Not executed model outputs. Manual/held-out agent scenarios to run after PR.
+scenarios:
+  - id: full-stack
+    query: "Recommend a full SaaS tech stack with SSR, payments, EU data residency, low idle cost, auth and PostgreSQL"
+    expected: stack-advisor
+    reference: references/cross-layer-compatibility.md
+    accept: ["hard requirements veto", "compatible auth/database/runtime", "dated source evidence"]
+  - id: database-decision
+    query: "Choose database PostgreSQL vs SQLite WAL vs Cloudflare D1 for concurrent order transactions"
+    expected: database-selection
+    reference: references/workload-transactions-and-consistency.md
+    accept: ["concurrency and transaction invariants", "provider constraints verified"]
+  - id: managed-db
+    query: "Compare serverless Neon Postgres and Cloudflare D1 with edge DB connection limits"
+    expected: database-selection
+    reference: references/managed-serverless-and-edge-databases.md
+    accept: ["engine != provider", "actual runtime/plan documentation"]
+  - id: ui-library
+    query: "Choose between shadcn Base UI and Radix libraries and MUI DataGrid license"
+    expected: ui-library-selection
+    reference: references/compatibility-and-license-gates.md
+    accept: ["preserve existing installed kit", "license and runtime compatibility"]
+  - id: auth-identity
+    query: "Select authentication solution with OIDC SSO MFA and passkeys for SaaS multi-tenant users"
+    expected: authentication-solution-selection
+    reference: references/identity-model-and-providers.md
+    accept: ["identity is not object authorization", "provider choice and revocation test"]
+  - id: auth-session
+    query: "Compare signed cookies and managed session auth solution with token revocation requirements"
+    expected: authentication-solution-selection
+    reference: references/session-and-trust-boundaries.md
+    accept: ["session threat model", "negative server auth checks"]
+  - id: negative-aws-iam
+    query: "Design IAM least privilege Lambda role trust policy for AWS STS"
+    expected_not: [authentication-solution-selection, stack-advisor]
+    accept: ["aws-iam-security selected"]
+  - id: negative-cloud
+    query: "Compare AWS and Google Cloud provider regions with vendor IAM and VPC"
+    expected_not: [authentication-solution-selection, ui-library-selection]
+    accept: ["cloud-provider-selection selected"]
+  - id: negative-ui-implementation
+    query: "Fix Base UI Dialog render as child prop compatibility"
+    expected_not: [ui-library-selection, authentication-solution-selection]
+    accept: ["base-ui selected"]
+  - id: negative-database-schema
+    query: "Design unique keys and row level security RLS policy in existing PostgreSQL"
+    expected_not: [database-selection, authentication-solution-selection]
+    accept: ["database-design selected"]
+  - id: negative-existing-stack
+    query: "Fix typo in existing TanStack Start React header"
+    expected_not: [stack-advisor, database-selection, authentication-solution-selection]
+    accept: ["do not reopen architecture"]
