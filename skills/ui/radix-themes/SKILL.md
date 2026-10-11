@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Integration, theming and regression checks](references/integration-and-verification.md) — **read when** integrating radix-themes with SSR, forms, themes, upgrades, tests or app delivery.
 
 For ordinary tasks, this `SKILL.md` is sufficient to choose the next action. **Do not bulk-load both leaves** unless the request genuinely spans implementation and integration. A skill available in the catalog is not permission to install its package.
+
+## Current provider contract and visual identity
+
+Distinguish styled Radix Themes from Radix Primitives; adjust Theme accent/gray/radius/scaling and test contrast, not stock demo palette. Official: https://www.radix-ui.com/themes/docs/theme/overview
+For **art direction**, activate the existing `frontend-design` skill; this library skill owns exact props, composition, states, version compatibility and accessibility. Do not ship the stock demo skin or force visual novelty contrary to the product brief.

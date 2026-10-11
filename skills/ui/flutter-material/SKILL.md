@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Runtime integration and validation](references/integration-and-verification.md) — **read when** configuring theme, SDK/build, native platform, accessibility, performance or upgrades.
 
 Use only the relevant local leaf. Native and web APIs must **not** be assumed interchangeable; run actual device checks when possible.
+
+## Current provider contract and visual identity
+
+Flutter Material design version and Flutter SDK/ThemeData useMaterial3 selection must be verified; honor native semantics, adaptive navigation and text scaling. A default color-scheme widget gallery is not a finished branded app. https://docs.flutter.dev/ui/widgets/material
+For product visual direction route to `frontend-design`; this skill owns toolkit composition, version matching, native accessibility and controlled states. Verify on intended devices, not only web-like demos.

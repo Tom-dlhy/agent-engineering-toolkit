@@ -55,3 +55,8 @@ Avoid `@latest` for reproducible automated builds; pin the approved CLI version 
 - [Integration, theming and regression checks](references/integration-and-verification.md) — **read when** integrating shadcn-ui with SSR, forms, themes, upgrades, tests or app delivery.
 
 For ordinary tasks, this `SKILL.md` is sufficient to choose the next action. **Do not bulk-load both leaves** unless the request genuinely spans implementation and integration. A skill available in the catalog is not permission to install its package.
+
+## Current provider contract and visual identity
+
+Use source-owned `components.json` and local component code to detect Radix vs Base UI. For visual polish adjust semantic theme tokens and composition, never overwrite project changes to get demo look. Official: https://ui.shadcn.com/docs/theming and https://github.com/shadcn-ui/ui/blob/main/skills/shadcn/rules/base-vs-radix.md
+For **art direction**, activate the existing `frontend-design` skill; this library skill owns exact props, composition, states, version compatibility and accessibility. Do not ship the stock demo skin or force visual novelty contrary to the product brief.

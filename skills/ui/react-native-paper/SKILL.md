@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Runtime integration and validation](references/integration-and-verification.md) — **read when** configuring theme, SDK/build, native platform, accessibility, performance or upgrades.
 
 Use only the relevant local leaf. Native and web APIs must **not** be assumed interchangeable; run actual device checks when possible.
+
+## Current provider contract and visual identity
+
+React Native Paper version, peer dependencies and PaperProvider Material 3 theme must align; touch targets, screen-reader labels and Text scaling are native, not browser CSS. Preserve product palette and safe areas. https://callstack.github.io/react-native-paper/
+For product visual direction route to `frontend-design`; this skill owns toolkit composition, version matching, native accessibility and controlled states. Verify on intended devices, not only web-like demos.

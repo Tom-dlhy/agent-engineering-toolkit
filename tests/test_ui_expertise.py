@@ -44,7 +44,7 @@ class UIExpertiseTests(unittest.TestCase):
 
     def test_shared_component_research_is_targeted(self):
         refs = indexed_references(self.skills["ui-component-research"], ROOT)
-        self.assertEqual(len(refs), 4)
+        self.assertEqual(len(refs), 5)
         self.assertTrue(all(len(read_reference(self.skills["ui-component-research"], r, ROOT)) > 1600
                             for r in refs))
         self.assertEqual(len(indexed_references(self.skills["ui-library-selection"], ROOT)), 1)

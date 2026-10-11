@@ -161,3 +161,14 @@ All have one uniform quality contract, never maturity rankings.
 ## Phase 12 — Frontend framework source review
 
 React, Next.js, TanStack Start upgraded with three practical deep leaves each; the combined Vue/Svelte skill was replaced with Vue/Nuxt and Svelte/SvelteKit, and Angular/Astro added as independent domains. Seven frontend skills now expose **21 leaves**. Catalog **144 skills / 20 profiles**, preserving metadata-only discovery. See [Frontend audit](frontend-refactor-audit.md) and [framework map](frontend-framework-map.md). Browser/framework adapter integration remains a follow-up, not presumed by green structural CI.
+
+## Phase 13 — UI library release gates and product-grounded visual quality
+
+Refined 35 provider SKILL.md files, eight high-risk integration leaves,
+ui-component-research (five leaves) and frontend-design (three leaves).
+Official references include shadcn, Base, HeroUI, Chakra, MUI,
+PrimeVue, Bits, Skeleton, W3C, Anthropic and Vercel. The toolkit still
+has **144 skills / 20 profiles** without graded maturity levels.
+No vendor sample was automatically installed. See
+[UI refactor audit](ui-refactor-audit.md) and
+[production visual rubric](ui-production-quality.md).

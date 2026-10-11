@@ -30,3 +30,10 @@ Inventory installed components and public props/slots; read versioned changelog;
 ## Release notes to report
 
 Version inspected; configuration/files touched; docs checked; tests actually executed; unsupported behavior and next verification needed. External vendor docs are for version freshness, not the only technical substance of this leaf.
+
+## 2026 provider-specific release and visual-fidelity addendum
+
+### PrimeVue 4 styling architecture
+PrimeVue 4 styled mode separates component CSS base and preset tokens. The preset has primitive/semantic/component token tiers. Unstyled mode omits the supplied CSS rules/tokens and expects the application styling system; do not install styled mode and then assume Tailwind-only slots or copy v3 SASS theme instructions. For DataTable confirm lazy pagination/filter callback and loading/selection with stable identifiers. Product art direction should be expressed by a coherent preset and component overrides, not one-off colored cards copied from samples. Validate dark contrast, overlay portal, keyboard/ARIA, SSR CSS output. Docs: https://v4.primevue.org/theming/styled/ ; https://v4.primevue.org/theming/unstyled/ .
+
+**Evidence boundary:** documentation is not a real app build; verify against the pinned installed release and record browser/device tests run. Distinctiveness is evaluated against real brand/content, not automated detection of AI authorship.

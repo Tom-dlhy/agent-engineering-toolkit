@@ -38,3 +38,10 @@ Test focus, data-disabled, overflow on small viewports, dark theme, and translat
 ## Verification output
 
 Record: package version and relevant official page, configuration change, screenshots/tests actually run, residual compatibility risk and rollback path.
+
+## 2026 provider-specific release and visual-fidelity addendum
+
+### Version and styling hard boundary
+Current HeroUI v3 quick start requires React 19+ and Tailwind 4; packages include `@heroui/react` and `@heroui/styles`, and global CSS imports `tailwindcss` before HeroUI styles. v2 projects may use a different provider/prop syntax and cannot safely consume v3 snippets without migration. Check v3 component availability before replacing a working v2 implementation; migration docs list which parts have changed. Styling a new product requires explicit brand semantic tokens/typography and real content rather than applying the showcased palette unchanged. Validate imports/build, SSR CSS order, form errors, overlay focus and narrow screens. Docs: https://heroui.com/en/docs/react/getting-started/quick-start ; https://heroui.com/en/docs/react/migration .
+
+**Evidence boundary:** documentation is not a real app build; verify against the pinned installed release and record browser/device tests run. Distinctiveness is evaluated against real brand/content, not automated detection of AI authorship.

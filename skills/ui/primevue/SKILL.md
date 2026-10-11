@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Integration, styling and verification](references/integration-and-verification.md) — **read when** configuring the library, SSR/native platform, themes, upgrades or testing.
 
 Read only the needed leaf, in addition to the activated SKILL.md. Do not infer API compatibility from similar React/Vue/Angular/Svelte packages. A provider is opt-in and not automatically installed.
+
+## Current provider contract and visual identity
+
+PrimeVue v4 styled theme uses primitive/semantic/component tokens and theme presets; unstyled mode delegates all CSS. Do not combine v3 legacy CSS themes with v4 new architecture. https://v4.primevue.org/theming/styled/
+For art direction use the existing `frontend-design` skill; this specialist owns accurate library API, interaction, accessibility and version migration. Refine the existing brand rather than accepting a demo component theme as final UI.

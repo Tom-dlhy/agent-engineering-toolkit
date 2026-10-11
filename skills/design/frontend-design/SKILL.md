@@ -17,8 +17,26 @@ description: >-
 5. Build using the installed component library and layout system. Ensure semantic HTML, contrast, keyboard, state feedback, responsive content and performance.
 6. Validate real screen sizes and loading/empty/error states; a code-only review is not visual QA.
 
+## Two-pass anti-template review before building a new page
+
+For a substantial new UI or redesign, write a **brief-grounded** micro-direction:
+audience and task, real content/constraints, a small token palette,
+type hierarchy, composition/wireframe, deliberate media and interaction
+style. Critique it against a different page for the same industry: if it
+would fit any generic SaaS, explain what to change **before coding**.
+Preserve an approved brand; do not ban a font, gradient, bento or
+minimalism categorically. Distinctiveness is the product of intentional
+choices, not decorative complexity. Ask for existing brand/assets only
+when unavailable and actually essential, otherwise state grounded
+assumptions and proceed with the supplied context.
+
+Provider component skills own library APIs. For the **appearance** of a
+whole page, route here before a library cookbook; for a bug fix, do not
+redesign the brand.
+
 ## Deep routing
 
+- [Brief to deliberate art direction and acceptance](references/brief-to-art-direction.md) — **read when** designing a new multi-section experience, choosing visual voice, or preventing generic template drift.
 - [Visual direction, brand specificity and anti-template diagnosis](references/visual-direction-and-anti-slop.md) — **read when** a page feels generic, when deriving visual direction, or when designing/revising a marketing/product surface.
 - [Compositional execution and visual QA](references/composition-and-critique.md) — **read when** implementing layout/hierarchy, reviewing screenshots, avoiding visual regressions or explaining polish improvements.
 

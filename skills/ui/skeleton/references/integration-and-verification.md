@@ -31,3 +31,10 @@ Inventory installed components and public props/slots; read versioned changelog;
 ## Release notes to report
 
 Version inspected; configuration/files touched; docs checked; tests actually executed; unsupported behavior and next verification needed. External vendor docs are for version freshness, not the only technical substance of this leaf.
+
+## 2026 provider-specific release and visual-fidelity addendum
+
+### Explicit dependency compatibility warning
+Skeleton's current official installation docs describe Tailwind v4 integration for React/Svelte and note that **Flowbite React, Flowbite Svelte and daisyUI are unsupported in combination** because of overlapping Tailwind classes/theme features. Detect existing plugins before installing; do not attempt to fix these conflicts by blindly resetting CSS. Skeleton Core, theme and framework component packages may have separate roles. Verify package generation and CSS import order, and test an interactive modal/form plus a data table in actual SSR/hydration. Choose a product-specific theme intentionally; default demos are not final branding. Docs: https://www.skeleton.dev/docs/svelte/get-started/installation .
+
+**Evidence boundary:** documentation is not a real app build; verify against the pinned installed release and record browser/device tests run. Distinctiveness is evaluated against real brand/content, not automated detection of AI authorship.

@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Integration, theming and regression checks](references/integration-and-verification.md) — **read when** integrating headless-ui with SSR, forms, themes, upgrades, tests or app delivery.
 
 For ordinary tasks, this `SKILL.md` is sufficient to choose the next action. **Do not bulk-load both leaves** unless the request genuinely spans implementation and integration. A skill available in the catalog is not permission to install its package.
+
+## Current provider contract and visual identity
+
+Choose `@headlessui/react` or `@headlessui/vue` explicitly, preserve render props, data state and transitions; library is behavior, not visual direction. No improvised accessibility replacement. Official: https://headlessui.com/
+For **art direction**, activate the existing `frontend-design` skill; this library skill owns exact props, composition, states, version compatibility and accessibility. Do not ship the stock demo skin or force visual novelty contrary to the product brief.

@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Integration, theming and regression checks](references/integration-and-verification.md) — **read when** integrating primereact with SSR, forms, themes, upgrades, tests or app delivery.
 
 For ordinary tasks, this `SKILL.md` is sufficient to choose the next action. **Do not bulk-load both leaves** unless the request genuinely spans implementation and integration. A skill available in the catalog is not permission to install its package.
+
+## Current provider contract and visual identity
+
+Resolve installed PrimeReact major, styled/unstyled mode and DataTable filtering/virtual/lazy behavior; verify migration before naming props. Adapt data density/tokens to real workflow. Official: https://primereact.org/
+For **art direction**, activate the existing `frontend-design` skill; this library skill owns exact props, composition, states, version compatibility and accessibility. Do not ship the stock demo skin or force visual novelty contrary to the product brief.

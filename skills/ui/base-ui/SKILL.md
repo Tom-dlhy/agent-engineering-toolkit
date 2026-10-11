@@ -23,7 +23,7 @@ description: >-
 
 **Relevant component families:** Dialog, Menu, Popover, Select, Combobox, Tooltip, Tabs, Field, Accordion.
 
-**Provider-specific method:** Read the installed @base-ui-components/react package version and official component anatomy before composition. Follow documented render/slot pattern, portal behavior, state attributes and controlled/uncontrolled APIs; style using the project’s design tokens.
+**Provider-specific method:** Read the installed @base-ui/react package version and official component anatomy before composition. Follow documented render/slot pattern, portal behavior, state attributes and controlled/uncontrolled APIs; style using the project’s design tokens.
 
 For each requested component, write a small *component contract* before implementation: required imports and package version, compositional structure, relevant props/events, loading/empty/error/disabled states, keyboard and screen reader behavior, theme tokens, SSR/hydration or native lifecycle concerns, and representative official example. Consult the independent `ui-component-research` skill when component APIs or accessibility semantics are nontrivial; its detailed references are loaded only on demand.
 
@@ -41,3 +41,8 @@ Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabl
 - [Integration, theming and regression checks](references/integration-and-verification.md) — **read when** integrating base-ui with SSR, forms, themes, upgrades, tests or app delivery.
 
 For ordinary tasks, this `SKILL.md` is sufficient to choose the next action. **Do not bulk-load both leaves** unless the request genuinely spans implementation and integration. A skill available in the catalog is not permission to install its package.
+
+## Current provider contract and visual identity
+
+Current official package is `@base-ui/react`, not legacy `@base-ui-components/react`; `render` composition forwards DOM props/ref, not Radix `asChild`. Supply branded styles from existing tokens and test keyboard. Official: https://base-ui.com/react/handbook/composition
+For **art direction**, activate the existing `frontend-design` skill; this library skill owns exact props, composition, states, version compatibility and accessibility. Do not ship the stock demo skin or force visual novelty contrary to the product brief.

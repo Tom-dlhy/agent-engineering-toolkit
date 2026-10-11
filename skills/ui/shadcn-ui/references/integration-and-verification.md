@@ -38,3 +38,10 @@ Official reference: https://ui.shadcn.com/docs . Inspect package lockfile, frame
 ## Verification output
 
 Record: package version and relevant official page, configuration change, screenshots/tests actually run, residual compatibility risk and rollback path.
+
+## 2026 provider-specific release and visual-fidelity addendum
+
+### Source-owned registry upgrade and brand QA
+The maintained upstream shadcn skill is an appropriate **reference**, not an executable dependency. Use local `components.json`, component source and CLI diff to decide between Radix `asChild` and Base UI `render`. Never apply code examples from the wrong base. Semantic `--primary` / `--primary-foreground` and other pairs in `:root`/`.dark` drive consistent foreground/background contrast, not an arbitrary radial gradient layer for every card. Before accepting a visually generic generated screen, identify product content and layout hierarchy, adjust typography and spacing without compromising Button/Dialog/Select refs, and inspect one long form plus table and modal with keyboard. Docs: https://ui.shadcn.com/docs/theming ; https://github.com/shadcn-ui/ui/blob/main/skills/shadcn/rules/base-vs-radix.md .
+
+**Evidence boundary:** documentation is not a real app build; verify against the pinned installed release and record browser/device tests run. Distinctiveness is evaluated against real brand/content, not automated detection of AI authorship.
