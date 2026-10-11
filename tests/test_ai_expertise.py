@@ -32,7 +32,7 @@ class AIExpertiseTests(unittest.TestCase):
         cls.cases=yaml.safe_load((ROOT/"evals/ai-routing.yaml").read_text())
 
     def test_catalog_eight_independent_ai_skills(self):
-        self.assertEqual(len(self.catalog),171)
+        self.assertEqual(len(self.catalog),177)
         self.assertEqual(
             {x.name for x in self.catalog.values() if x.domain=="ai"},set(AI))
 

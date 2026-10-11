@@ -32,7 +32,7 @@ class GrowthExpertiseTests(unittest.TestCase):
         cls.growth = {name: s for name, s in cls.catalog.items() if s.domain == "growth"}
 
     def test_exact_catalog_and_no_duplicate_growth_responsibility(self):
-        self.assertEqual(len(self.catalog), 171)
+        self.assertEqual(len(self.catalog), 177)
         self.assertEqual(set(self.growth), set(GROWTH))
         self.assertEqual(sum(len(indexed_references(s, ROOT)) for s in self.growth.values()), 18)
         for adjacent in ("analytics-modeling", "landing-page-design", "technical-seo",

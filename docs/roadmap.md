@@ -2,8 +2,8 @@
 
 ## Current state
 
-- 171 first-party skills across 14 domains (13 technical + 1 optional behavioral-persona domain), with light / standard / deep workflows independent of skill knowledge depth.
-- The original 12 technical domains underwent source-reviewed refactors (through merged PR #25); 15 independent self-contained personas are now proposed in their own opt-in domain. The catalog retains **397 technical reference leaves** and **20 installation profiles**.
+- 177 first-party skills across 14 domains (13 technical + 1 optional behavioral-persona domain), with light / standard / deep workflows independent of skill knowledge depth.
+- The original 12 technical domains underwent source-reviewed refactors (through merged PR #25); 15 independent self-contained personas are now proposed in their own opt-in domain. The catalog retains **415 technical reference leaves** and **20 installation profiles**.
 - The AWS split, 35 UI provider branches and Design/Growth/Stacks selection skills use targeted references. Practical depth and real-world integration evidence still vary by skill.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
 - No imported third-party executable content, no self-updating prompts, no automatic merges.
@@ -212,8 +212,20 @@ Snowpark ML, Cortex AI, Security/Governance). This is a distinct set of
 platform API and operational skills, not a Snowflake vendor rewrite of
 `lakehouse-engineering`, `data-pipeline-quality`, `analytics-modeling`
 or `llm-evaluation`. Each has three deep local reference leaves: the
-proposed catalog has **171 skills / 14 domains / 397 references / 20 profiles**.
+proposed catalog has **177 skills / 14 domains / 415 references / 20 profiles**.
 These are authored examples plus deterministic routing tests, **not**
 production Snowflake integration or paid warehouse benchmarks. Follow-on
 Databricks/BigQuery/Fabric/Redshift must be individually re-audited for
 unique utility before creation. Source review: [Snowflake audit](snowflake-platform-audit.md).
+
+## Databricks specialists — proposed 2026-10-12
+
+Six independent provider specialists extend the existing data-platforms domain
+with Spark/Delta, Lakeflow, Unity Catalog, MLflow MLOps, Declarative Automation
+Bundles and Unity Gateway AI governance. Current catalog proposal: **177 skills,
+14 domains, 415 reference leaves, 20 profiles**. Source and non-duplication
+audit: [Databricks platform](databricks-platform-audit.md). Existing Snowflake
+skills and Data/AI/Cloud expert ownership remain unchanged. Tests here are
+local deterministic and textual; real Databricks workspace, DBU benchmarking,
+managed service access, production policy enforcement and held-out agent
+behavior are **not** verified. Avoid auto-expanding the catalog to other providers.

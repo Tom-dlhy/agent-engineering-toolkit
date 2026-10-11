@@ -433,6 +433,30 @@ skills:
     domain: data-platforms
     path: skills/data-platforms/snowflake-snowpark-ml
     keywords: ["snowflake","snowpark","ml","machine-learning","lightgbm","xgboost","registry","feature-store","model","inference","score","training"]
+  - name: databricks-spark-delta
+    domain: data-platforms
+    path: skills/data-platforms/databricks-spark-delta
+    keywords: ["databricks","spark","delta","pyspark","aqe","photon","shuffle","skew","liquid","clustering","optimize","vacuum"]
+  - name: databricks-lakeflow-pipelines
+    domain: data-platforms
+    path: skills/data-platforms/databricks-lakeflow-pipelines
+    keywords: ["databricks","lakeflow","pipelines","autoloader","cloudfiles","auto","cdc","scd2","expectations","checkpoint","streaming"]
+  - name: databricks-unity-catalog
+    domain: data-platforms
+    path: skills/data-platforms/databricks-unity-catalog
+    keywords: ["databricks","unity","catalog","governance","abac","grants","masking","row","filters","lineage","shares","privileges"]
+  - name: databricks-mlflow-mlops
+    domain: data-platforms
+    path: skills/data-platforms/databricks-mlflow-mlops
+    keywords: ["databricks","mlflow","mlops","model","registry","loggedmodel","tracing","training","serving","evaluation","drift"]
+  - name: databricks-automation-bundles
+    domain: data-platforms
+    path: skills/data-platforms/databricks-automation-bundles
+    keywords: ["databricks","bundles","declarative","automation","databricksyml","cli","ci","cd","deployment","terraform","targets"]
+  - name: databricks-ai-governance
+    domain: data-platforms
+    path: skills/data-platforms/databricks-ai-governance
+    keywords: ["databricks","unitygateway","gateway","ai","llm","mcp","agents","guardrails","inference","routing","token","rate"]
   - name: snowflake-cortex-ai
     domain: data-platforms
     path: skills/data-platforms/snowflake-cortex-ai
