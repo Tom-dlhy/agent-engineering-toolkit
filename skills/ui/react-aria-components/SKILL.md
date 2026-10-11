@@ -1,7 +1,7 @@
 ---
 name: react-aria-components
 domain: ui
-version: "0.1.0"
+version: "2.0.0"
 description: >-
   Use when implementing, integrating, debugging or reviewing React Aria Components components in a project that uses or has explicitly selected this library. Do not use for unrelated component libraries or to override an existing stack choice.
 ---
@@ -34,3 +34,10 @@ Do not replace its collection and selection state with ad hoc click handlers. Te
 Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabled states, contrast, form validation, reduced motion as appropriate, and current target framework integration. For advanced tables, test stable row identity, pagination/filtering, loading, empty and error states. For mobile, test actual platform semantics. Prefer vendor-supported solutions first, but do not misuse a component merely to avoid custom semantic markup.
 
 **Done when:** component choice and API are justified with version-matched docs; the code reuses the project's design system; tests and visual/manual QA are reported accurately.
+
+## V2 local expertise — open only the applicable leaf
+
+- [Button, Dialog, Popover, ComboBox, Select, Table, ListBox — implementation patterns](references/component-patterns.md) — **read when** implementing or debugging Button, Dialog, Popover and component anatomy, behavior, controlled state.
+- [Integration, theming and regression checks](references/integration-and-verification.md) — **read when** integrating react-aria-components with SSR, forms, themes, upgrades, tests or app delivery.
+
+For ordinary tasks, this `SKILL.md` is sufficient to choose the next action. **Do not bulk-load both leaves** unless the request genuinely spans implementation and integration. A skill available in the catalog is not permission to install its package.

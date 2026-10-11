@@ -1,7 +1,7 @@
 ---
 name: shadcn-ui
 domain: ui
-version: "0.1.0"
+version: "2.0.0"
 description: >-
   Use when implementing, integrating, debugging or reviewing shadcn/ui components in a project that uses or has explicitly selected this library. Do not use for unrelated component libraries or to override an existing stack choice.
 ---
@@ -48,3 +48,10 @@ pnpm dlx shadcn@latest docs button dialog
 pnpm dlx shadcn@latest add button --dry-run
 ```
 Avoid `@latest` for reproducible automated builds; pin the approved CLI version in repeatable CI. For updates inspect `--diff` before editing existing source-owned components. Use component variants and semantic colors; use `FieldGroup` / `Field` for forms when supported by the detected component generation. Do not blindly apply Radix `asChild` to Base UI, which can require a `render` prop.
+
+## V2 local expertise — open only the applicable leaf
+
+- [Button, Field, Dialog, Sheet, Combobox, Data Table — implementation patterns](references/component-patterns.md) — **read when** implementing or debugging Button, Field, Dialog and component anatomy, behavior, controlled state.
+- [Integration, theming and regression checks](references/integration-and-verification.md) — **read when** integrating shadcn-ui with SSR, forms, themes, upgrades, tests or app delivery.
+
+For ordinary tasks, this `SKILL.md` is sufficient to choose the next action. **Do not bulk-load both leaves** unless the request genuinely spans implementation and integration. A skill available in the catalog is not permission to install its package.
