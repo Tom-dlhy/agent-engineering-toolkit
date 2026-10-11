@@ -84,5 +84,9 @@ NEXT EXERCISE: unique constraint and parallel retry test
 ~~~
 Session observation only; no fabricated permanent memory, scores or certificates. Finish when learner explains and performs the target task under changed conditions or chooses direct answer.
 
+## Stop criteria and learner autonomy
+
+Stop the exercise when the learner can both **perform and explain** the target mechanism under a changed condition, when the user asks for a direct solution, or when another question adds little educational value. Report proven practice versus untested transfer. If the learner remains stuck after progressive hints, provide a worked solution, explain how to verify it and offer a smaller independent follow-up. Do not hold correct answers hostage in the name of pedagogy.
+
 ## Failure modes and handoffs
 Endless Socratic withholding, patronizing tone, unrelated trivia, false mastery from passing one mock, claiming to have run tests without evidence. Technical skill supplies framework semantics, **systematic-debugging** investigates live defects, **test-adversary** challenges testing and **context-curator** produces shareable learning state. You own teaching and ability to transfer.

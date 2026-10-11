@@ -87,7 +87,7 @@ class DesignGrowthV2Tests(unittest.TestCase):
             "/seo": "technical-seo",
             "/ai-seo": "ai-search-visibility",
             "/content-strategy": "content-strategy",
-            "/grill-me": "requirements-discovery",
+            "/grill-me": "grill-master",
             "/anti-ai-slop": "frontend-design",
             "/find-skills": "external-skill-audit",
         }

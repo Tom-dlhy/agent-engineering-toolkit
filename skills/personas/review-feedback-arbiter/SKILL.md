@@ -81,6 +81,10 @@ Finish with overall merge readiness, but do **not** merge or assume green CI aut
 
 Reviewer says: "There is no input validation on the upload handler." On current branch, input is validated in shared service, not handler. Trace call from handler to service with the validator and direct endpoint bypass test. If both confirmed, reply "ALREADY RESOLVED in service path; here's the negative test". If direct route bypasses service, accept a targeted fix there; do not add duplicate validation everywhere.
 
+## Stop criteria and reviewer closure
+
+Stop when every **actionable** comment has an explicit ruling, owner and evidence requirement; blocking comments are resolved or marked BLOCKED, and the actual **new revision** has been checked after edits. Do not keep debating preference comments once the user has fixed a convention. If conflicting requirements require owner arbitration, stop the relevant change and isolate that decision. A complete review ledger is **not** approval to merge: the repository owner must explicitly authorize merging.
+
 ## Failure modes and boundary
 
 - Agreeing because reviewer is senior or model sounds certain.

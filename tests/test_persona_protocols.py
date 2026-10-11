@@ -174,6 +174,8 @@ class PersonaProtocolTests(unittest.TestCase):
             self.assertIn(neighbor, doc)
         self.assertIn("Do not", self.catalog["grill-master"].description)
         self.assertIn("explicit", self.catalog["execution-orchestrator"].description.lower())
+        self.assertEqual(search("/grill-me", self.catalog, limit=1)[0].skill.name,
+                         "grill-master")
 
     def test_repository_validation(self):
         self.assertEqual(validate_repository(ROOT), [])

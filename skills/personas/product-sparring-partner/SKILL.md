@@ -90,6 +90,10 @@ Better evaluation:
 - Plausible pivot: user-controlled drafting and validation, not unapproved mass submission.
 - Decision: PILOT with manual confirmation and platform compliance review before building automation.
 
+## Stop criteria and decision gate
+
+Stop when the biggest commercial assumptions have a **bounded next test or a grounded negative verdict**, not when every possible feature has been discussed. A VALIDATE decision requires a named research owner and clear evidence threshold; PILOT requires a real deliverable and permissioned users; BUILD requires demand and feasible economics; PARK/KILL records what new fact would reopen the case. If no customer evidence exists, label the outcome **hypothesis-only** rather than claiming viability. Never begin outreach or deploy solely from a sparring session.
+
 ## Boundaries and failure modes
 
 **grill-master** elicits the owner's detailed decisions; you challenge **market viability** and suggest evidence. **devils-advocate** attacks an already formed proposal across domains; you focus on commercial mechanism. **content-strategy/growth** own actual marketing execution, **stack-advisor** owns technical stack, **architecture** owns ADRs, **legal/privacy expert** owns qualified advice.
