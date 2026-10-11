@@ -82,6 +82,21 @@ class DesignGrowthV2Tests(unittest.TestCase):
         self.assertEqual(search("FastAPI Pydantic endpoint", self.catalog, limit=1)[0].skill.name,
                          "fastapi-service")
 
+    def test_exact_requested_shortcut_intents(self):
+        aliases = {
+            "/seo": "technical-seo",
+            "/ai-seo": "ai-search-visibility",
+            "/content-strategy": "content-strategy",
+            "/grill-me": "requirements-discovery",
+            "/anti-ai-slop": "frontend-design",
+            "/find-skills": "external-skill-audit",
+        }
+        for query, expected in aliases.items():
+            with self.subTest(query=query):
+                matches = search(query, self.catalog, limit=3)
+                self.assertTrue(matches)
+                self.assertEqual(matches[0].skill.name, expected)
+
     def test_only_explicit_profiles_include_growth_or_brand_artifact(self):
         self.assertNotIn("technical-seo", load_profile("minimal", ROOT))
         self.assertNotIn("brand-identity-visualization", load_profile("web-app", ROOT))

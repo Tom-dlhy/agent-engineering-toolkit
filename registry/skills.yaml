@@ -378,7 +378,7 @@ skills:
     domain: design
     path: skills/design/frontend-design
     maturity: expanded-v2
-    keywords: ["frontend", "visual", "aesthetic", "distinctive", "design", "page", "polish", "anti-slop"]
+    keywords: ["frontend", "visual", "aesthetic", "distinctive", "design", "page", "polish", "anti-ai-slop"]
   - name: glassmorphism
     domain: design
     path: skills/design/glassmorphism
@@ -426,7 +426,7 @@ skills:
     domain: growth
     path: skills/growth/ai-search-visibility
     maturity: expanded-v2
-    keywords: ["ai", "search", "visibility", "citations", "mentions", "geo", "aeo", "answer", "engine", "attribution", "llm"]
+    keywords: ["ai", "seo", "search", "visibility", "citations", "mentions", "geo", "aeo", "answer", "engine", "attribution", "llm"]
   - name: content-strategy
     domain: growth
     path: skills/growth/content-strategy
