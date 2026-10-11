@@ -1,7 +1,7 @@
 ---
 name: rneui
 domain: ui
-version: "0.1.0"
+version: "2.0.0"
 description: >-
   Use when implementing, integrating, debugging or reviewing React Native Elements (RNEUI) components in a project that uses or has explicitly selected this library. Do not use for unrelated component libraries or to override an existing stack choice.
 ---
@@ -34,3 +34,10 @@ Do not use deprecated react-native-elements package APIs without inspecting inst
 Test the behavior and keyboard flow, responsive/narrow layouts, focus and disabled states, contrast, form validation, reduced motion as appropriate, and current target framework integration. For advanced tables, test stable row identity, pagination/filtering, loading, empty and error states. For mobile, test actual platform semantics. Prefer vendor-supported solutions first, but do not misuse a component merely to avoid custom semantic markup.
 
 **Done when:** component choice and API are justified with version-matched docs; the code reuses the project's design system; tests and visual/manual QA are reported accurately.
+ 
+## Progressive expertise V2
+
+- [Native widget and component patterns](references/component-patterns.md) — **read when** implementing ThemeProvider, Button, Input, ListItem, Overlay, SearchBar or troubleshooting native interaction.
+- [Runtime integration and validation](references/integration-and-verification.md) — **read when** configuring theme, SDK/build, native platform, accessibility, performance or upgrades.
+
+Use only the relevant local leaf. Native and web APIs must **not** be assumed interchangeable; run actual device checks when possible.
