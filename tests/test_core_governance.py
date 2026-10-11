@@ -77,7 +77,7 @@ class CoreGovernanceTests(unittest.TestCase):
     def test_five_existing_core_skills_without_duplication(self) -> None:
         found = {x.name for x in self.skills.values() if x.domain == "core"}
         self.assertEqual(found, set(CORE))
-        self.assertEqual(len(self.skills), 163)
+        self.assertEqual(len(self.skills), 166)
 
     def test_all_core_skills_have_targeted_substantial_local_references(self) -> None:
         for name in CORE:
@@ -98,7 +98,7 @@ class CoreGovernanceTests(unittest.TestCase):
         registry = yaml.safe_load(
             (ROOT / "registry" / "skills.yaml").read_text(encoding="utf-8")
         )
-        self.assertEqual(len(registry["skills"]), 163)
+        self.assertEqual(len(registry["skills"]), 166)
         self.assertFalse(any("maturity" in row for row in registry["skills"]))
         self.assertNotIn("maturity", (ROOT / "toolkit" / "catalog.py").read_text())
 

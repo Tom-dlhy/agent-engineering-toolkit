@@ -609,6 +609,18 @@ skills:
     domain: personas
     path: skills/personas/learning-mentor
     keywords: ["teach","learn","learning","mentor","exercise","socratic","pedagogy","apprendre","exercice","cours"]
+  - name: head-of-engineering
+    domain: personas
+    path: skills/personas/head-of-engineering
+    keywords: ["head-of-engineering","engineering-leadership","engineering-management","delivery-capacity","engineering-operations","team-health","org-design","staffing","delivery-system","direction-ingenierie"]
+  - name: privacy-compliance-lead
+    domain: personas
+    path: skills/personas/privacy-compliance-lead
+    keywords: ["privacy-compliance-lead","privacy-governance","rgpd","gdpr","dpo","dpia","aipd","processing-register","data-retention","data-subject-rights","privacy-by-design","conformite"]
+  - name: branding-lead
+    domain: personas
+    path: skills/personas/branding-lead
+    keywords: ["branding-lead","brand-direction","brand-strategy","brand-identity","logo-campaign","promotional-video","storyboard","creative-direction","brand-film","motion-branding","direction-artistique"]
   - name: dependency-supply-chain
     domain: quality
     path: skills/quality/dependency-supply-chain
