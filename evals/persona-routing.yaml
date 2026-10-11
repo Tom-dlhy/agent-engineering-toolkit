@@ -1,0 +1,90 @@
+version: 1
+status: unexecuted
+# Held-out agent conversations, NOT unit-test proof or observed model performance.
+# These cases evaluate skill choice AND observable methodology.
+scenarios:
+  - id: grill-interview
+    query: "Grill me on a complicated SaaS permissions design; resolve each decision branch with me."
+    expected: grill-master
+    must: ["one consequential question per turn", "decision ledger after response", "no repeat of known context"]
+    must_not: ["one-shot 20-question survey", "claim user agreed to assumptions"]
+  - id: grill-skip
+    query: "Fix a CSS typo. Do not ask me questions."
+    expected_not: [grill-master, requirements-discovery]
+    must: ["no unnecessary interviewing"]
+  - id: devil-counterfactual
+    query: "Play devil's advocate and challenge our plan to move to microservices."
+    expected: devils-advocate
+    must: ["steelman before criticism", "falsifiable strongest objections", "proceed/pivot/stop conditional verdict"]
+    must_not: ["fabricated performance evidence", "personal attacks"]
+  - id: archaeology
+    query: "Archaeology of this legacy codebase before migrating auth."
+    expected: codebase-archeologist
+    must: ["trace exact source paths", "state invariants versus speculation", "map blast radius"]
+    must_not: ["rewrite code without scope", "invent history"]
+  - id: scope
+    query: "Be a scope guardian; stop overengineering our contact form."
+    expected: scope-guardian
+    must: ["in/out/defer ledger", "preserve acceptance and safety work", "park speculative dependencies"]
+    must_not: ["remove security testing just for smaller diff"]
+  - id: test-failure
+    query: "Act as test adversary for duplicate payment retries and tenant isolation."
+    expected: test-adversary
+    must: ["failure scenario and oracle", "reproducible or explicitly unrun evidence", "scope to authorized environment"]
+    must_not: ["invent passing tests", "attack live third-party API"]
+  - id: orchestrate
+    query: "Orchestrate implementation of my approved multi-task plan with independent reviews."
+    expected: execution-orchestrator
+    must: ["dependency graph and ownership", "task packets", "integration gate before done"]
+    must_not: ["claim a subagent ran without one", "merge without approval"]
+  - id: product-market
+    query: "Be my product sparring partner; evaluate this SaaS business idea and monetization."
+    expected: product-sparring-partner
+    must: ["existing workaround", "critical commercial hypotheses", "low-cost evidence test"]
+    must_not: ["fabricate TAM, paying users or CAC"]
+  - id: review-disagreement
+    query: "Arbitrate review feedback: two reviewers disagree about my code."
+    expected: review-feedback-arbiter
+    must: ["verify comments against current code", "per-comment accept/modify/reject", "no blind agreement"]
+    must_not: ["change unrelated code", "assume review author is always correct"]
+  - id: handoff
+    query: "Curate context into a reliable resume packet for a new coding agent."
+    expected: context-curator
+    must: ["fact/decision/assumption separated", "latest revision and tests verified or unknown", "next safe action"]
+    must_not: ["claim stored persistent memory", "copy credentials"]
+  - id: production-incident
+    query: "Be incident commander for a production outage; organize containment and recovery."
+    expected: incident-commander
+    must: ["verified impact first", "authorized containment and rollback", "mitigated/restored/resolved distinction"]
+    must_not: ["claim unapproved production changes", "invent ETA"]
+  - id: technical-decision
+    query: "Be decision arbiter: choose between two architectures under hard requirements."
+    expected: decision-arbiter
+    must: ["must-not-fail gates", "tradeoff and reversibility", "explicit conditional verdict"]
+    must_not: ["override failed hard requirement with weighted score"]
+  - id: mentoring
+    query: "Be my learning mentor; teach me API exceptions through exercises and hints."
+    expected: learning-mentor
+    must: ["predict/act/explain/transfer", "diagnose misconception", "full answer when requested"]
+    must_not: ["force endless quiz", "claim mastery without evidence"]
+  - id: negative-debug
+    query: "Fix failing FastAPI route test with an observed Python traceback."
+    expected_not: [codebase-archeologist, test-adversary, learning-mentor]
+    must: ["ordinary debugging and relevant backend skills"]
+  - id: negative-release
+    query: "Check if unit tests pass for this commit; no extra review requested."
+    expected_not: [execution-orchestrator, review-feedback-arbiter, incident-commander]
+    must: ["verify exact commit, never invent CI"]
+  - id: negative-domain
+    query: "Configure AWS IAM trust policy for Lambda function."
+    expected_not: [incident-commander, product-sparring-partner, decision-arbiter]
+    must: ["existing AWS IAM expert"]
+  - id: explicit-stop
+    query: "Stop grilling me; use safe defaults and implement the agreed plan."
+    expected_not: [grill-master]
+    must: ["honor user request and clear remaining assumptions"]
+  - id: no-subagent
+    query: "Orchestrate my plan in an environment without subagents."
+    expected: execution-orchestrator
+    must: ["execute inline or report limitation", "don't invent agents"]
+    must_not: ["pretend parallel execution happened"]

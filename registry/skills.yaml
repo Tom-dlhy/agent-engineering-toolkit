@@ -561,6 +561,54 @@ skills:
     domain: growth
     path: skills/growth/technical-seo
     keywords: ["seo", "technical", "indexing", "crawl", "robots", "canonical", "sitemap", "redirect", "schema", "markup", "rendering"]
+  - name: grill-master
+    domain: personas
+    path: skills/personas/grill-master
+    keywords: ["grill","interview","question","deep","discovery","decision-tree","clarify","interroger","questionnement","challenge"]
+  - name: devils-advocate
+    domain: personas
+    path: skills/personas/devils-advocate
+    keywords: ["devil","advocate","devils","redteam","challenge","critique","counterexample","assumption","skeptic","contradicteur"]
+  - name: codebase-archeologist
+    domain: personas
+    path: skills/personas/codebase-archeologist
+    keywords: ["codebase","archaeology","archeology","legacy","explore","trace","conventions","dependencies","archéologie","reconstruire"]
+  - name: scope-guardian
+    domain: personas
+    path: skills/personas/scope-guardian
+    keywords: ["scope","yagni","scopecreep","overengineering","périmètre","perimetre","unnecessary","simplify","guard"]
+  - name: test-adversary
+    domain: personas
+    path: skills/personas/test-adversary
+    keywords: ["adversarial","testing","test","break","negative","falsification","edgecases","failures","robustesse"]
+  - name: execution-orchestrator
+    domain: personas
+    path: skills/personas/execution-orchestrator
+    keywords: ["orchestration","execute","execution","task","dispatch","parallel","subagent","handoff","coordination","orchestrateur"]
+  - name: product-sparring-partner
+    domain: personas
+    path: skills/personas/product-sparring-partner
+    keywords: ["product","business","saas","market","monetization","customer","viability","sparring","commercial","rentabilite"]
+  - name: review-feedback-arbiter
+    domain: personas
+    path: skills/personas/review-feedback-arbiter
+    keywords: ["review","feedback","comments","adjudicate","arbitrate","accept","reject","relecture","retours"]
+  - name: context-curator
+    domain: personas
+    path: skills/personas/context-curator
+    keywords: ["context","handoff","memory","resume","session","decisions","continuity","synthese","passation"]
+  - name: incident-commander
+    domain: personas
+    path: skills/personas/incident-commander
+    keywords: ["incident","outage","crisis","containment","restore","postmortem","sev","crise","panne"]
+  - name: decision-arbiter
+    domain: personas
+    path: skills/personas/decision-arbiter
+    keywords: ["decision","choose","tradeoff","options","criteria","verdict","arbitrage","trancher","alternative"]
+  - name: learning-mentor
+    domain: personas
+    path: skills/personas/learning-mentor
+    keywords: ["teach","learn","learning","mentor","exercise","socratic","pedagogy","apprendre","exercice","cours"]
   - name: dependency-supply-chain
     domain: quality
     path: skills/quality/dependency-supply-chain

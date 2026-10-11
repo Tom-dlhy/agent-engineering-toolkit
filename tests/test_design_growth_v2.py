@@ -36,7 +36,7 @@ class DesignGrowthV2Tests(unittest.TestCase):
         )
 
     def test_catalog_and_existing_provider_are_preserved(self):
-        self.assertEqual(len(self.catalog), 151)
+        self.assertEqual(len(self.catalog), 163)
         self.assertEqual(self.catalog["requirements-discovery"].domain, "core")
         self.assertEqual(self.catalog["technical-seo"].domain, "growth")
         self.assertEqual(self.catalog["ui-library-selection"].path, "skills/stacks/ui-library-selection")
@@ -87,7 +87,7 @@ class DesignGrowthV2Tests(unittest.TestCase):
             "/seo": "technical-seo",
             "/ai-seo": "ai-search-visibility",
             "/content-strategy": "content-strategy",
-            "/grill-me": "requirements-discovery",
+            "/grill-me": "grill-master",
             "/anti-ai-slop": "frontend-design",
             "/find-skills": "external-skill-audit",
         }

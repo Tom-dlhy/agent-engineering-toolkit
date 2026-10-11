@@ -1,6 +1,6 @@
 # Skill catalog and design conventions
 
-The source of truth is `registry/skills.yaml`: 151 first-party skills grouped into 12 domains.
+The source of truth is `registry/skills.yaml`: 163 first-party skills grouped into 13 domains (12 technical domains and one opt-in behavioral-persona domain).
 
 | Domain | Focus |
 | --- | --- |
@@ -16,6 +16,7 @@ The source of truth is `registry/skills.yaml`: 151 first-party skills grouped in
 | `quality` | Testing, code review, dependencies, releases and PR workflows |
 | `ui` | Provider-specific React/Vue/Angular/Svelte/mobile component guidance |
 | `growth` | Editorial governance, SEO/AI search observation, experiments and lifecycle retention |
+| `personas` | Explicitly activated interview, critique, coordination, adversarial evaluation, incident, decision and teaching protocols |
 
 ## Minimal interface of a skill
 
@@ -31,7 +32,7 @@ description: >-
 
 The content is a **method**: scope, prerequisites, procedure, verification and failure modes. It should not merely say "act as a world-class expert".
 
-Only name/description metadata is needed to decide whether to read the body. Additional details belong in skill-local `references/`, while scripts must be permission-scoped, deterministic and reviewed.
+Only name/description metadata is needed to decide whether to read the body. Technical deep details normally belong in skill-local `references/`; **persona skills are an intentional exception**: their complete behavior protocol is self-contained in `SKILL.md`, with no required external reference file. Scripts, when present, must be permission-scoped, deterministic and reviewed.
 
 ## Importing third-party skills
 

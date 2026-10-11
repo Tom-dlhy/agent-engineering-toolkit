@@ -2,15 +2,15 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **151 first-party skills across 12 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **163 first-party skills across 13 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status (2026-10-11, after PR #25): all **12 domains** have undergone source-reviewed refactors; the catalog has **151 skills, 382 local reference leaves and 20 installation profiles**. A single authoring contract applies to every skill, without maturity tiers. This is a **documentation and deterministic-CI milestone**, not proof of production correctness, skill-routing quality or improvement in real agent outcomes. Next: fix observed discovery limitations and run held-out baseline-vs-toolkit evaluations.
+> Status (2026-10-11, after PR #25): the original **12 technical domains** have undergone source-reviewed refactors; the catalog has **163 skills (including 12 opt-in personas), 382 technical reference leaves and 20 installation profiles**. A single authoring contract applies to every skill, without maturity tiers. This is a **documentation and deterministic-CI milestone**, not proof of production correctness, skill-routing quality or improvement in real agent outcomes. Next: fix observed discovery limitations and run held-out baseline-vs-toolkit evaluations.
 
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **151 skills stored** in the library; only **5–20 installed** in a project profile.
+- **163 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
@@ -48,6 +48,19 @@ python scripts/install_profile.py --agent codex --profile python-backend --proje
 
 The installer writes only when `--apply` is provided. It copies selected skills to `.agents/skills` (Codex) or `.claude/skills` (Claude Code). Copy/adapt `AGENTS.md` into a target project separately to adopt shared conventions. Never install every profile indiscriminately.
 
+## Operational persona skills (explicit opt-in)
+
+Twelve **self-contained, source-independent behavior protocols** in `skills/personas/` provide focused operating modes: deep interviews, adversarial critique/testing, repository archaeology, scope control, plan orchestration, product strategy, review adjudication, reliable handoffs, incident response, decisions and mentoring. These are **not** duplicative framework/API references or automatically enabled subagents. They have no external reference leaves: the full operational method is in each selected `SKILL.md`. Install only the requested persona with `--skill`; selecting one does not override security, owner authorization or the chosen light/standard/deep workflow.
+
+~~~bash
+# Inspect before applying; no existing profile needs to grow
+python scripts/skillctl.py show grill-master
+python scripts/install_profile.py --skill grill-master --agent codex --project /path/to/project
+python scripts/install_profile.py --skill grill-master --agent codex --project /path/to/project --apply
+~~~
+
+See [persona design, activation boundaries and evaluation criteria](docs/persona-protocols.md).
+
 ## UI library expertise
 
 35 optional provider skills across web, native and Flutter; plus one `ui-component-research` skill. The original `ui-library-selection` is **extended** in `skills/stacks`, never duplicated. See [UI skills](docs/ui-skills.md). Install only the chosen provider using `--skill` and read its optional references when needed.
@@ -56,6 +69,7 @@ The installer writes only when `--apply` is provided. It copies selected skills 
 
 - [Progressive expertise refactor and quality standard](docs/progressive-expertise.md)
 - [Historical expertise audit and current evaluation backlog](docs/expertise-audit.md)
+- [Opt-in persona protocols and governance](docs/persona-protocols.md)
 - [Design refactor decision matrix and evidence](docs/design-refactor-audit.md)
 - [Growth skill audit, experimentation and lifecycle governance](docs/growth-refactor-audit.md)
 - [Stack selection audit and identity solution boundaries](docs/stacks-refactor-audit.md)

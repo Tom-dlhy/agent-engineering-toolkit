@@ -2,8 +2,8 @@
 
 ## Current state
 
-- 151 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
-- All 12 domains have undergone source-reviewed refactors (through merged PR #25); the catalog contains **382 selectively readable local references** and **20 installation profiles**.
+- 163 first-party skills across 13 domains (12 technical + 1 optional behavioral-persona domain), with light / standard / deep workflows independent of skill knowledge depth.
+- The original 12 technical domains underwent source-reviewed refactors (through merged PR #25); 12 independent self-contained personas are now proposed in their own opt-in domain. The catalog retains **382 technical reference leaves** and **20 installation profiles**.
 - The AWS split, 35 UI provider branches and Design/Growth/Stacks selection skills use targeted references. Practical depth and real-world integration evidence still vary by skill.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
 - No imported third-party executable content, no self-updating prompts, no automatic merges.
@@ -175,3 +175,16 @@ All 12 categories have now undergone domain-level source review, but this is
 **not** proof of production-quality behavior. Next: cross-category held-out
 agent evaluation and authorized real-project integration, browser, provider
 and security review, documenting where routed skills actually help or collide.
+
+## Persona operating protocols — proposed new optional domain
+
+Twelve self-contained behavioral protocols (interview, critique, archaeology,
+scoping, adversarial tests, orchestration, product strategy, feedback review,
+context, incidents, choices and mentoring) are authored in `skills/personas/`.
+Their independent triggers and exclusions deliberately avoid replacing the
+existing core/quality skills or `agents/*.md` briefs. No references folder or
+external documentation is necessary for their operation, and none is added
+to default profiles. See [persona governance and evaluation](persona-protocols.md).
+The original 12 technical categories are not modified by this persona-focused
+addition. Held-out conversational agent tests and real host installation
+remain **future evidence**, not completed validation.

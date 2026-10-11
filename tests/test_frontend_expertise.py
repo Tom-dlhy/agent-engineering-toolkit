@@ -41,7 +41,7 @@ class FrontendExpertiseTests(unittest.TestCase):
         cls.routes = yaml.safe_load((ROOT / "evals/frontend-routing.yaml").read_text())
 
     def test_seven_independent_frontend_skills(self):
-        self.assertEqual(len(self.catalog), 151)
+        self.assertEqual(len(self.catalog), 163)
         found = {s.name for s in self.catalog.values() if s.domain == "frontend"}
         self.assertEqual(found, FRAMEWORKS)
         self.assertNotIn("vue-svelte-patterns", self.catalog)
