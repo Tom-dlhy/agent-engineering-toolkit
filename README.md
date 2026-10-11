@@ -140,3 +140,24 @@ Official source decisions and limitations:
 The checker is for explicit Python import restrictions, **not a
 general proof of software architecture**. No user-count-based
 "microservices required" rule exists.
+
+## Backend production engineering (Python + Node TypeScript)
+
+Seven existing Backend skills now own **33 selectively readable references**
+(15 additional). They cover modern Python packaging/uv, FastAPI lifecycle,
+HTTPX retries/deadlines, SQLAlchemy isolation/async sessions, OpenTelemetry,
+Celery worker reliability and Node/TypeScript runtime/API behavior.
+Architecture, Quality and cloud/LLM concerns remain independently routed.
+
+~~~bash
+python scripts/skillctl.py search "TypeScript Node.js API runtime validation"
+python scripts/skillctl.py references typescript-api
+python scripts/skillctl.py read-ref typescript-api references/runtime-schema-and-security.md
+node --test examples/backend-typescript/tests/*.test.ts  # Node 24+
+python -m unittest discover -s tests -p 'test_backend_expertise.py' -v
+~~~
+
+[Official-source Backend audit](docs/backend-refactor-audit.md) distinguishes
+current provider semantics from illustrative code and unverified deployment
+claims. The Node example requires a separate strict TypeScript typecheck
+before production and is deliberately not a real authenticated service.

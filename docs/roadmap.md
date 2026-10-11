@@ -53,3 +53,15 @@ injection, toolchain/versioned OpenAPI client compatibility
 and load/deployment measurements for concrete apps. The
 toolkit does not proclaim architecture production-ready solely
 from green static CI.
+
+## Backend refactor — implemented, validation evidence still evolving
+
+Seven Backend skills now expose 33 targeted references, including
+modern Python, FastAPI, outbound HTTPX, SQLAlchemy, OpenTelemetry,
+Celery and Node/TypeScript. A TypeScript HTTP test fixture runs
+under Node 24, alongside existing Python FastAPI tests. Remaining:
+strict Node/TS project compilation against a pinned tsconfig,
+real Postgres concurrency/rollback suites, live broker crash tests,
+authorized provider HTTP quota/fallback integration, SSE/proxy
+load, tracing exporter, and held-out agent behavioral evaluations.
+No maturity tiers and no blanket claim of proven production readiness.

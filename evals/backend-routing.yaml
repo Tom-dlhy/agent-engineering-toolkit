@@ -1,0 +1,35 @@
+# Deterministic lexical baseline, NOT proof of Codex/Claude activation.
+version: 1
+selection:
+  - query: "uv pyproject Python packaging typing"
+    expected: modern-python
+  - query: "FastAPI lifespan endpoint Pydantic dependency"
+    expected: fastapi-service
+  - query: "httpx AsyncClient outbound timeout"
+    expected: python-http-clients
+  - query: "SQLAlchemy AsyncSession Alembic transaction"
+    expected: python-persistence
+  - query: "Python opentelemetry correlation logging"
+    expected: python-observability
+  - query: "Celery background jobs queue worker retry"
+    expected: background-jobs
+  - query: "TypeScript Node.js API runtime validation"
+    expected: typescript-api
+negative_neighbors:
+  - query: "DDD bounded aggregate Python"
+    expected: python-ddd
+  - query: "AWS Bedrock Converse inference"
+    expected: aws-bedrock
+  - query: "Azure Foundry Entra Responses deployment"
+    expected: azure-ai-foundry
+  - query: "pytest property concurrency test strategy"
+    expected: test-strategy
+  - query: "REST OpenAPI API contract versioning ETag pagination"
+    expected: api-contract-design
+  - query: "modular monolith module boundaries ownership coupling"
+    expected: modular-monolith
+  - query: "GitHub branch PR merge checks"
+    expected: git-pr-workflow
+no_match:
+  - ""
+  - "zzzzbackendunknownxx"
