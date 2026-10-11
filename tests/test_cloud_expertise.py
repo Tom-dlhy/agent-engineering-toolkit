@@ -49,7 +49,7 @@ class CloudExpertiseTests(unittest.TestCase):
         cls.cases=yaml.safe_load((ROOT/"evals/cloud-routing.yaml").read_text())
 
     def test_41_independent_cloud_skills_141_catalog(self):
-        self.assertEqual(len(self.catalog),148)
+        self.assertEqual(len(self.catalog),150)
         self.assertEqual({s.name for s in self.catalog.values()
                           if s.domain=="cloud"},set(ALL_CLOUD))
         self.assertEqual(len(NEW),22)
@@ -57,7 +57,7 @@ class CloudExpertiseTests(unittest.TestCase):
     def test_single_standard_without_tier(self):
         entries=yaml.safe_load((ROOT/"registry/skills.yaml").read_text())["skills"]
         self.assertFalse(any("maturity" in e for e in entries))
-        self.assertEqual(len(entries),148)
+        self.assertEqual(len(entries),150)
 
     def test_82_declared_selective_cloud_references(self):
         total=0
