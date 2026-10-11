@@ -421,6 +421,26 @@ skills:
     domain: core
     path: skills/core/verification-before-done
     keywords: ["verify","verification","evidence","completion","tests","checks","proof","done","validation"]
+  - name: snowflake-query-performance
+    domain: data-platforms
+    path: skills/data-platforms/snowflake-query-performance
+    keywords: ["snowflake","query","performance","profile","profiling","warehouse","micro-partitions","pruning","clustering","spill","credits","sql","latency"]
+  - name: snowflake-data-pipelines
+    domain: data-platforms
+    path: skills/data-platforms/snowflake-data-pipelines
+    keywords: ["snowflake","data","pipelines","snowpipe","copy","dynamic","tables","streams","tasks","merge","ingestion","backfill","elt"]
+  - name: snowflake-snowpark-ml
+    domain: data-platforms
+    path: skills/data-platforms/snowflake-snowpark-ml
+    keywords: ["snowflake","snowpark","ml","machine-learning","lightgbm","xgboost","registry","feature-store","model","inference","score","training"]
+  - name: snowflake-cortex-ai
+    domain: data-platforms
+    path: skills/data-platforms/snowflake-cortex-ai
+    keywords: ["snowflake","cortex","agents","analyst","cortex-search","semantic","views","text-to-sql","rag","llm","ai"]
+  - name: snowflake-security-governance
+    domain: data-platforms
+    path: skills/data-platforms/snowflake-security-governance
+    keywords: ["snowflake","security","governance","rbac","roles","grants","row","access","masking","policies","sharing","audit"]
   - name: analytics-modeling
     domain: data
     path: skills/data/analytics-modeling

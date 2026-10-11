@@ -2,7 +2,7 @@
 
 This toolkit distinguishes **library size**, **installation profile size** and **activation size**.
 
-1. The library holds 166 local `SKILL.md` files and may grow to hundreds.
+1. The library holds 171 local `SKILL.md` files and may grow to hundreds.
 2. A profile installs only a curated subset (5–20 skills).
 3. The model sees a brief name/description, not a full skill body.
 4. Only 1–3 directly relevant skill bodies should be read for ordinary tasks.
@@ -38,6 +38,16 @@ Personas are deliberate *operating modes*, not technical source-of-truth skills 
 - `head-of-engineering`: ongoing multi-team engineering delivery/ownership, not a single approved implementation plan (`execution-orchestrator`).
 - `privacy-compliance-lead`: purpose-level privacy processing, DPIA screening, vendor transfers and data-subject rights, not a one-endpoint code security audit or qualified legal signoff.
 - `branding-lead`: cross-medium brand identity, logo system and **promotional-video creative direction**; one-off logo concepts go to `brand-identity-visualization`, interactive UI motion to `interaction-motion`. An interactive web animation is **not** video mastering.
+
+## Snowflake platform-specific selection
+
+- `snowflake-query-performance` diagnoses Snowflake Query Profile, warehouses and credits, not PostgreSQL EXPLAIN or metric definitions.
+- `snowflake-data-pipelines` owns Snowpipe, Dynamic Tables, Streams, Tasks and Snowflake replay; `data-pipeline-quality` still owns general source contracts.
+- `snowflake-snowpark-ml` owns Snowflake ML Model Registry, LightGBM/Snowpark and feature store, not Cortex text-to-SQL.
+- `snowflake-cortex-ai` owns Snowflake Agents/Analyst/Search/semantic views, not Bedrock Converse or generic RAG architecture.
+- `snowflake-security-governance` owns Snowflake SQL grants, masking and row access policies, not cloud IAM, GDPR legal signoff or Cortex answer evaluation.
+
+All five are opt-in and absent from existing installation profiles. Exact matching is still lexical; the local finder is not a semantic multilingual router. See [platform governance](snowflake-platform-audit.md).
 
 ## Workflow policy
 
