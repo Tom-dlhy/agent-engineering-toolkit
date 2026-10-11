@@ -1,0 +1,8 @@
+name: minimal
+description: Lightweight default for everyday tasks.
+skills:
+  - task-routing
+  - verification-before-done
+  - systematic-debugging
+  - test-strategy
+  - secure-code-review

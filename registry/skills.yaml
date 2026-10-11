@@ -1,0 +1,21 @@
+version: 1
+skills:
+  - {name: task-routing, domain: core, path: skills/core/task-routing}
+  - {name: verification-before-done, domain: core, path: skills/core/verification-before-done}
+  - {name: systematic-debugging, domain: core, path: skills/core/systematic-debugging}
+  - {name: skill-authoring, domain: core, path: skills/core/skill-authoring}
+  - {name: architecture-decision, domain: architecture, path: skills/architecture/architecture-decision}
+  - {name: python-ddd, domain: architecture, path: skills/architecture/python-ddd}
+  - {name: fastapi-service, domain: backend, path: skills/backend/fastapi-service}
+  - {name: cloud-provider-selection, domain: cloud, path: skills/cloud/cloud-provider-selection}
+  - {name: aws-integration, domain: cloud, path: skills/cloud/aws-integration}
+  - {name: gcp-integration, domain: cloud, path: skills/cloud/gcp-integration}
+  - {name: azure-integration, domain: cloud, path: skills/cloud/azure-integration}
+  - {name: frontend-design, domain: design, path: skills/design/frontend-design}
+  - {name: glassmorphism, domain: design, path: skills/design/glassmorphism}
+  - {name: ux-audit, domain: design, path: skills/design/ux-audit}
+  - {name: secure-code-review, domain: quality, path: skills/quality/secure-code-review}
+  - {name: test-strategy, domain: quality, path: skills/quality/test-strategy}
+  - {name: external-skill-audit, domain: quality, path: skills/quality/external-skill-audit}
+  - {name: llm-integration, domain: ai, path: skills/ai/llm-integration}
+  - {name: database-design, domain: data, path: skills/data/database-design}

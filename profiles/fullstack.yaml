@@ -1,0 +1,22 @@
+name: fullstack
+description: Broad installation; still load only needed skill bodies.
+skills:
+  - task-routing
+  - verification-before-done
+  - systematic-debugging
+  - skill-authoring
+  - architecture-decision
+  - python-ddd
+  - fastapi-service
+  - cloud-provider-selection
+  - aws-integration
+  - gcp-integration
+  - azure-integration
+  - frontend-design
+  - glassmorphism
+  - ux-audit
+  - secure-code-review
+  - test-strategy
+  - external-skill-audit
+  - llm-integration
+  - database-design
