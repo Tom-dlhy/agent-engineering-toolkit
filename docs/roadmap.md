@@ -2,7 +2,7 @@
 
 ## Current state
 
-- 119 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
+- 144 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
 - The AWS split, 35 UI provider branches and design/growth/refined methodology work use selective references.
 - Additional skills remain condensed methodological overviews and are scheduled for deeper technical coverage.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
@@ -122,3 +122,16 @@ No catalog/profiles were added. Next evidence stage is actual
 version-pinned provider projects, real browser/native screen captures,
 keyboard/ARIA checks and task-based visual critique, not arbitrary
 'AI-slop scores'.
+
+## Design refactor — task-scoped visual engineering
+
+Design retains 12 existing skills, with no new categories or style imports.
+Six prior condensed skills now include 11 task-scoped references for WCAG 2.2,
+accessible forms, theme SSR/contrast, responsive screenshot discipline,
+truthful conversion design and opt-in bento/glass techniques. The broad
+`ui-ux-design` profile no longer auto-installs niche bento/glass effects;
+users can still install them explicitly. See
+[design refactor decisions](design-refactor-audit.md). The next evidence stage
+requires held-out real-agent routing, actual browser and assistive-tech journeys,
+and measured context consumption; static tests cannot establish visual
+originality, WCAG conformance or conversion gains.

@@ -1,0 +1,47 @@
+version: 1
+# Human-executed behavioral evaluation specification, not automated model results.
+scenarios:
+  - id: wcag-keyboard-checkout
+    intent: "Audit WCAG 2.2 AA keyboard focus and touch targets of checkout form"
+    expected: accessibility-wcag
+    leaf: references/wcag22-audit-and-triage.md
+    negative: ["Do not claim certification from axe", "Do not confuse 2.4.13 AAA with AA"]
+    acceptance: ["cites correct criterion/exception", "reproduces focus steps", "labels untested screen-reader combinations"]
+  - id: dark-mode-ssr
+    intent: "Implement dark mode with system preference and hydration-safe initial paint"
+    expected: dark-mode-theming
+    leaf: references/theme-state-and-tokens.md
+    negative: ["Do not force all elements through CSS invert"]
+    acceptance: ["one source of theme truth", "states preference precedence", "handles color-scheme and first paint"]
+  - id: responsive-screenshot
+    intent: "Verify responsive screenshots and long translated text at mobile width"
+    expected: responsive-visual-qa
+    leaf: references/screenshot-baselines-and-triage.md
+    negative: ["Do not call static source reading visual QA"]
+    acceptance: ["records viewport/browser and state", "separates flaky screenshot diffs", "does not blindly update baseline"]
+  - id: conversion-landing
+    intent: "Build a service landing page with actual inquiry CTA and factual evidence"
+    expected: landing-page-design
+    leaf: references/narrative-and-evidence.md
+    negative: ["Do not invent testimonials or conversion uplift"]
+    acceptance: ["real content hierarchy", "primary CTA is clear", "measurement distinguishes completed inquiry from click"]
+  - id: opt-in-bento
+    intent: "Implement an explicit bento grid composition with mixed tile sizes"
+    expected: bento-grid
+    leaf: references/semantic-responsive-bento.md
+    negative: ["Do not reorder tab sequence with dense auto-placement"]
+    acceptance: ["mobile DOM and reading order match", "long tile content survives"]
+  - id: opt-in-glass
+    intent: "Implement a frosted glass overlay with accessible opaque fallback"
+    expected: glassmorphism
+    leaf: references/translucency-fallback-and-qa.md
+    negative: ["Do not rely on reduced-transparency support everywhere"]
+    acceptance: ["opaque fallback", "tests multiple photo backgrounds", "forced-colors remains legible"]
+  - id: ordinary-dashboard
+    intent: "Fix text clipping in a standard table of a SaaS dashboard"
+    expected_not: [bento-grid, glassmorphism, landing-page-design]
+    acceptance: ["no automatic trendy effect", "smallest correct component repair"]
+  - id: existing-provider
+    intent: "Fix shadcn dialog API and keyboard focus"
+    expected: shadcn-ui
+    acceptance: ["consult exact provider API", "ask accessibility-wcag only if criterion mapping needed"]

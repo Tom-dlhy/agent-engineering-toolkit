@@ -452,7 +452,7 @@ skills:
   - name: accessibility-wcag
     domain: design
     path: skills/design/accessibility-wcag
-    keywords: ["accessibility","a11y","wcag","keyboard","screenreader"]
+    keywords: ["accessibility","a11y","wcag","keyboard","screenreader","focus","contrast","touch"]
   - name: brand-identity-visualization
     domain: design
     path: skills/design/brand-identity-visualization
@@ -460,11 +460,11 @@ skills:
   - name: bento-grid
     domain: design
     path: skills/design/bento-grid
-    keywords: ["bento","cards","grid","modern","design"]
+    keywords: ["bento","tiles","grid","spans","mosaic"]
   - name: dark-mode-theming
     domain: design
     path: skills/design/dark-mode-theming
-    keywords: ["dark","mode","light","theme","colors"]
+    keywords: ["dark","mode","light","theme","colors","hydration","system"]
   - name: design-system
     domain: design
     path: skills/design/design-system
@@ -476,7 +476,7 @@ skills:
   - name: glassmorphism
     domain: design
     path: skills/design/glassmorphism
-    keywords: ["frosted","glass","transparent","blur","backdrop","css","liquid"]
+    keywords: ["glassmorphism","frosted","glass","translucent","blur","backdrop"]
   - name: interaction-motion
     domain: design
     path: skills/design/interaction-motion
@@ -484,11 +484,11 @@ skills:
   - name: landing-page-design
     domain: design
     path: skills/design/landing-page-design
-    keywords: ["landing","page","site","website","marketing","conversion"]
+    keywords: ["landing","page","marketing","conversion","cta","hero","inquiry"]
   - name: responsive-visual-qa
     domain: design
     path: skills/design/responsive-visual-qa
-    keywords: ["responsive","mobile","tablet","screenshots","visual","qa"]
+    keywords: ["responsive","mobile","tablet","screenshots","visual","qa","viewport","regression"]
   - name: typography-layout
     domain: design
     path: skills/design/typography-layout

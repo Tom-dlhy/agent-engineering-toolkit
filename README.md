@@ -56,6 +56,7 @@ The installer writes only when `--apply` is provided. It copies selected skills 
 
 - [Progressive expertise refactor and quality standard](docs/progressive-expertise.md)
 - [Expertise depth audit / migration backlog](docs/expertise-audit.md)
+- [Design refactor decision matrix and evidence](docs/design-refactor-audit.md)
 - [Catalog and authoring conventions](docs/catalog.md)
 - [Progressive disclosure and token budgets](docs/skill-routing.md)
 - [Architecture](docs/architecture.md)
