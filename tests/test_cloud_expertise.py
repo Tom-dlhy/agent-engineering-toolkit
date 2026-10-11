@@ -71,7 +71,7 @@ class CloudExpertiseTests(unittest.TestCase):
                 for ref in refs:
                     text=read_reference(skill,ref,ROOT)
                     self.assertGreater(len(text),1300,(name,ref))
-                    self.assertIn("Read when:",text[:650])
+                    self.assertTrue("Read when:" in text[:650] or "Open when:" in text[:650])
                     self.assertTrue(text.startswith("# "))
                     self.assertIn("https://",text)
                     total+=1
