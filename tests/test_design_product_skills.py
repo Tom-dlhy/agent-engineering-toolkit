@@ -66,7 +66,7 @@ class DesignProductSkillsTests(unittest.TestCase):
                      "ui-library-selection", "Recharts", "provider"):
             self.assertIn(term, body + handoff)
         for term in ("@base-ui/react", "not a guaranteed chart", "Do not",
-                     "existing chart", "https://ui.shadcn.com",
+                     "Reuse the same chart package", "https://ui.shadcn.com",
                      "https://mui.com/x/react-charts"):
             self.assertIn(term, handoff)
         self.assertNotIn("npm install ", body)
