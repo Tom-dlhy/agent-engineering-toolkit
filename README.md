@@ -2,19 +2,34 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **166 first-party skills across 13 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **171 first-party skills across 14 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status (2026-10-12, following merged PR #27; three additional opt-in personas proposed): the original **12 technical domains** have undergone source-reviewed refactors; the catalog has **166 skills (including 15 opt-in personas), 382 technical reference leaves and 20 installation profiles**. A single authoring contract applies to every skill, without maturity tiers. This is a **documentation and deterministic-CI milestone**, not proof of production correctness, skill-routing quality or improvement in real agent outcomes. Next: fix observed discovery limitations and run held-out baseline-vs-toolkit evaluations.
+> Status (2026-10-12, following merged PR #27; three additional opt-in personas proposed): the original **12 technical domains** have undergone source-reviewed refactors; the Snowflake specialist domain is proposed as an additional technical domain; the catalog has **171 skills (including 15 opt-in personas), 397 technical reference leaves and 20 installation profiles**. A single authoring contract applies to every skill, without maturity tiers. This is a **documentation and deterministic-CI milestone**, not proof of production correctness, skill-routing quality or improvement in real agent outcomes. Next: fix observed discovery limitations and run held-out baseline-vs-toolkit evaluations.
 
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **166 skills stored** in the library; only **5–20 installed** in a project profile.
+- **171 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
 - **No automatic third-party downloads or execution**; security and licensing come before convenience.
+
+## Snowflake platform expertise (explicit opt-in)
+
+Five provider-specific Snowflake skills live under `skills/data-platforms/`: `snowflake-query-performance`, `snowflake-data-pipelines`, `snowflake-snowpark-ml`, `snowflake-cortex-ai` and `snowflake-security-governance`. Each has one actionable SKILL.md and **three selectively loaded references** covering Snowflake SQL/API contracts, operational failures, security, reproducible examples and verification. They do not replace `data/lakehouse-engineering`, `data/data-pipeline-quality`, `ai/llm-evaluation` or existing Cloud IAM experts.
+
+~~~bash
+python scripts/skillctl.py search "Snowflake Cortex semantic views"
+python scripts/skillctl.py show snowflake-snowpark-ml
+python scripts/skillctl.py references snowflake-data-pipelines
+python scripts/skillctl.py read-ref snowflake-data-pipelines references/dynamic-tables-streams-tasks.md
+# Install deliberately in a target repo only when required; no general profile grows.
+python scripts/install_profile.py --skill snowflake-query-performance --agent codex --project /path/to/project
+~~~
+
+See the [Snowflake governance and source audit](docs/snowflake-platform-audit.md).
 
 ## Quick start
 

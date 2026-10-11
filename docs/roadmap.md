@@ -2,8 +2,8 @@
 
 ## Current state
 
-- 166 first-party skills across 13 domains (12 technical + 1 optional behavioral-persona domain), with light / standard / deep workflows independent of skill knowledge depth.
-- The original 12 technical domains underwent source-reviewed refactors (through merged PR #25); 15 independent self-contained personas are now proposed in their own opt-in domain. The catalog retains **382 technical reference leaves** and **20 installation profiles**.
+- 171 first-party skills across 14 domains (13 technical + 1 optional behavioral-persona domain), with light / standard / deep workflows independent of skill knowledge depth.
+- The original 12 technical domains underwent source-reviewed refactors (through merged PR #25); 15 independent self-contained personas are now proposed in their own opt-in domain. The catalog retains **397 technical reference leaves** and **20 installation profiles**.
 - The AWS split, 35 UI provider branches and Design/Growth/Stacks selection skills use targeted references. Practical depth and real-world integration evidence still vary by skill.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
 - No imported third-party executable content, no self-updating prompts, no automatic merges.
@@ -199,7 +199,21 @@ claiming legal certification; `branding-lead` art-directs identity and
 cross-channel campaigns, including promotional-video storyboards and
 creative QA. Technical design skills still own logo boards, UI motion,
 component tokens and production APIs. The proposed catalog holds
-**166 skills / 13 domains**, with **15 opt-in persona methods** and
+**166 skills / 13 domains** (historical persona-stage snapshot), with **15 opt-in persona methods** and
 unchanged **382 technical references / 20 profiles**. No live creative
 asset or compliance audit is claimed; held-out behavior tests remain
 unexecuted.
+
+## Snowflake platform experts — proposed expansion (2026-10-12)
+
+Five source-reviewed operational Snowflake specialists are proposed in a
+new `data-platforms` technical domain (Query Performance, Data Pipelines,
+Snowpark ML, Cortex AI, Security/Governance). This is a distinct set of
+platform API and operational skills, not a Snowflake vendor rewrite of
+`lakehouse-engineering`, `data-pipeline-quality`, `analytics-modeling`
+or `llm-evaluation`. Each has three deep local reference leaves: the
+proposed catalog has **171 skills / 14 domains / 397 references / 20 profiles**.
+These are authored examples plus deterministic routing tests, **not**
+production Snowflake integration or paid warehouse benchmarks. Follow-on
+Databricks/BigQuery/Fabric/Redshift must be individually re-audited for
+unique utility before creation. Source review: [Snowflake audit](snowflake-platform-audit.md).
