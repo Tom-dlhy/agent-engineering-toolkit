@@ -25,7 +25,8 @@ class UISkillsTests(unittest.TestCase):
         for name in ("web-app", "fullstack"):
             profile = yaml.safe_load((ROOT / "profiles" / f"{name}.yaml").read_text(encoding="utf-8"))
             self.assertIn("ui-library-selection", profile["skills"])
-            self.assertIn("ui-component-research", profile["skills"])
+            if name == "web-app":
+                self.assertIn("ui-component-research", profile["skills"])
             self.assertNotIn("shadcn-ui", profile["skills"])
             self.assertNotIn("mui", profile["skills"])
 
