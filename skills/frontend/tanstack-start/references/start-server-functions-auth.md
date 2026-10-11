@@ -9,13 +9,13 @@
 import { createServerFn } from "@tanstack/react-start";
 // requireActor and service are application-specific server-only functions.
 export const getPrivateOrder = createServerFn()
-  .inputValidator((value: unknown) => parseOrderInput(value))
+  .validator((value: unknown) => parseOrderInput(value))
   .handler(async ({ data }) => {
     const actor = await requireActor();
     return await findAuthorizedOrder(actor, data.orderId);
   });
 ~~~
-Check installed version for supported `inputValidator` and middleware chaining; `parseOrderInput` is a runtime parser, not TS assertion. Place server-only imports in server modules and test bundle tree shaking.
+Check installed version for supported `.validator()` and middleware chaining; `parseOrderInput` is a runtime parser, not TS assertion. Place server-only imports in server modules and test bundle tree shaking.
 
 **CSRF:** With no `src/start.ts`, Start currently installs its CSRF middleware; custom `createStart` config must add it explicitly:
 

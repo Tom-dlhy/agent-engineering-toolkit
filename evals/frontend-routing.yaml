@@ -17,9 +17,9 @@ selection:
     expected: astro-application
 negative_neighbors:
   - query: "UI libraries component libraries compare stack"
-    expected: ui-library-selection
+    expected: ui-component-research
   - query: "shadcn ui radix Base UI component"
-    expected: shadcn-ui
+    expected: base-ui
   - query: "WCAG accessibility contrast screen reader keyboard"
     expected: accessibility-wcag
   - query: "SEO robots sitemap canonical metadata structured data"
