@@ -27,4 +27,4 @@ description: >-
 - [Repeatable visibility benchmark and adversarial review](references/benchmark-contract-and-sanity-checks.md) — **read when** writing evaluator fixtures, de-duplicating URLs, conducting blind claim support checks or guarding against cherry-picked prompts.
 
 ## Handoffs and exit
-`technical-seo` owns Google crawl/index machinery; `content-strategy` owns long-term editorial governance; `ai/model-evaluation` (where present) owns tests of the user's own AI product, not third-party search visibility. A completed report names engine/mode, frozen denominator, tested runs, citations and accurate/unsupported claims. When no live access is available, propose a **test protocol**, never invent a benchmark.
+`technical-seo` owns Google crawl/index machinery; `content-strategy` owns long-term editorial governance; `ai/llm-evaluation` (where present) owns tests of the user's own AI product, not third-party search visibility. A completed report names engine/mode, frozen denominator, tested runs, citations and accurate/unsupported claims. When no live access is available, propose a **test protocol**, never invent a benchmark.

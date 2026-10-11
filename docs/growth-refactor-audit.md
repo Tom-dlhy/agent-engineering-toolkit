@@ -8,7 +8,7 @@
 |---|---|---|---|
 | `technical-seo` | **EXTEND** | HTTP/HTML crawl/index/SSR canonical/schema/redirect regression evidence | Frontend owns framework render APIs; Quality owns performance engineering; AI search visibility does not rewrite Google SEO |
 | `content-strategy` | **EXTEND** | Evidence-led editorial content inventory, creation/refresh, topic and distribution governance | `design/content-design` owns UI microcopy; `landing-page-design` owns actual CTA/landing composition |
-| `ai-search-visibility` | **EXTEND** | External answer-engine citations/mentions and reproducible factual support grading | `technical-seo` owns crawl/index; `ai/model-evaluation` covers own LLM products; no universal AI-search ranking tricks |
+| `ai-search-visibility` | **EXTEND** | External answer-engine citations/mentions and reproducible factual support grading | `technical-seo` owns crawl/index; `ai/llm-evaluation` covers own LLM products; no universal AI-search ranking tricks |
 | `growth-experimentation` | **CREATE** | Causal experiment design, bucketing/exposure, SRM, primary and guardrail metrics, preregistration and decision | `landing-page-design` designs page; `data/analytics-modeling` defines metric/grain; installed analytics/flag provider owns real APIs |
 | `lifecycle-retention` | **CREATE** | Permissioned activation/re-engagement journeys, opt-out/suppression and retention measurement | `content-strategy` owns editorial calendar; backend/ESP owns sending; `growth-experimentation` owns randomized impact |
 

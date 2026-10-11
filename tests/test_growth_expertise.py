@@ -36,10 +36,7 @@ class GrowthExpertiseTests(unittest.TestCase):
         self.assertEqual(set(self.growth), set(GROWTH))
         self.assertEqual(sum(len(indexed_references(s, ROOT)) for s in self.growth.values()), 18)
         for adjacent in ("analytics-modeling", "landing-page-design", "technical-seo",
-                         "content-design", "model-evaluation", "ui-component-research"):
-            if adjacent == "model-evaluation":
-                # The AI provider skill's exact label is immaterial to Growth ownership.
-                continue
+                         "content-design", "llm-evaluation", "ui-component-research"):
             self.assertIn(adjacent, self.catalog)
 
     def test_every_growth_reference_is_selective_and_substantial(self):
