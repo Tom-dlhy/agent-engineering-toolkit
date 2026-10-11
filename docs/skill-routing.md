@@ -2,7 +2,7 @@
 
 This toolkit distinguishes **library size**, **installation profile size** and **activation size**.
 
-1. The library holds 150 local `SKILL.md` files and may grow to hundreds.
+1. The library holds 151 local `SKILL.md` files and may grow to hundreds.
 2. A profile installs only a curated subset (5–20 skills).
 3. The model sees a brief name/description, not a full skill body.
 4. Only 1–3 directly relevant skill bodies should be read for ordinary tasks.

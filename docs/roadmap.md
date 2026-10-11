@@ -2,7 +2,7 @@
 
 ## Current state
 
-- 150 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
+- 151 first-party skills across 12 domains, with light / standard / deep workflows independent of skill knowledge depth.
 - The AWS split, 35 UI provider branches and design/growth/refined methodology work use selective references.
 - Additional skills remain condensed methodological overviews and are scheduled for deeper technical coverage.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
@@ -162,3 +162,19 @@ invariants but **do not** establish real campaign or experiment outcomes.
 Next category: Stacks; final evidence phase: held-out agent tasks, live
 crawl/analytics integrations (authorized only), production browser and provider
 simulations, consent review and measured business impact.
+
+## Stacks final domain refactor — composable selection
+
+Existing `stack-advisor`, `database-selection`, `ui-library-selection`
+are extended in place. One **independent** new `authentication-solution-selection`
+specialist addresses user identity provider choice, federation and session
+risk—not cloud IAM or provider SDKs. Four Stacks skills have 12 targeted
+local reference leaves (11 new, original UI library map retained).
+No ORM/framework/hosting-by-vendor micro-skills, installation profile growth,
+automated dependency installs or production migrations. See
+[Stacks governance audit](stacks-refactor-audit.md).
+
+All 12 categories have now undergone domain-level source review, but this is
+**not** proof of production-quality behavior. Next: cross-category held-out
+agent evaluation and authorized real-project integration, browser, provider
+and security review, documenting where routed skills actually help or collide.

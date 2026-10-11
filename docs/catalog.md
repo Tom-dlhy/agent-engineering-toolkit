@@ -1,6 +1,6 @@
 # Skill catalog and design conventions
 
-The source of truth is `registry/skills.yaml`: 150 first-party skills grouped into 12 domains.
+The source of truth is `registry/skills.yaml`: 151 first-party skills grouped into 12 domains.
 
 | Domain | Focus |
 | --- | --- |
@@ -8,7 +8,7 @@ The source of truth is `registry/skills.yaml`: 150 first-party skills grouped in
 | `architecture` | DDD, ports/adapters, modularity, events and contracts |
 | `backend` | Python, TypeScript, FastAPI and background processing |
 | `frontend` | React, TanStack Start, Next.js, Vue and Svelte |
-| `stacks` | Stack, database and UI library selection |
+| `stacks` | Cross-layer stack, database, UI library and authentication solution selection |
 | `design` | Art direction, flows, information architecture, content, charts, UX and accessibility |
 | `cloud` | AWS, GCP, Azure, Terraform, Cloudflare, Kubernetes, FinOps, SRE |
 | `data` | Data quality, SQL, migrations and performance |
