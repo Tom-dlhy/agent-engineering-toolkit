@@ -53,6 +53,8 @@ content cropping, loading/error/empty and reduced-motion settings.
 Separate blocking UX/a11y defects from aesthetic preference.
 Write issues with route, viewport, selector, reproduction and
 proposed correction. No "looks premium" or unsupported 10/10 scores.
+No automated metric can certify that an interface is free from
+AI-generated template aesthetics; use evidence-led human critique.
 
 ## Component selection / conflict matrix
 

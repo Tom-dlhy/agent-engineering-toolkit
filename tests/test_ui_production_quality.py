@@ -102,7 +102,8 @@ class UIProductionQualityTests(unittest.TestCase):
                 self.assertIn(term,body)
                 self.assertIn(link,body)
         base=(ROOT/self.catalog["base-ui"].path/"SKILL.md").read_text()
-        self.assertNotIn("@base-ui-components/react",base)
+        self.assertNotIn("Read the installed @base-ui-components/react",base)
+        self.assertIn("Read the installed @base-ui/react package",base)
         self.assertIn("asChild",base)
 
     def test_negative_framework_route_remains_accurate(self):
