@@ -1,6 +1,6 @@
 # Design product experience expansion — create only autonomous responsibilities
 
-Reviewed: 2026-10-11. Depends on Design content refactor PR #22.
+Reviewed: 2026-10-11. Originally stacked on Design refactor [PR #22](https://github.com/Tom-dlhy/agent-engineering-toolkit/pull/22); the product-specialist changes merged in [PR #23](https://github.com/Tom-dlhy/agent-engineering-toolkit/pull/23). Both dependencies are resolved in `main`.
 Scope: **four new** narrow, provider-neutral skills. Existing design/UI/data/stack specialists remain authoritative for their own domains. No new category, no external skill vendoring, no charting dependency.
 
 ## Prior governance decisions (charter v2)
@@ -39,4 +39,4 @@ Upstream websites support concepts and should be checked against the installed p
 
 ## Verification and limits
 
-Static tests cover registry unique entries (148 expected after this PR), profile budget, 38 Design leaf references, path-safe reads, lexical routing including negative provider cases and no code-level chart package scaffolding. `evals/design-product-routing.yaml` describes **unrun, model-driven held-out tasks**. Real screen-reader/browser charts, participant usability, true task completion improvement and measured token traces remain an evaluation backlog. Do not call static CI proof of visual quality.
+At the **PR #23 historical snapshot**, static tests covered 148 catalog entries. After subsequent Growth and Stacks merges, the **current catalog contains 151**; the unchanged Design domain has 16 skills and 38 local references. Tests also cover profile budgets, path-safe reads, lexical routing (including negative provider cases) and no code-level chart package scaffolding. `evals/design-product-routing.yaml` describes **unrun, model-driven held-out tasks**. Real screen-reader/browser charts, participant usability, true task completion improvement and measured token traces remain an evaluation backlog. Do not call static CI proof of visual quality.

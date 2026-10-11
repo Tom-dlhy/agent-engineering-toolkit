@@ -1,5 +1,7 @@
 # UI category audit — official source verified patterns and anti-template rules
 
+> **Historical snapshot:** The 144-skill figures in this UI refactor report describe the state at that PR, before the later Design/Growth/Stacks additions. The current merged catalog contains **151 skills**; the UI provider count remains **35**. See [the current roadmap](roadmap.md) and [phase history](expertise-audit.md).
+
 Date: **2026-10-11**. Governance: user-provided Agent Engineering Toolkit
 charter v2. Current main: 144 skills, 20 profiles, 12 domains.
 Starting UI domain: 36 skills = 35 provider specialists + one

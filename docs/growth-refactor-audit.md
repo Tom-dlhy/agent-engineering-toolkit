@@ -71,4 +71,4 @@ All content is original technical synthesis, not a vendored provider skill. Prod
 - No claim of live Search Console indexing, real Google AI citations, growth uplift or delivered marketing messages.
 - CI includes catalog/path validation, unit tests, offline examples, context budgets and existing backend tests. No deployment, external publishing, tracking or CRM send is authorized.
 
-Next: Stacks refactor, then held-out baseline-vs-toolkit evaluations and real authorized browser/crawler/provider integration checks.
+**Historical follow-up:** The Stacks refactor subsequently merged as [PR #25](https://github.com/Tom-dlhy/agent-engineering-toolkit/pull/25). The current next phase is held-out baseline-vs-toolkit agent evaluation plus authorized real browser/crawler/provider integration checks; these are not completed by this audit.
