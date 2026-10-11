@@ -1,32 +1,30 @@
 ---
 name: ai-search-visibility
 domain: growth
-version: "2.0.0"
+version: "3.0.0"
 description: >-
-  Use when evaluating factual brand representation, citations or discoverability in AI-powered search and answer engines (GEO/AEO/AI SEO). Do not promise citations, rankings, or assume AI training updates follow SEO indexing.
+  Use when measuring how real answer engines represent or cite an organization, product or public source across GEO/AEO and AI-assisted search. Do not use for ordinary crawl/index fixes, proprietary LLM app evaluation, prompt injection, guaranteed AI rankings or speculative llms.txt ranking claims.
 ---
 
-# AI search visibility
+# AI search visibility — source integrity plus observed engine behavior
 
-## Scope
+## Separate two problems
+**Source quality:** public factual information can be fetched, understood, attributed and kept current. **Answer behavior:** a particular engine may or may not mention/cite it, depending on query, model, retrieval mode, index, region and time. Neither implies the other.
 
-AI-powered search is not one unified ranking mechanism. Separate **being crawlable and authoritative as a source** from an answer engine choosing to cite or mention that source. Individual engines and modes vary.
+## Evidence-led method
+1. Identify exactly which engine/mode, market, language, target entity, category, canonical source URLs and business questions matter. Do not merge ChatGPT web search, Gemini, Google AI Overviews and other surfaces into a fake unified rank.
+2. Confirm public pages and identity facts; refer robots/index problems to `technical-seo`. For Google AI Search, **ordinary SEO eligibility** applies; no special file/schema is required by Google for AI Overviews/AI Mode. Do not sell shortcuts.
+3. Freeze benchmark queries from real audience intents: brand, nonbrand, comparison, how-to, local and troubleshooting. Record test membership, prompt versions, dates, locales, provider/mode, personalization/account state, repeat runs and whether citation URLs are actually available.
+4. Observe **authorized** outputs; record URL citations, exact supported claims, brand mentions, answer usefulness and sources separately. Do not synthesize fake observations, scrape prohibited endpoints or bypass rate limits.
+5. Analyze uncertainty: exposure and citation availability denominators, missing sources, variability across runs and differences in engine affordances. Changes after publication are correlations unless the design supports causal inference.
+6. Improve first-party source clarity and original proof where justified; do not insert instructions aimed at manipulating AI assistants. No guarantee of training-data updates, retrieval inclusion or citation placement.
+7. Report explicit evidence artifacts, unsupported claims and a repeatable recheck schedule only if scheduled by the operator.
 
-## Method
+## Open one targeted expert branch
+- [Discoverability and factual entity grounding](references/discoverability-and-grounding.md) — **read when** auditing public source quality, ownership, grounding and ethical interventions.
+- [Measurement and uncertainty](references/measurement-and-uncertainty.md) — **read when** designing citation/mention benchmarks or interpreting measured rates.
+- [Search and answer-engine feature boundaries](references/engine-boundaries-and-policies.md) — **read when** comparing Google AI features, standalone assistants, citation modes, crawler controls or supposed AI SEO technical requirements.
+- [Repeatable visibility benchmark and adversarial review](references/benchmark-contract-and-sanity-checks.md) — **read when** writing evaluator fixtures, de-duplicating URLs, conducting blind claim support checks or guarding against cherry-picked prompts.
 
-1. Define the target engine, market, user question and whether real source links/citations are exposed.
-2. Verify public content, canonical URLs, clearly stated facts, documentation freshness and business identifiers; technical crawl/index blockers belong to technical-seo.
-3. Choose a reproducible question set with brand, nonbrand, comparison, local and troubleshooting intents; freeze queries and denominators.
-4. Observe real outputs only in approved environments, preserving timestamp, locale, mode and citations. Never invent results or scrape against service terms.
-5. Grade factual accuracy, attribution and usefulness separately from brand mention. Repeat tests to expose variability.
-6. Recommend real content/source improvements: first-party evidence, explicit answers, original methodology, structured human-readable HTML and source references. Avoid speculative "secret LLM ranking factor" recipes.
-7. Explain uncertainty and choose metrics that can be reproduced. A page can be a good source and still not be cited by a particular assistant.
-
-## Branches — open only what is needed
-
-- [Public source quality and entity grounding](references/discoverability-and-grounding.md) — **read when** improving public source content to be understandable, identifiable and potentially citable.
-- [Answer-engine evaluation and claims](references/measurement-and-uncertainty.md) — **read when** establishing a baseline, measuring citations/mentions or assessing AI SEO vendors.
-
-## Boundaries
-
-This is not llm-evaluation for your own model app, not technical-seo for crawler headers, and not editorial calendar planning; call those specialists when needed.
+## Handoffs and exit
+`technical-seo` owns Google crawl/index machinery; `content-strategy` owns long-term editorial governance; `ai/model-evaluation` (where present) owns tests of the user's own AI product, not third-party search visibility. A completed report names engine/mode, frozen denominator, tested runs, citations and accurate/unsupported claims. When no live access is available, propose a **test protocol**, never invent a benchmark.
