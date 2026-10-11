@@ -72,3 +72,20 @@ See [Python decision matrix](python-engineering-v2.md) and source notes. Static 
 All **five Core skills** were audited and refactored in place: task-routing, systematic-debugging, verification-before-done, skill-authoring and requirements-discovery. Four previously short skills gained **eight targeted procedural leaves**; requirements-discovery retains its two substantial leaves with clearer activation boundaries. No new skill was registered.
 
 The registry's **66 historical maturity fields were removed** without adding replacement tiers or ranks. All reference paths declared by any skill now receive the same structural safety validation; no arbitrary two-leaf minimum is imposed on methodological skills. Exact-depth and behavioral evidence are still needed per technical domain before claiming individual task readiness. See [Core audit and test matrix](core-refactor-audit.md).
+
+## Phase 6 — Quality category and verified technical methods
+
+Seven pre-existing Quality skills were refactored **without creating another
+registered skill**. Six short methodological entries now have three deep,
+task-directed local references; the existing external-skill-audit gained an
+adversarial-evaluation leaf. This contributes **19 new leaves** and a total
+of 21 indexed Quality references. See [Quality refactor audit](quality-refactor-audit.md).
+
+Methods and claims were compared against primary official sources including
+pytest, OWASP ASVS 5.0.x, NIST SSDF final 1.1, GitHub Actions/rulesets,
+SLSA 1.2, Python profiling and Grafana k6. The tests cover deterministic
+discovery/negative routing, leaf access and a separate educational
+authorization/idempotency fixture. Real penetration/load tests, provider
+environments and agent behavioral evaluations remain unperformed.
+Every skill continues to obey the same **uniform** quality contract; no
+maturity ranks.

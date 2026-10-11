@@ -97,3 +97,24 @@ python scripts/context_budget.py --profile python-llm-production --activated pyt
 ~~~
 
 See [Python architecture and stack decision matrix](docs/python-engineering-v2.md) for lightweight vs production choices and official provider docs. Provider-specific model IDs, quotas, SDK versions and endpoints require verification in the target project; docs are not deployment authorization.
+
+## Quality engineering (risk-based, primary-source reviewed)
+
+Seven focused Quality specialists cover testing, code security, dependency
+supply chains, performance profiling, release decisions, GitHub PR workflows
+and adversarial external-skill intake. Their activation pages selectively route
+to **21 local deep reference leaves** (19 added in this refactor). The documented
+method uses pytest/Playwright/Hypothesis, OWASP ASVS, NIST SSDF, GitHub security
+guidance, SLSA, Python cProfile and k6 as appropriate; it does not load all
+Quality materials for a routine code edit.
+
+~~~bash
+python scripts/skillctl.py search "pytest integration contract regression"
+python scripts/skillctl.py references secure-code-review
+python scripts/skillctl.py read-ref secure-code-review references/threat-boundaries-asvs.md
+python -m unittest discover -s tests -p 'test_quality_contract_examples.py' -v
+~~~
+
+See [Quality audit, citations and evidence limitations](docs/quality-refactor-audit.md).
+Source guidance is linked, not executed. A green structural CI is not
+proof of a production penetration test, load SLO or live cloud IAM.

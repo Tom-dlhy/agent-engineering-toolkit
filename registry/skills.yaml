@@ -416,31 +416,31 @@ skills:
   - name: dependency-supply-chain
     domain: quality
     path: skills/quality/dependency-supply-chain
-    keywords: ["dependency","npm","pip","security","sbom","vulnerability"]
+    keywords: ["dependency","dependencies","supply","chain","sbom","provenance","vulnerability","lockfile","actions","cve"]
   - name: external-skill-audit
     domain: quality
     path: skills/quality/external-skill-audit
-    keywords: ["external", "import", "find", "discover", "skills", "github", "license", "security", "audit", "provenance"]
+    keywords: ["external","skill","skills","import","intake","provenance","license","audit","find","discover"]
   - name: git-pr-workflow
     domain: quality
     path: skills/quality/git-pr-workflow
-    keywords: ["git","github","pr","branch","pull","request","review","merge"]
+    keywords: ["git","pr","github","pull","request","branch","merge","ruleset","review","checks"]
   - name: performance-profiling
     domain: quality
     path: skills/quality/performance-profiling
-    keywords: ["performance","optimize","profiling","latency","web","vitals"]
+    keywords: ["performance","profiling","latency","p95","p99","benchmark","cprofile","k6","bottleneck"]
   - name: release-readiness
     domain: quality
     path: skills/quality/release-readiness
-    keywords: ["release","prod","go","live","deployment","readiness"]
+    keywords: ["release","readiness","go","no-go","rollback","canary","migration","deploy","rollout"]
   - name: secure-code-review
     domain: quality
     path: skills/quality/secure-code-review
-    keywords: ["security","audit","review","vulnerability","authentication","authorization"]
+    keywords: ["security","secure","code","review","owasp","asvs","ssrf","injection","authorization","tenant"]
   - name: test-strategy
     domain: quality
     path: skills/quality/test-strategy
-    keywords: ["test","pytest","unit","integration","coverage","tdd","qa"]
+    keywords: ["test","testing","pytest","unit","integration","contract","e2e","property","concurrency","coverage","tdd"]
   - name: database-selection
     domain: stacks
     path: skills/stacks/database-selection

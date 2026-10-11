@@ -1,20 +1,53 @@
 ---
 name: test-strategy
 domain: quality
-version: "0.1.0"
+version: "0.2.0"
 description: >-
-  Use when choosing effective verification for a feature, refactor, bug fix or integration. Do not impose arbitrary 100 percent coverage or TDD ceremony on unrelated content-only edits.
+  Use when choosing and implementing risk-based unit, integration, contract,
+  end-to-end, property-based or concurrency tests for software changes.
+  Do not impose arbitrary 100% coverage or duplicate the evidence gate.
 ---
 
-# test-strategy
+# Test strategy — prove contracts and failure behavior
 
-## Risk-driven coverage
-Identify critical invariants, likely regressions and trust boundaries. Use unit tests for pure logic; integration tests for persistence, transport and cloud adapters; contract tests for provider interfaces; E2E tests for the most valuable user journeys.
+## Intake
+Read the requirement, current tests, runtime/toolchain and change surface first.
+Identify business invariants, state transitions, trust boundaries, persistent
+effects, external dependencies and likely regressions. Distinguish what can be
+proven with fakes from what requires a real database/browser/provider.
 
-Prioritize negative cases, error recovery, race/retry behavior and permission boundaries when appropriate. Keep tests deterministic, isolated and fast enough to run frequently; avoid excessive mocking of the system under test.
+## Decisions
+1. **Pure rules** → isolated fast unit tests with representative boundary inputs.
+2. **Database, HTTP, queues, third-party adapters** → integration/contract tests
+   with realistic dependencies; test error, timeout, duplicate and cancellation.
+3. **Public protocol or versioned schema** → producer/consumer contract checks
+   including backward/forward compatibility; a generated OpenAPI schema is not
+   proof a live endpoint conforms.
+4. **Critical user journey** → a small number of browser/API E2E scenarios
+   covering both success and recovery; prefer user-visible locators.
+5. **Many combinatorial inputs/invariants** → property-based or metamorphic tests
+   where a meaningful oracle exists, plus persisted regression examples.
+6. **Parallelism, retries, races** → explicit deterministic interleavings or
+   fault injection; don't claim one stress run proves race-freedom.
 
-## Implementation
-For a bug, first capture a failing regression test when feasible. For new features, choose TDD when behavior can be specified clearly; otherwise pair implementation and tests incrementally. Use fixtures/fakes deliberately and run relevant checks before claiming success.
+Choose a balanced portfolio by *failure cost and likelihood*, not percentages
+or test-pyramid dogma. Preserve developer feedback speed by separating fast
+PR checks, slower integration and authorized scheduled/load tests.
 
-## Evidence
-State which risks the suite covers, what ran successfully and remaining gaps.
+## Reference router
+- [Test-design matrix and determinism](references/risk-matrix-and-test-design.md) —
+  **read when** designing coverage from requirements, choosing fixtures/fakes,
+  isolating test state or avoiding misleading coverage targets.
+- [Integration, contract and E2E](references/integration-contract-e2e.md) —
+  **read when** testing persistence, network APIs, event contracts, browser
+  behavior or lifecycle against production-like components.
+- [Property, concurrency and fault injection](references/property-concurrency-failures.md) —
+  **read when** validating invariants over many inputs, idempotency, retries,
+  crashes and hard-to-reproduce interleavings.
+
+## Boundaries and exit
+verification-before-done decides whether checks **ran** and support completion.
+systematic-debugging investigates a failure. secure-code-review owns threat
+hypotheses; this skill designs executable coverage for them. Report a
+test-to-risk map, commands actually executed, isolation, pass/fail/skips
+and remaining unverified conditions. Never invent test counts.

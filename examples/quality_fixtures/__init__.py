@@ -1,0 +1,1 @@
+"""Illustrative only: in-memory negative-test fixture, NOT production persistence."""
