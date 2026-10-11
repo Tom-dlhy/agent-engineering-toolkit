@@ -26,7 +26,7 @@ class UIExpertiseTests(unittest.TestCase):
 
     def test_exact_provider_count_and_deduplicated_selector(self):
         self.assertEqual(len(self.providers), 35)
-        self.assertEqual(len(self.skills), 163)
+        self.assertEqual(len(self.skills), 166)
         self.assertEqual(self.skills["ui-library-selection"].path,
                          "skills/stacks/ui-library-selection")
 
