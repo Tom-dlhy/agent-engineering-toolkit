@@ -2,15 +2,15 @@
 
 **Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
 
-A growing library of **106 first-party skills across 12 domains**, with **15 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A growing library of **113 first-party skills across 12 domains**, with **16 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
 
-> Status: progressive expertise refactor underway. Seven AWS skills use expert-v2 structure; 35 UI provider skills and 11 design/growth/intake skills use expanded-v2 structure. Remaining skills are still scheduled for deeper content review. Static validation is not proof of real agent expertise.
+> Status: progressive expertise refactor underway. Seven AWS skills use expert-v2 structure; 35 UI provider skills and 11 design/growth/intake skills and 13 Python/LLM specialists use expanded-v2 structure. Remaining skills are still scheduled for deeper content review. Static validation is not proof of real agent expertise.
 
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
 
-- **106 skills stored** in the library; only **5–20 installed** in a project profile.
+- **113 skills stored** in the library; only **5–20 installed** in a project profile.
 - **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
 - **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
 - **Validation and tests** run without using any LLM tokens.
@@ -83,3 +83,17 @@ python scripts/skillctl.py read-ref interaction-motion references/easing-and-imp
 ~~~
 
 All commands preview installations by default. No external scripts are executed or external source data copied; see [selection and pinned provenance](docs/design-growth-source-review.md). Do not treat AI visibility as a guaranteed ranking or inclusion mechanism.
+
+## Python production engineering and LLM providers
+
+Python V2 adds focused expertise on application architecture, HTTPX clients, SQLAlchemy persistence, observability, FastAPI lifecycle, async/worker capacity, cloud-native AI inference and LangChain/LiteLLM tradeoffs. **The catalog keeps one narrow activated SKILL.md and selectively read deep references**, instead of loading all Python/provider material for a simple bug fix.
+
+~~~bash
+python scripts/skillctl.py search "FastAPI lifespan Pydantic HTTPX" --profile python-backend
+python scripts/skillctl.py search "Azure Foundry Responses" --profile python-llm-production
+python scripts/skillctl.py references python-llm-gateways
+python scripts/skillctl.py read-ref python-llm-gateways references/litellm-routing.md
+python scripts/context_budget.py --profile python-llm-production --activated python-llm-gateways --reference python-llm-gateways:references/litellm-routing.md
+~~~
+
+See [Python architecture and stack decision matrix](docs/python-engineering-v2.md) for lightweight vs production choices and official provider docs. Provider-specific model IDs, quotas, SDK versions and endpoints require verification in the target project; docs are not deployment authorization.

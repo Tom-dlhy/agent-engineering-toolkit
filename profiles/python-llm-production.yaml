@@ -1,0 +1,21 @@
+name: python-llm-production
+description: Opt-in Python LLM application development, typed boundaries, native AWS/GCP/Azure, gateways, persistence and release QA.
+skills:
+  - task-routing
+  - verification-before-done
+  - modern-python
+  - python-project-architecture
+  - fastapi-service
+  - python-http-clients
+  - python-persistence
+  - python-observability
+  - llm-integration
+  - python-llm-gateways
+  - aws-bedrock
+  - gcp-vertex-ai
+  - azure-ai-foundry
+  - agent-tool-safety
+  - llm-evaluation
+  - background-jobs
+  - test-strategy
+  - secure-code-review

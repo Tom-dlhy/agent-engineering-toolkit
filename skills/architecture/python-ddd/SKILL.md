@@ -1,38 +1,22 @@
 ---
 name: python-ddd
 domain: architecture
-version: "0.1.0"
+version: "2.0.0"
 description: >-
-  Use when modeling complex Python business rules, bounded contexts, aggregates, value objects or ports and adapters. Do not use for a trivial CRUD service where DDD would introduce needless ceremony.
+  Use when Python business complexity justifies bounded contexts, domain aggregates, value objects, consistency invariants or domain events. Do not impose entities, factories and repositories on a simple CRUD service.
 ---
 
-# python-ddd
+# Python DDD — domain modeling only when justified
 
-## Boundaries
-Start from business language, invariants and bounded contexts; identify aggregate consistency boundaries. Keep domain entities, value objects and domain services framework-free. Application use cases orchestrate the domain; infrastructure implements persistence, messaging or cloud dependencies.
+## Decide
+1. Is domain language contested, are invariants complex or multiple teams share different meanings? If not, prefer layered/feature-first Python application.
+2. Draw context map and aggregate ownership from actual business capabilities. Keep domain entities/value objects free of FastAPI, SQLAlchemy and HTTPX.
+3. Enforce invariants in domain methods and DB constraints; application use case orchestrates transaction, auth and external ports.
+4. Map transport DTO, domain types and ORM models at appropriate boundaries; don't create a useless generic mapper for trivial cases.
+5. Test domain invariant failure and concurrent persistence; remember fake repository tests cannot prove database isolation.
 
-Dependencies point inward: HTTP handlers, SQLAlchemy models and boto3 clients must not leak into domain logic.
+## References
+- [Bounded contexts, entities, value objects and invariants](references/domain-modeling.md) — read when modeling complex business behavior and consistency boundaries.
+- [Use cases, ports, UoW and domain event publishing](references/application-and-events.md) — read when coordinating domain changes, DB transactions and external side effects.
 
-## Python pattern
-~~~python
-from typing import Protocol
-
-class CustomerRepository(Protocol):
-    def get(self, customer_id: str) -> "Customer | None": ...
-    def save(self, customer: "Customer") -> None: ...
-
-class RegisterCustomer:
-    def __init__(self, customers: CustomerRepository) -> None:
-        self.customers = customers
-
-    def execute(self, customer: "Customer") -> None:
-        customer.validate_invariants()
-        self.customers.save(customer)
-~~~
-
-Use dependency injection at the composition root to bind infrastructure adapters to ports. Validate domain invariants in the domain, not in HTTP-only request parsing. Map between domain models, persistence models and transport DTOs explicitly.
-
-## Anti-patterns and verification
-Avoid "domain" classes that are ORM aliases, generic repository abstractions created preemptively, and remote calls hidden inside entities. Test business use cases against in-memory fakes; run adapter contract tests against actual SDK/database boundaries.
-
-This improves portability but does not eliminate provider-specific behavior, data-format coupling or migration cost. Record deliberate tradeoffs.
+For overall architecture choice use python-project-architecture; hexagonal-architecture owns ports/adapters principle, python-persistence owns DB session and outbox mechanism.

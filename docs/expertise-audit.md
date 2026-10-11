@@ -58,3 +58,11 @@ Current PR #11 increases the catalog to **106 unique skills across 12 domains** 
 A total of **24 new local reference leaves** were authored with narrow read conditions. The 11 affected skills are classified `expanded-v2` rather than `expert-v2` until real agent behavioral evaluations and domain-specific runtime/browsing tests support promotion. The original seven AWS `expert-v2` and 35 UI `expanded-v2` skills remain intact. All external source decisions and immutable revisions are documented in [source review](design-growth-source-review.md); scripts, hooks and datasets were not copied.
 
 **Remaining coverage gaps:** backend and databases still lack deep references; GCP/Azure/Cloudflare specialization, full framework coverage and rigorous evaluation remain future phases. Documented SEO methods do not guarantee public indexing, rich results or AI-answer citations.
+
+## Phase 4 — Python architecture + production LLM multi-provider integration
+
+This branch starts from a merged 106-skill main and reaches **113 skills / 16 profiles**. It creates seven narrowly triggered specialists: `python-project-architecture`, `python-http-clients`, `python-persistence`, `python-observability`, `python-llm-gateways`, `gcp-vertex-ai`, `azure-ai-foundry`. It substantively rewrites `modern-python`, `fastapi-service`, `background-jobs`, `python-ddd`, `hexagonal-architecture` and `llm-integration` — not duplicated.
+
+35 local leaves include typed Python/package/async/settings/architecture guidance, FastAPI/Pydantic/HTTPX, SQLAlchemy and transactions, JSON logs/OpenTelemetry, LLM contracts/production risk, LiteLLM/LangChain/LangGraph, GCP Google Gen AI, Microsoft Foundry and Python DDD/ports/jobs. The existing AWS Bedrock specialist is reused rather than recreated. All new or substantially revised skills are marked `expanded-v2` until true integration/agent evals verify behavior and model versions.
+
+See [Python decision matrix](python-engineering-v2.md) and source notes. Static checks validate routing/leaf paths/context safety, **not** real credentials, production scaling, correctness of every vendor variant or cost/quality; examples require target-version verification.

@@ -1,18 +1,27 @@
 ---
 name: modern-python
 domain: backend
-version: "0.1.0"
+version: "2.0.0"
 description: >-
-  Use when structuring Python projects with type hints, uv, packaging, testing, linting and robust runtime behavior. Do not use when Python is not the implementation language.
+  Use for Python runtime, package structure, type safety, dependency management, concurrency choices, configuration and Python-specific code quality. Do not use instead of FastAPI, SQLAlchemy, HTTPX or LLM provider specialists.
 ---
 
-# modern-python
+# Modern Python — engineering foundations
 
-## Project conventions
-Specify supported Python versions, use `pyproject.toml` with a reproducible dependency lock, source layout appropriate to distribution needs and narrow public interfaces. Use `uv` when compatible with project conventions.
-## Correctness
-Use type hints and static checking for boundaries, explicit exceptions, context managers for resources and dataclasses or Pydantic only when appropriate. Avoid shared mutable defaults, hidden globals, import-time side effects and broad `except Exception` handlers.
-## Testing
-Use pytest/unittest with temp directories and deterministic fixtures. Unit-test pure logic; integration-test database, filesystem and HTTP boundaries. Run `ruff`, type checker, tests and packaging smoke checks per project's documented toolchain.
-## Performance
-Profile before async or concurrency rewrites; distinguish I/O-bound from CPU-bound work.
+## Decide before scaffolding
+1. Identify project type (one-off script, CLI/library, worker, API, ML experiment), Python versions, package manager, lockfile, deployment platform and existing conventions. No migration for fashion.
+2. Define untrusted inputs, domain invariants, side-effect boundaries, error contracts, lifecycle and cancellation.
+3. Choose sync versus async from actual I/O drivers and latency; do not use async as a CPU acceleration technique.
+4. Select the lightest project structure that preserves testing and deployment. Record reasons before introducing extra abstraction.
+5. Establish reproducible builds, typed boundaries, static checks, deterministic tests and release/rollback criteria.
+
+## Targeted references
+- [Python packaging, uv and builds](references/project-packaging.md) — read when choosing project layout, dependency pinning, locking, CI or distribution.
+- [Typing, domain contracts and exceptions](references/typing-and-quality.md) — read when defining interfaces, data types, validation or reviewing maintainability.
+- [Concurrency, capacity and performance](references/concurrency-and-performance.md) — read when deciding sync vs async, threads/processes/workers, rate limits or bottlenecks.
+- [Pydantic settings and secrets](references/settings-and-secrets.md) — read when setting env config, cache lifetime, secret injection and fail-fast startup.
+
+Use python-project-architecture for layout decisions, fastapi-service for ASGI, python-http-clients for outbound REST, python-persistence for databases, python-observability for telemetry, and llm-integration for models.
+
+## Done
+Version and toolchain recorded, type/lint/test/build commands run where available, runtime budgets and failure modes examined, no secret or hidden global side effect.

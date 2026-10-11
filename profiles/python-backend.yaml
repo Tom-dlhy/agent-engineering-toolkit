@@ -5,6 +5,10 @@ skills:
   - verification-before-done
   - systematic-debugging
   - modern-python
+  - python-project-architecture
+  - python-http-clients
+  - python-persistence
+  - python-observability
   - python-ddd
   - hexagonal-architecture
   - fastapi-service
