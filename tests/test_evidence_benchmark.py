@@ -27,7 +27,7 @@ def case(variant: str, trial: int = 0, **override):
 
 
 def trio(trial=0, **by_variant):
-    return [case(v, trial, **by_variant.get(v, {})) for v in
+    return [{**case(v, trial), **by_variant.get(v, {})} for v in
             ("baseline", "knowledge", "full")]
 
 
