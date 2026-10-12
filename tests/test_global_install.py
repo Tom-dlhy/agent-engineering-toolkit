@@ -120,6 +120,75 @@ class GlobalGatewayTests(unittest.TestCase):
             home=self.home, apply=True)
         self.assertFalse((self.home / ".agents/skills/aet").exists())
 
+    def test_one_command_removes_both_hosts_preserves_other_skills_and_reinstalls(self):
+        unrelated = []
+        for host_dir in (".agents", ".claude"):
+            foreign = self.home / host_dir / "skills/unrelated/SKILL.md"
+            foreign.parent.mkdir(parents=True, exist_ok=True)
+            foreign.write_text("User-owned unrelated skill", encoding="utf-8")
+            unrelated.append(foreign)
+
+        run("install", ("codex", "claude"), source=self.source,
+            home=self.home, apply=True)
+        preview, code = run("uninstall", ("codex", "claude"),
+                            source=self.source, home=self.home)
+        self.assertEqual(code, 0)
+        self.assertFalse(preview["applied"])
+        self.assertEqual(
+            [preview["agents"][agent]["operations"][0]["action"]
+             for agent in ("codex", "claude")],
+            ["remove", "remove"],
+        )
+        for host_dir in (".agents", ".claude"):
+            self.assertTrue((self.home / host_dir / "skills/aet/SKILL.md").exists())
+
+        result, code = run("uninstall", ("codex", "claude"),
+                           source=self.source, home=self.home, apply=True)
+        self.assertEqual(code, 0)
+        self.assertTrue(result["applied"])
+        for agent, host_dir in (("codex", ".agents"), ("claude", ".claude")):
+            self.assertFalse((self.home / host_dir / "skills/aet").exists())
+            self.assertEqual(
+                ManagedInstaller(self.source, agent, "user", home=self.home)
+                ._state()["selected"], []
+            )
+        for foreign in unrelated:
+            self.assertEqual(foreign.read_text(), "User-owned unrelated skill")
+        self.assertTrue((self.home / ".aet").is_dir())
+
+        # Repeated removal is harmless, and the same managed copy can be installed again.
+        result, code = run("uninstall", ("codex", "claude"),
+                           source=self.source, home=self.home, apply=True)
+        self.assertEqual(code, 0)
+        self.assertTrue(all(not agent["operations"]
+                            for agent in result["agents"].values()))
+        run("install", ("codex", "claude"),
+            source=self.source, home=self.home, apply=True)
+        report, code = run("doctor", ("codex", "claude"),
+                           source=self.source, home=self.home)
+        self.assertEqual(code, 0)
+        self.assertTrue(all(agent["gateway_installed"]
+                            for agent in report["agents"].values()))
+        for foreign in unrelated:
+            self.assertTrue(foreign.exists())
+
+    def test_uninstall_preflights_both_hosts_if_one_is_modified(self):
+        run("install", ("codex", "claude"),
+            source=self.source, home=self.home, apply=True)
+        changed = self.home / ".claude/skills/aet/index/backend.md"
+        changed.write_text("Local user edit", encoding="utf-8")
+        with self.assertRaisesRegex(InstallError, "conflicts"):
+            run("uninstall", ("codex", "claude"),
+                source=self.source, home=self.home, apply=True)
+        self.assertTrue((self.home / ".agents/skills/aet/SKILL.md").exists())
+        self.assertEqual(changed.read_text(), "Local user edit")
+        # The user can still opt to uninstall only the unaffected host.
+        result, code = run("uninstall", ("codex",),
+                           source=self.source, home=self.home, apply=True)
+        self.assertEqual(code, 0)
+        self.assertFalse((self.home / ".agents/skills/aet").exists())
+        self.assertTrue(changed.exists())
+
     def test_modified_gateway_blocks_update_or_removal(self):
         run("install", ("codex",), source=self.source, home=self.home, apply=True)
         guide = self.home / ".agents/skills/aet/index/backend.md"

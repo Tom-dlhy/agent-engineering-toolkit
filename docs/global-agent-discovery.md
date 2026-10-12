@@ -43,6 +43,41 @@ python scripts/aet_global.py update --apply
 python scripts/aet_global.py uninstall --apply
 ```
 
+### Rollback if you do not like AET
+
+From the **same AET checkout**, preview exactly what will be removed:
+
+```bash
+python scripts/aet_global.py uninstall
+```
+
+If the preview shows only the managed `aet` gateway, undo both installations:
+
+```bash
+python scripts/aet_global.py uninstall --apply
+```
+
+This removes `~/.agents/skills/aet/` and `~/.claude/skills/aet/`, including
+the bundled 178 on-demand guides, but **not other skills, your projects,
+host configuration, or user-authored files**. Pass `--agent codex` or
+`--agent claude` to remove only one. Removing twice is safe. Start a fresh
+host session afterward so it stops advertising cached skill metadata.
+
+The installer intentionally leaves small, authenticated ownership records in
+`~/.aet/` and trust keys in
+`~/.config/agent-engineering-toolkit/trust/` (or `AET_TRUST_HOME` if set).
+They are inert, and may belong to other AET managed installations: **do not
+delete either directory wholesale**. The uninstall command needs the AET
+checkout and its Python dependencies available; run it **before** removing
+the checkout. After removal, `doctor` returns status 2 because the gateway
+is no longer installed; inspect the two skill paths instead.
+
+If either gateway contains local edits or unowned files, the command stops
+rather than deleting them. The two hosts are checked before any removal,
+though cross-host operations are not an atomic transaction. Review changes,
+restore the original bytes if appropriate, then retry; never work around the
+safety guard with an indiscriminate recursive deletion.
+
 Select only one host with `--agent codex` or `--agent claude`. Omitting
 `--apply` previews any operation; `plan` is always read-only.
 For `--agent both`, both destinations are checked for conflicts before any

@@ -127,6 +127,12 @@ python scripts/aet_global.py install --apply
 python scripts/aet_global.py doctor
 ```
 
+To remove it later: `python scripts/aet_global.py uninstall` previews the
+removal; `python scripts/aet_global.py uninstall --apply` removes the two
+managed `aet` skill directories. Other skills and host settings are untouched.
+Run this from the AET checkout **before deleting that checkout**. The signed
+ownership metadata remains; see [safe rollback](docs/global-agent-discovery.md#rollback-if-you-do-not-like-aet).
+
 Then start a new Codex/Claude Code session in **any unrelated project**.
 Only `aet` is exposed as a native skill; it links to compact domain indexes
 and all specialist content copied in its own directory. The host decides
