@@ -11,7 +11,7 @@ A growing library of **177 first-party skills across 14 domains**, with **20 sma
 The new installer is available **opt-in**. It provides cumulative and
 idempotent skills, per-file SHA ownership, read-only doctor, update/repair/
 uninstall, journaled recovery, user scope and verifiable native Claude Code/
-Codex plugin marketplaces. The legacy copy-only installer is deprecated.
+Codex plugin marketplaces. The legacy copy-only installer is deprecated. Signed ownership records are required for managed operations; old unsigned ledgers require explicit audited sealing before migration.
 
 ~~~bash
 python scripts/manage_install.py plan --agent codex --profile web-app --project /path/to/app
@@ -21,7 +21,7 @@ python scripts/package_plugins.py build --profile web-app --output dist/web-app 
 python scripts/package_plugins.py verify --output dist/web-app
 ~~~
 
-Read the [Installer v2 guide](docs/installer-v2.md). Live host activation tests
+Read the [Installer v2 guide](docs/installer-v2.md) and the [security/migration runbook](docs/installer-v2-security.md). Live host activation tests
 are still required before asserting full production/SOTA qualification.
 
 ## Why
