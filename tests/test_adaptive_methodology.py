@@ -70,8 +70,9 @@ class AdaptiveMethodologyTests(unittest.TestCase):
 
     def test_planning_is_opt_in_not_in_minimal(self):
         self.assertNotIn("implementation-planning", load_profile("minimal", ROOT))
-        for profile in ("fullstack", "web-app", "python-backend", "devops"):
+        for profile in ("web-app", "python-backend", "devops"):
             self.assertIn("implementation-planning", load_profile(profile, ROOT))
+        self.assertNotIn("implementation-planning", load_profile("fullstack", ROOT))
         for persona in ("execution-orchestrator", "review-feedback-arbiter"):
             for profile in ("minimal", "fullstack", "web-app", "devops"):
                 self.assertNotIn(persona, load_profile(profile, ROOT))

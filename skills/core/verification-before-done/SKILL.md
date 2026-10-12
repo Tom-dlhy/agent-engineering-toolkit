@@ -5,7 +5,7 @@ version: "1.0.0"
 description: >-
   Use when checking whether actual source, test, integration or review evidence
   supports completion of a software, infrastructure, data or documentation task.
-  Scale checks to risk and R0/R1/R2 review obligations; do not equate a self-review
+  Scale checks to risk and R0/R1/R2 review obligations. Do not equate a self-review
   or CI on a stale revision with independent approval or production readiness.
 ---
 
