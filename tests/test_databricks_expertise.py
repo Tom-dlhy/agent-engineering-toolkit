@@ -34,13 +34,13 @@ class DatabricksExpertiseTests(unittest.TestCase):
         )
 
     def test_catalog_invariants_and_distinct_provider_scope(self):
-        self.assertEqual(len(self.catalog), 177)
+        self.assertEqual(len(self.catalog), 178)
         self.assertEqual(len({s.domain for s in self.catalog.values()}), 14)
         platform = {n for n,s in self.catalog.items() if s.domain == "data-platforms"}
         self.assertEqual(len(platform), 11)
         self.assertEqual({n for n in platform if n.startswith("databricks-")}, DATABRICKS)
         self.assertEqual(len({n for n in platform if n.startswith("snowflake-")}), 5)
-        self.assertEqual(len(list((ROOT / "skills").glob("*/**/references/*.md"))), 415)
+        self.assertEqual(len(list((ROOT / "skills").glob("*/**/references/*.md"))), 423)
 
     def test_each_specialist_has_independent_deep_refs_and_factual_sources(self):
         for name in sorted(DATABRICKS):
