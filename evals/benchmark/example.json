@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "tasks": [
+    {
+      "id": "email-normalization",
+      "prompt": "Fix normalize_email so it consistently normalizes case while preserving the existing trim behavior. Add or adjust a targeted test; avoid unrelated changes.",
+      "fixture_dir": "evals/benchmark/fixture-string-bug",
+      "fixture_sha256": null,
+      "technical_skills": [
+        "systematic-debugging",
+        "test-strategy"
+      ],
+      "check_argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "expected": "normalize_email of '  USER@Example.COM  ' equals 'user@example.com' and existing trim behavior remains",
+      "risk": "standard"
+    }
+  ]
+}
