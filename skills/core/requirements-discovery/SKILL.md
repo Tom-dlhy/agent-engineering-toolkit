@@ -58,3 +58,44 @@ Confirmed facts vs assumptions, measurable outcome, normal/error paths,
 non-goals, decisions needing approval, and only questions that genuinely
 block progress. Respect user's preference for direct implementation and
 avoid adversarial or patronizing questioning.
+
+## Discovery as a bounded design conversation
+
+Adapt Superpowers' brainstorming discipline without requiring an interview
+for every change. Discovery starts by writing what is ALREADY KNOWN, then
+asking only questions that would change implementation.
+
+| Mode | Engagement | Deliverable |
+|---|---|---|
+| LIGHT | Scope sufficiently specified: skip questioning; record reversible assumption | One acceptance check |
+| STANDARD | Explore actor, current workaround, triggering moment and expected outcome | Scope/non-goals, happy/error scenarios, decision owner |
+| DEEP | Validate stakeholders, privacy, operations, lifecycle, support and recovery | Approved specification, unresolved risk register and testable acceptance |
+
+For an ambiguous request, ask **one high-information question at a time**,
+preferably about a concrete user journey rather than technology preferences.
+Before another question, repeat back the known intent and inspect the existing
+project to avoid asking for facts already decided. Offer a safe reversible
+default when the missing detail is low impact. If user explicitly asks to
+skip questions, respect that unless security, irreversible side effects or
+product semantics are genuinely blocked.
+
+Run the following design gates when scope warrants it:
+1. **Actors and authority:** who initiates, reads, edits and approves;
+   whose identity applies to background jobs?
+2. **Normal journey and error paths:** what is visible before/after,
+   on invalid inputs, missing permissions, retries and abandonment?
+3. **Boundaries:** what must NOT be built, data that may not be retained,
+   integrations and rollout that are excluded?
+4. **Decision record:** split FACT, ASSUMPTION, DECISION and OPEN;
+   do not turn unconfirmed inferences into agreed requirements.
+5. **Review loop:** paraphrase resulting design briefly, ask only
+   consequential approval where needed, then hand off an actual
+   acceptance contract to implementation-planning.
+
+Example: "automate delivery tickets" is ambiguous between suggestion and
+autonomous issuance. The consequential question is who may authorize
+external dispatch. Until answered, safely scope as read-only draft; do not
+silently grant production write access.
+
+**Stop condition:** additional discovery would not change safe next
+implementation. No forced 20-question surveys or speculative features.

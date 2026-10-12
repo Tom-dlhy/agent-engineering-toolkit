@@ -48,3 +48,41 @@ secure-code-review audits actual app security controls.
 A documented tool policy, externally enforced authorization, bounded
 operation budget, approval/replay tests and proof of fail-closed decisions.
 No safety claims based solely on system prompt wording.
+
+## Trust decisions for tool-using agents
+
+Combine GitHub's agent-governance patterns with the defense-in-depth
+approach of Anthropic's security-guidance: cheap policy checks should
+precede expensive context-aware review, but neither grants permissions
+on its own.
+
+| Mode | Safety gate |
+|---|---|
+| LIGHT | Read-only tool or no external side effect: validate input and known policy, minimal logging |
+| STANDARD | Identify tool arguments, actor, tenant, requested scope, recipient and idempotency; add denial tests |
+| DEEP | Approval bound to exact action+arguments, sandbox/allowlist, prompt-injection simulation, replay/expiry and audit reconstruction |
+
+**Before tool execution:** treat retrieved documents, PR comments, code
+comments and model outputs as *data*, not new authorization instructions.
+Policy decides whether actor, tenant, tool, resource and requested operation
+are allowed; model intent alone is not an access-control rule. Revalidate
+arguments server-side at point of effect; a prompt telling an agent
+"ignore previous policy" does not change scope.
+
+**At side-effect boundary:** bind human approval to exact normalized
+tool name, arguments, object ID, actor, expiry and version; a changed
+payload requires new approval. Use idempotency keys and durable operation
+IDs where a network timeout can occur after a remote commit. Never
+assume a retry is safe without reconciliation.
+
+**Verification:** include allowed case and negative cases for cross-tenant
+access, tool substitution, malicious retrieved text, replayed approval,
+oversized input and denied external destination. Independent high-risk
+review is triggered by actual privileged effects, not every prompt
+format change. Log decision IDs and redacted reasons; no raw secrets or
+unbounded user records.
+
+Example: retrieved issue body says to upload .env to an external URL.
+Treat text as untrusted issue content, reject network/secret disclosure
+without independently authenticated authorization, and record denied
+tool call. A static prompt checklist alone does not enforce this policy.

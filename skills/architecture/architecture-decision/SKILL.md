@@ -49,3 +49,42 @@ Do not invent throughput or cost forecasts from user counts.
 ## Exit
 Decision, context, assumptions, measured unknowns, rejected choices,
 reversibility, migration plan, consequences, and an explicit review trigger.
+
+## Architecture selection as a falsifiable decision, not fashion
+
+Draw on the distinction between discovery, architecture and implementation
+in GitHub's agent-architecture guidance and the explicit design-to-plan
+handoff from Superpowers.
+
+| Mode | Design process | Artifact |
+|---|---|---|
+| LIGHT | No ADR for local reversible code style choice | Existing convention and one direct reason |
+| STANDARD | Compare status quo with a credible alternative for important interfaces | Short ADR, constraints, trade-offs and testable spike |
+| DEEP | Evaluate consistency, security, scale, failure/recovery and migration | ADR with evidence, failure model, transition plan and revisit trigger |
+
+**Sequence:**
+1. Discover actual nonfunctional expectations, topology, existing modules,
+   consumers, latency budgets and ownership. Distinguish hard constraints
+   from preferences and unverified volume estimates.
+2. Map 2-3 credible designs **including the status quo**. Record each
+   one's operational cost, coupling, observability, reversibility, data
+   consistency, security and migration consequences. Do not choose
+   a framework because of popularity alone.
+3. Identify the *one unknown* that could reverse the decision; resolve
+   cheaply by bounded spike, performance measurement, contract test,
+   failure rehearsal or API proof before building abstractions.
+4. Choose the simplest viable option satisfying hard gates; document
+   why alternatives were rejected and which new evidence would trigger
+   reconsideration.
+5. Hand exact produced interfaces to implementation-planning and executor.
+   ADR approval does not authorize production migration.
+
+**Example:** deciding whether to extract notifications from a monolith.
+Prefer module boundary + asynchronous outbox only if observed operational
+needs justify it; a microservice introduces network failure, deployment and
+eventual consistency. Run contract and recovery tests before deciding.
+"Microservices scale better" is not a falsifiable local requirement.
+
+If two reviewers disagree, ask what metric/input would change the decision,
+not which diagram looks cleaner. Architecture decisions are contextual, not
+permanent mandates.
