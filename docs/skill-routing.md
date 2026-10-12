@@ -18,9 +18,11 @@ The managed Installer v2 is preferred; the legacy copy-only CLI is deprecated. S
 ~~~bash
 python scripts/skillctl.py profiles
 python scripts/skillctl.py search "Design an accessible React dashboard" --profile web-app
-python scripts/skillctl.py recommend "Migrate production IAM permissions" --profile cloud-engineering
-# Evidence, exclusions and uncertainty; never an activation/authorization decision
-python scripts/skillctl.py recommend "choisir une base de données pour mon SaaS" --json --explain
+# AET architecture + scoped metadata; agent decides skills, workflow and review
+python scripts/skillctl.py routing-context --profile cloud-engineering
+python scripts/skillctl.py routing-context --skill database-selection --skill task-routing
+# Optional lexical candidates and uncertainty diagnostics, never automatic activation
+python scripts/skillctl.py search "choisir une base de données pour mon SaaS" --json --explain
 python scripts/skillctl.py show responsive-visual-qa
 
 # Compare approximate metadata footprints
@@ -81,93 +83,66 @@ Use `workflows/<level>.md` for the full protocol. The selector is *advisory*. It
 
 CI rejects profiles if this rough core + metadata estimate exceeds 2500 tokens or the installed count exceeds 20. This is a **guardrail**, not a guarantee about real consumption.
 
-## Candidate evidence and uncertainty
+## Routing ownership — agent decision, deterministic discovery
 
-The finder retains deterministic weights for names, keywords, domains and **positive**
-description text. Description text starting at `Do not`, `Don't`, `Not for`,
-`Avoid using` or `Ne pas utiliser` is separated and never adds positive score.
-Only activation-scope markers (`Do not use`, `Do not apply`, `Do not substitute`, etc.)
-can suppress a candidate; procedural warnings such as `Do not assume` cannot.
-Fully matched exclusion clauses with at least two meaningful terms suppress a
-candidate; partial matches become an unfavorable scope check. This conservative
-parser does not understand every conditional/negative construction. Metadata
-exclusions still need human/agent review.
+**`task-routing` is the existing decision skill.** Do not add a duplicate
+`choose_skill`. When selection is ambiguous or consequential, the agent must
+inspect the user request, actual repository, affected contracts, side effects,
+reversibility, available tools and explicit permissions. It then decides:
 
-A small, reviewed alias set handles database compounds (`base de données`,
-`bases de données`, `data base`) and selected FR/EN choice/diagnosis/action terms.
-It is **not general translation**. Database compounds no longer contribute `base`
-to Base UI. Debugging favors diagnostic keywords; `*-selection` candidates require
-explicit choice/comparison and technical-domain evidence; `selection` alone
-cannot recommend every choice specialist. Simple documentation spelling edits can
-return zero skills. Negative query clauses introduced by `do not use`, `without`,
-`sans`, etc. are removed from positive scoring until punctuation or `but`/`mais`/`and`/`et`.
-Clause scope remains heuristic; rephrase complex mixed intentions or inspect them
-manually.
+1. Zero or one primary specialist and only genuinely independent helpers.
+2. LIGHT / STANDARD / DEEP as *execution rigor*.
+3. R0 / R1 / R2 as *review assurance*, separately from skill count.
 
-`discover(query, catalog, allowed=..., limit=...)` returns:
+A tiny authorization change may need DEEP/R2; a documentation typo mentioning
+authentication does not. No keyword or model decision grants merge/deploy/
+destructive permission. If facts are missing, ask for context or state that
+classification is pending; do not silently assume safety.
 
-- `candidates`: scores and favorable `reasons`, plus `unfavorable` checks.
-- `excluded`: named candidates and matched exclusion reasons.
-- `uncertainty`: `lexical`, `ambiguous` (tied leaders or unfavorable evidence for
-  the leader), or `insufficient` (no candidates). These are labels, not probabilities.
-- `required_checks`: inspect actual task/stack before activation; **zero skills is valid**.
+### Machine-readable architecture and available skills
 
-An unidentified component library remains a stack check; installed visibility is
-not evidence that the user selected it. A higher score does not settle conflicting
-stacks, competence or permission. `allowed` still restricts discovery to a profile;
-`limit < 1`, empty requests and noise yield no candidates.
+```bash
+python scripts/skillctl.py routing-context --profile minimal
+python scripts/skillctl.py routing-context --profile python-backend --json
+python scripts/skillctl.py routing-context --skill database-selection --skill task-routing
+```
 
-Compatibility: `Skill` construction is unchanged; `Match` adds a defaulted
-`unfavorable` field. `search(...)` still returns a list of matches and
-`suggest_workflow(query)` still returns `(workflow, reason)`. `search --json` retains
-its list/row shape. Opt-in `search --json --explain` returns a diagnostic object.
-New `recommend --json` returns that object with `workflow`; text `--explain`
-prints the same exclusions, uncertainty and required checks. No discovery command
-activates/installs a skill, executes its scripts or makes network/model calls.
+The **YAML by default** is generated from the existing registry and each
+skill's frontmatter description. There is no second copy of the 178 skill
+definitions to keep synchronized. Output includes the contract and workflow
+paths, review levels, the scoped skills' paths, positive activation scopes,
+exclusions and safety cautions. The command requires an explicit profile or
+skill list and is capped at 20 entries; it does not bulk-load bodies or
+references. Profiles describe AET catalog membership, **not proof that a
+specific host installed or activated the skills**. The host's installed skill
+metadata should be preferred when already available.
 
-## Workflow evidence, not authorization
+### CLI discovery remains a fallback, not a workflow engine
 
-`workflow_advice(query)` inspects requested actions and consequences together.
-An authentication-documentation typo is LIGHT; restricting a tenant lookup or
-removing an ownership filter suggests DEEP; a database choice suggests STANDARD.
-An explanation about irreversible migration is not migration execution. Compound
-requests retain the strongest indicated consequence per clause: updating docs
-alongside an authorization fix cannot downgrade the fix. Coordinated objects
-inherit the preceding action when they have no action of their own. A
-localized reversible refactor may be LIGHT; unverified scope remains explicit.
+`search` and `discover` provide explainable **lexical candidates** with
+exclusions, checks and uncertainty. They cannot understand arbitrary French,
+negation or nuanced intent. `search --json` retains its legacy list shape;
+`--explain` exposes additional diagnostics.
 
-Text-derived suggestions always have `source=request_heuristic`, with `risk=potential`
-or `insufficient`, even for DEEP. They cannot confirm a boundary change, determine
-real rollback safety or authorize execution. Inspect the diff, data and permissions.
-This is a bounded lexical heuristic, not a reliable security assessment. Unknown
-impact can yield a tentative LIGHT default marked insufficient; it must **not** be
-read as a safety verdict.
+`recommend` still prints candidates for compatibility, but its workflow
+output now explicitly abstains. `workflow_advice(query)` returns
+`workflow=unclassified`, `risk=unknown`,
+`source=agent_decision_required` for free text.
+The legacy `suggest_workflow(query)` tuple also returns `unclassified`
+rather than misrepresenting a keyword guess as a risk assessment.
 
-For actual observed facts, callers can use
-`workflow_advice(query, observed=ChangeSignals(...))`, which delegates to
-`adaptive_policy.assess` without fabricating observations from the text.
-It sets `source=observed_change_signals`, `risk=confirmed` for observed DEEP risks
-or `observed` for other observed outcomes, and exposes unmet gates as required
-checks. This reports caller-supplied facts, not independently verified code and
-not authorization. The structured policy's review/execution rules are unchanged.
+If a caller supplies actual structured observations,
+`workflow_advice(query, observed=ChangeSignals(...))` delegates to the existing
+`adaptive_policy.assess`. Those observations are caller-reported, not
+independently verified. Neither output is authorization.
 
-## Router failure modes and validation
+The PR #38 routing regression fixtures remain **negative/positive discovery
+tests**, not a claim that offline code can measure model judgment. Evaluating
+the agent's choice of skills, workflow and cost requires real host traces and
+held-out tasks.
 
-- Accents and selected FR/EN aliases are supported; unconstrained French/English
-  syntax, other languages, polysemy and compound negations can still misroute.
-- Generic overlaps and description syntax can hide ambiguity. Inspect metadata,
-  user-selected stack and exclusions before applying any recommendation.
-- Scores/uncertainty are not confidence percentages, expertise certificates or
-  evidence of actual native invocation.
-- Maintain positive, negative, ambiguity and natural-language cases alongside
-  registry changes. Do not bulk-add synonyms without measuring false positives.
-- [Regression fixtures](../evals/routing-regressions.yaml) test the five audited
-  failures, FR/EN variants and candidate inclusion/exclusion properties. Existing
-  domain routing suites remain required. These deterministic checks do not measure
-  Codex/Claude behavior or performance gains.
-- Paired native evaluation records use the separate
-  [activation evidence contract](skill-evaluation-records.md); missing telemetry is
-  unknown, not an observed activation failure.
+See [activation evidence records](skill-evaluation-records.md) for separately
+tracked correct, missed, unwanted, unknown and not-run activation states.
 
 ## Quality and selection
 

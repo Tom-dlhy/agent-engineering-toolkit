@@ -6,7 +6,9 @@ import json
 from dataclasses import asdict
 from pathlib import Path
 
-from toolkit.catalog import ROOT, load_catalog, load_profile, discover, workflow_advice
+import yaml
+
+from toolkit.catalog import ROOT, load_catalog, load_profile, discover, workflow_advice, routing_metadata
 from toolkit.knowledge import indexed_references, read_reference
 
 
@@ -28,6 +30,10 @@ def main(argv: list[str] | None = None) -> int:
     recommend.add_argument("--limit", type=int, default=3)
     recommend.add_argument("--json", action="store_true", help="Machine-readable recommendation")
     recommend.add_argument("--explain", action="store_true", help="Include exclusions, uncertainty and checks")
+    context = commands.add_parser("routing-context", help="Bounded YAML/JSON architecture and catalog metadata for an agent")
+    context.add_argument("--profile", help="Curated profile whose skills are cataloged, not proof of host installation")
+    context.add_argument("--skill", action="append", default=[], help="Explicit extra skill name (repeatable)")
+    context.add_argument("--json", action="store_true", help="Return JSON instead of YAML")
     show = commands.add_parser("show", help="Read one selected skill, without scanning other bodies")
     show.add_argument("name")
     refs = commands.add_parser("references", help="List declared leaf paths for a single skill (no leaf bodies)")
@@ -44,6 +50,37 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "profiles":
             for path in sorted((args.root / "profiles").glob("*.yaml")):
                 print(f"{path.stem:20} {len(load_profile(path.stem, args.root))} skills")
+        elif args.command == "routing-context":
+            if not args.profile and not args.skill:
+                raise ValueError("routing-context requires --profile or --skill; never dump all 178 skills")
+            names = list(load_profile(args.profile, args.root)) if args.profile else []
+            names.extend(args.skill)
+            names = list(dict.fromkeys(names))
+            if len(names) > 20:
+                raise ValueError("routing-context is limited to 20 selected skills")
+            unknown = [name for name in names if name not in catalog]
+            if unknown:
+                raise ValueError("unknown skills: " + ", ".join(unknown))
+            payload = {
+                "schema_version": 1,
+                "scope": {"profile": args.profile, "cataloged_not_proven_installed": True,
+                          "skill_count": len(names)},
+                "architecture": {
+                    "global_contract": "AGENTS.md",
+                    "decision_owner": "skills/core/task-routing/SKILL.md",
+                    "discovery": "registry/skills.yaml + skill frontmatter",
+                    "knowledge_loading": "metadata -> selected SKILL.md -> needed references only",
+                    "workflow_guides": ["workflows/light.md", "workflows/standard.md", "workflows/deep.md"],
+                    "review_levels": ["R0 self", "R1 targeted independent", "R2 deep risk-led"],
+                    "permissions": "No skill/route grants merge, deploy or destructive authority",
+                    "finder": "advisory candidates only; agent evaluates intent, scope and exclusions",
+                },
+                "skills": [routing_metadata(catalog[name]) for name in names],
+            }
+            if args.json:
+                print(json.dumps(payload, ensure_ascii=False, indent=2))
+            else:
+                print(yaml.safe_dump(payload, allow_unicode=True, sort_keys=False))
         elif args.command in ("search", "recommend"):
             allowed = load_profile(args.profile, args.root) if args.profile else None
             discovery = discover(args.query, catalog, allowed=allowed, limit=args.limit)
@@ -71,7 +108,7 @@ def main(argv: list[str] | None = None) -> int:
                     print(json.dumps(rows, ensure_ascii=False, indent=2))
             else:
                 if args.command == "recommend":
-                    print(f"Suggested workflow: {advice.workflow} ({'; '.join(advice.rationale)}; risk: {advice.risk})")
+                    print("Workflow: agent decision required (inspect project impact using task-routing)")
                     print("Advisory only: verify complexity, permissions and user intent.")
                 for match in discovery.candidates:
                     print(f"{match.skill.name}: {match.skill.path}/SKILL.md | score={match.score} | {', '.join(match.reasons)}")

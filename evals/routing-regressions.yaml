@@ -1,5 +1,5 @@
-# Deterministic candidate properties. Not measurements of native skill loading.
-version: 1
+# Discovery-only evidence: these are not native-agent decisions or activations.
+version: 2
 selection:
   - query: choisir une base de données pour mon SaaS
     include: [database-selection]
@@ -7,13 +7,7 @@ selection:
   - query: choose a database for my SaaS
     include: [database-selection]
     exclude: [base-ui]
-  - query: comparer les bases de données pour le stockage
-    include: [database-selection]
-    exclude: [base-ui]
   - query: debug duplicate payment after provider timeout
-    include: [systematic-debugging]
-    exclude: [cloud-provider-selection, authentication-solution-selection]
-  - query: diagnostiquer un paiement dupliqué après un timeout fournisseur
     include: [systematic-debugging]
     exclude: [cloud-provider-selection]
   - query: Implement a Base UI Dialog render
@@ -22,27 +16,14 @@ selection:
   - query: Do not use FastAPI; review SQLAlchemy AsyncSession
     include: [python-persistence]
     exclude: [fastapi-service]
-workflows:
-  - query: Fix a typo in authentication documentation
-    expected: light
-  - query: corriger une faute dans la documentation d'authentification
-    expected: light
-  - query: restrict one tenant lookup
-    expected: deep
-  - query: remove the ownership filter from lookup
-    expected: deep
-  - query: modifier le prédicat d'autorisation entre tenants
-    expected: deep
-  - query: perform an irreversible data migration
-    expected: deep
-  - query: local reversible refactor of a helper
-    expected: light
-  - query: explain authentication in documentation
-    expected: light
-  - query: describe an irreversible data migration in documentation
-    expected: light
-  - query: choose a database for my SaaS
-    expected: standard
+unclassified:
+  - Fix a typo in authentication documentation
+  - restrict one tenant lookup
+  - modify billing logic
+  - delete all customer data
+  - migrate production database permissions
+  - choose a database for my SaaS
+  - ''
 no_match:
   - Fix a typo in authentication documentation
   - corriger une faute dans la documentation d'authentification

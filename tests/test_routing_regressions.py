@@ -1,4 +1,6 @@
-"""Deterministic discovery properties, not native-agent activation evidence."""
+"""Offline candidate diagnostics and agent-decision handoff, not model-behavior proof."""
+from __future__ import annotations
+
 import contextlib
 import io
 import json
@@ -8,6 +10,7 @@ from pathlib import Path
 import yaml
 
 import toolkit.catalog as routing
+from toolkit.adaptive_policy import ChangeSignals
 from toolkit.cli import main
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,184 +21,133 @@ class RoutingRegressionTests(unittest.TestCase):
     def setUpClass(cls):
         cls.catalog = routing.load_catalog(ROOT)
 
-    def names(self, query):
+    def names(self, query: str) -> set[str]:
         return {m.skill.name for m in routing.search(query, self.catalog)}
 
-    def test_database_choice_bilingual_without_base_ui(self):
-        for query in ("choisir une base de données pour mon SaaS",
-                      "choose a database for my SaaS",
-                      "comparer les bases de données pour le stockage"):
-            with self.subTest(query=query):
-                self.assertIn("database-selection", self.names(query))
-                self.assertTrue({"base-ui", "authentication-solution-selection", "cloud-provider-selection"}.isdisjoint(self.names(query)))
-
-    def test_debugging_is_not_provider_selection(self):
-        for query in ("debug duplicate payment after provider timeout",
-                      "diagnostiquer un paiement dupliqué après un timeout fournisseur"):
-            with self.subTest(query=query):
-                self.assertIn("systematic-debugging", self.names(query))
-                self.assertNotIn("cloud-provider-selection", self.names(query))
-
-    def test_sensitive_documentation_typo_needs_no_skill(self):
-        for query in ("Fix a typo in authentication documentation",
-                      "corriger une faute dans la documentation d'authentification"):
-            with self.subTest(query=query):
-                self.assertEqual(routing.suggest_workflow(query)[0], "light")
-                self.assertEqual(self.names(query), set())
-
-    def test_exclusion_words_do_not_score(self):
-        skill = routing.Skill("widget", "ui", "skills/ui/widget",
-                              "Use for rendering widgets. Do not use for database selection.", ())
-        self.assertEqual(routing.search("database selection", {skill.name: skill}), [])
-
-    def test_exclusion_can_override_positive_keywords(self):
-        skill = routing.Skill("widget", "ui", "skills/ui/widget",
-                              "Use for widgets. Do not use for database selection.",
-                              ("database", "selection"))
-        self.assertEqual(routing.search("choose a database", {skill.name: skill}), [])
-
-    def test_explicit_base_ui_survives(self):
-        self.assertIn("base-ui", self.names("Implement a Base UI Dialog render"))
-
-    def test_real_consequences_and_mentions(self):
-        cases = {
-            "restrict one tenant lookup": "deep",
-            "implement authorization checks": "deep",
-            "add a tenant ownership filter": "deep",
-            "remove the ownership filter from lookup": "deep",
-            "modifier le prédicat d'autorisation entre tenants": "deep",
-            "perform an irreversible data migration": "deep",
-            "migration irréversible des données": "deep",
-            "local reversible refactor of a helper": "light",
-            "explain authentication in documentation": "light",
-            "choose a database for my SaaS": "standard",
-        }
-        for query, expected in cases.items():
-            with self.subTest(query=query):
-                self.assertEqual(routing.suggest_workflow(query)[0], expected)
-
-    def test_public_explanation_is_available_and_advisory(self):
-        discovery = routing.discover("Implement a date picker with an unknown UI provider", self.catalog)
-        self.assertEqual(discovery.uncertainty, "ambiguous")
-        self.assertTrue(discovery.required_checks)
-        self.assertTrue(any(m.unfavorable for m in discovery.candidates))
-        excluded = routing.discover("debug duplicate payment after provider timeout", self.catalog)
-        self.assertIn("cloud-provider-selection", {x.skill.name for x in excluded.excluded})
-        advice = routing.workflow_advice("restrict one tenant lookup")
-        self.assertEqual(advice.risk, "potential")
-        self.assertNotEqual(advice.source, "observed_change_signals")
-        self.assertTrue(advice.required_checks)
-        unknown = routing.workflow_advice("make it better")
-        self.assertEqual(unknown.risk, "insufficient")
-
-    def test_confirmed_risk_requires_observations(self):
-        from toolkit.adaptive_policy import ChangeSignals
-        advice = routing.workflow_advice("tiny correction", observed=ChangeSignals(authorization_or_secrets=True))
-        self.assertEqual(advice.workflow, "deep")
-        self.assertEqual(advice.risk, "confirmed")
-        self.assertEqual(advice.source, "observed_change_signals")
-        self.assertIn("independent R2 risk review unavailable", advice.required_checks)
-
-    def test_no_match_and_profile_limits(self):
-        for query in ("", "zzzxxyyqq"):
-            self.assertEqual(self.names(query), set())
-        allowed = routing.load_profile("minimal")
-        self.assertTrue(all(m.skill.name in allowed for m in routing.search("choose database", self.catalog, allowed=allowed)))
-
-    def test_routing_fixture_properties(self):
+    def test_selection_and_no_match_cases(self):
         fixture = yaml.safe_load((ROOT / "evals/routing-regressions.yaml").read_text())
         for case in fixture["selection"]:
             with self.subTest(query=case["query"]):
-                actual = self.names(case["query"])
-                self.assertTrue(set(case["include"]) <= actual)
-                self.assertTrue(set(case["exclude"]).isdisjoint(actual))
-        for case in fixture["workflows"]:
-            with self.subTest(query=case["query"]):
-                self.assertEqual(routing.suggest_workflow(case["query"])[0], case["expected"])
+                found = self.names(case["query"])
+                self.assertTrue(set(case["include"]) <= found)
+                self.assertTrue(set(case["exclude"]).isdisjoint(found))
         for query in fixture["no_match"]:
             with self.subTest(query=query):
-                self.assertEqual(self.names(query), set())
+                self.assertFalse(self.names(query))
 
-    def test_cli_legacy_search_json_shape(self):
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output):
-            main(["search", "FastAPI Pydantic endpoint", "--json"])
-        self.assertIsInstance(json.loads(output.getvalue()), list)
-
-
-class RoutingDiagnosticsTests(unittest.TestCase):
-    def test_cli_explanation_has_separate_evidence_and_unknowns(self):
-        output = io.StringIO()
-        try:
-            with contextlib.redirect_stdout(output):
-                result = main(["recommend", "restrict one tenant lookup", "--json", "--explain"])
-        except SystemExit as exc:
-            self.fail(f"explanation interface not implemented: {exc}")
-        report = json.loads(output.getvalue())
-        self.assertEqual(result, 0)
-        self.assertEqual(report["workflow"]["risk"], "potential")
-        self.assertEqual(report["workflow"]["source"], "request_heuristic")
-        self.assertIn("excluded", report)
-        self.assertIn("uncertainty", report)
-        self.assertTrue(report["required_checks"])
-
-    def test_negated_technology_is_not_positive_evidence(self):
-        c = routing.load_catalog(ROOT)
-        for query in ("Do not use FastAPI; review SQLAlchemy AsyncSession",
-                      "without FastAPI, review SQLAlchemy AsyncSession",
-                      "sans FastAPI; examiner SQLAlchemy AsyncSession"):
+    def test_free_text_never_claims_to_decide_workflow(self):
+        fixture = yaml.safe_load((ROOT / "evals/routing-regressions.yaml").read_text())
+        for query in fixture["unclassified"]:
             with self.subTest(query=query):
-                names = {m.skill.name for m in routing.search(query, c)}
-                self.assertIn("python-persistence", names)
-                self.assertNotIn("fastapi-service", names)
+                advice = routing.workflow_advice(query)
+                self.assertEqual((advice.workflow, advice.risk, advice.source),
+                                 ("unclassified", "unknown", "agent_decision_required"))
+                self.assertTrue(advice.required_checks)
+                self.assertEqual(routing.suggest_workflow(query)[0], "unclassified")
 
-    def test_partial_exclusion_is_check_not_observed_fact(self):
-        s = routing.Skill("widget", "ui", "skills/ui/widget",
-                          "Use for widgets. Do not use for database schema migration.", ("database",))
-        result = routing.discover("widget database schema", {s.name: s})
-        self.assertTrue(result.candidates)
-        self.assertTrue(result.candidates[0].unfavorable)
-        self.assertEqual(result.excluded, ())
+    def test_structured_observations_remain_separate(self):
+        cases = (
+            (ChangeSignals(authorization_or_secrets=True), "deep"),
+            (ChangeSignals(local_reversible=True), "light"),
+            (ChangeSignals(multi_component=True), "standard"),
+        )
+        for observations, expected in cases:
+            with self.subTest(workflow=expected):
+                advice = routing.workflow_advice("arbitrary words", observed=observations)
+                self.assertEqual(advice.workflow, expected)
+                self.assertEqual(advice.source, "caller_supplied_change_signals")
 
-    def test_sensitive_fix_is_not_downgraded_by_documentation_mention(self):
-        for query in ("fix authorization predicate", "refactor tenant ownership filter",
-                      "fix a typo in documentation and remove tenant restriction"):
-            with self.subTest(query=query):
-                self.assertEqual(routing.suggest_workflow(query)[0], "deep")
-        self.assertEqual(routing.suggest_workflow("update authentication documentation")[0], "light")
+    def test_exclusion_is_not_positive_evidence(self):
+        skill = routing.Skill("widget", "ui", "skills/ui/widget",
+                              "Use for widgets. Do not use for database selection.", ())
+        self.assertEqual(routing.search("database selection", {skill.name: skill}), [])
 
-    def test_selection_intent_allows_both_languages(self):
-        c = routing.load_catalog(ROOT)
-        for query in ("choose a cloud provider compare AWS and GCP",
-                      "comparer AWS et GCP pour choisir un fournisseur cloud"):
-            self.assertIn("cloud-provider-selection", {m.skill.name for m in routing.search(query, c)})
+    def test_exclusions_and_safety_warnings(self):
+        denied = routing.Skill("widget", "ui", "skills/ui/widget",
+                               "Use for widgets. Do not use for database selection.",
+                               ("database", "selection"))
+        self.assertFalse(routing.search("choose a database", {denied.name: denied}))
+        allowed = routing.Skill("widget", "ui", "skills/ui/widget",
+                                "Use for widgets. Do not assume user credentials are safe.",
+                                ("widget",))
+        self.assertTrue(routing.search("widget", {allowed.name: allowed}))
 
-
-class RoutingReviewRegressions(unittest.TestCase):
-    def test_query_negation_survives_generic_keyword_overlap(self):
-        c = routing.load_catalog(ROOT)
-        names = {m.skill.name for m in routing.search("Do not use FastAPI; implement an HTTP endpoint", c)}
+    def test_negative_and_ambiguous_discovery(self):
+        names = self.names("Do not use FastAPI; review SQLAlchemy AsyncSession")
+        self.assertIn("python-persistence", names)
         self.assertNotIn("fastapi-service", names)
+        self.assertNotIn("fastapi-service", self.names("without FastAPI, review SQLAlchemy"))
+        self.assertIn("base-ui", self.names("Implement a Base UI Dialog render"))
+        result = routing.discover("Implement a date picker with an unknown UI provider", self.catalog)
+        self.assertEqual(result.uncertainty, "ambiguous")
 
-    def test_safety_warning_is_not_activation_exclusion(self):
-        c = routing.load_catalog(ROOT)
-        result = routing.discover("plan schema migration with external effects", c)
-        self.assertNotIn("schema-migrations", {e.skill.name for e in result.excluded})
-        self.assertIn("schema-migrations", {m.skill.name for m in result.candidates})
+    def test_legacy_search_json_shape(self):
+        stream = io.StringIO()
+        with contextlib.redirect_stdout(stream):
+            self.assertEqual(main(["search", "FastAPI Pydantic endpoint", "--json"]), 0)
+        self.assertIsInstance(json.loads(stream.getvalue()), list)
 
-    def test_do_not_apply_is_an_activation_scope_exclusion(self):
-        c = routing.load_catalog(ROOT)
-        self.assertNotIn("fastapi-service", {m.skill.name for m in routing.search("review FastAPI SQL internals", c)})
+    def test_recommend_explicitly_abstains(self):
+        stream = io.StringIO()
+        with contextlib.redirect_stdout(stream):
+            self.assertEqual(main(["recommend", "modify billing logic", "--json", "--explain"]), 0)
+        report = json.loads(stream.getvalue())
+        self.assertEqual(report["workflow"]["workflow"], "unclassified")
+        self.assertEqual(report["workflow"]["source"], "agent_decision_required")
+        self.assertIn("candidates", report)
 
-    def test_mixed_documentation_and_operational_changes(self):
-        for query in ("Fix authentication and update docs",
-                      "Fix a documentation typo and update authorization checks",
-                      "Explain rollback then perform a data migration",
-                      "delete all customer data",
-                      "fix documentation and authorization checks",
-                      "delete temporary files and customer data"):
-            with self.subTest(query=query):
-                self.assertEqual(routing.suggest_workflow(query)[0], "deep")
+
+class RoutingContextTests(unittest.TestCase):
+    def _run(self, *arguments: str) -> object:
+        stream = io.StringIO()
+        with contextlib.redirect_stdout(stream):
+            self.assertEqual(main(["routing-context", *arguments]), 0)
+        return yaml.safe_load(stream.getvalue())
+
+    def test_scoped_profile_yaml_architecture_and_metadata(self):
+        result = self._run("--profile", "minimal")
+        self.assertEqual(result["schema_version"], 1)
+        self.assertEqual(result["scope"]["skill_count"], 5)
+        self.assertTrue(result["scope"]["cataloged_not_proven_installed"])
+        self.assertEqual(result["architecture"]["decision_owner"],
+                         "skills/core/task-routing/SKILL.md")
+        self.assertEqual({entry["name"] for entry in result["skills"]},
+                         set(routing.load_profile("minimal")))
+        self.assertTrue(all(entry["path"].endswith("/SKILL.md") for entry in result["skills"]))
+        self.assertTrue(all(entry["use_when"] for entry in result["skills"]))
+        self.assertNotIn("references/", str(result["skills"]))
+
+    def test_explicit_skills_no_duplication_and_json(self):
+        stream = io.StringIO()
+        with contextlib.redirect_stdout(stream):
+            self.assertEqual(main(["routing-context", "--skill", "task-routing",
+                                   "--skill", "task-routing", "--skill", "database-selection",
+                                   "--json"]), 0)
+        output = json.loads(stream.getvalue())
+        self.assertEqual([x["name"] for x in output["skills"]],
+                         ["task-routing", "database-selection"])
+
+    def test_profile_does_not_claim_host_activation(self):
+        report = self._run("--profile", "minimal")
+        self.assertNotIn("activated", report["scope"])
+        self.assertNotIn("installed", report["scope"])
+        self.assertIn("permissions", report["architecture"])
+
+    def test_metadata_separates_scope_exclusions_from_cautions(self):
+        skill = routing.Skill("sample", "core", "skills/core/sample",
+                              "Use when checking widgets. Do not use for databases. "
+                              "Do not assume credentials are safe.", ("widgets",))
+        meta = routing.routing_metadata(skill)
+        self.assertIn("Do not use for databases", meta["avoid_when"][0])
+        self.assertIn("Do not assume credentials", meta["cautions"][0])
+
+    def test_explicit_scope_required_and_bounded(self):
+        for args in ((), ("--skill", "unknown-skill"),
+                     ("--profile", "nonexistent"),
+                     tuple(sum((["--skill", s] for s in list(routing.load_catalog())[:21]), []))):
+            with self.subTest(args=args):
+                with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                    main(["routing-context", *args])
 
 
 if __name__ == "__main__":

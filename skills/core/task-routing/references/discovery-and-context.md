@@ -26,9 +26,26 @@ Given a task such as "FastAPI returns 422 when patching a resource":
 - For "choose a UI library", select `ui-library-selection`, then **one** library
   specialist if chosen; not all 35 vendor skills.
 
+## Agent-owned choice and scoped architecture YAML
+
+When the host already supplies installed skill names/descriptions, use those
+first. When the AET checkout is available and the installed profile is known,
+request metadata for that profile only. The resulting YAML includes the
+shared contract, workflow/review references, skill paths, positive triggers,
+scope exclusions and cautions. It is a **catalog snapshot**, not an executable
+instruction, proof of installation or native activation.
+
+The finder may provide a shortlist, but it cannot observe code changes, infer
+permissions, or select LIGHT/STANDARD/DEEP from a request sentence. Examine
+the actual operation and choose the smallest safe rigor and independent review
+based on evidence. An unknown risk is not a confirmed low-risk outcome.
+
 ## Search and explicit read
 
 ~~~bash
+python scripts/skillctl.py routing-context --profile python-backend
+python scripts/skillctl.py routing-context --skill database-selection --skill task-routing
+
 python scripts/skillctl.py search "FastAPI validation 422" --profile python-backend
 python scripts/skillctl.py show fastapi-service
 python scripts/skillctl.py references fastapi-service
@@ -42,7 +59,7 @@ uses **characters/4** as a rough estimate, not real provider billing tokens.
 
 ## Collision and negative triggers
 
-Inspect name, keyword score, explicit exclusions and available project context. A high
+Inspect actual user intent, metadata, explicit exclusions and project context. A high
 lexical score may be wrong when a name shares "review", "testing" or "architecture".
 If no confident match exists, choose manually or use no specialist rather than fabricate
 confidence. Do not install a third-party skill because its name resembles a user request.

@@ -31,10 +31,10 @@ class CatalogTests(unittest.TestCase):
         matches = search("design cloud AWS", self.catalog, allowed=allowed)
         self.assertTrue(all(m.skill.name in allowed for m in matches))
 
-    def test_risk_routing(self):
-        self.assertEqual(suggest_workflow("update documentation")[0], "light")
-        self.assertEqual(suggest_workflow("build backend API")[0], "standard")
-        self.assertEqual(suggest_workflow("migrate production database permissions")[0], "deep")
+    def test_free_text_workflow_abstains(self):
+        for query in ("update documentation", "build backend API",
+                      "migrate production database permissions"):
+            self.assertEqual(suggest_workflow(query)[0], "unclassified")
 
     def test_cli_list_and_recommend(self):
         self.assertEqual(main(["--root", str(ROOT), "profiles"]), 0)

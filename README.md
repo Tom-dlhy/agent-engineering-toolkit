@@ -105,10 +105,11 @@ python -m pip install -r requirements-dev.txt
 
 python scripts/skillctl.py profiles
 python scripts/skillctl.py search "FastAPI Pydantic API" --profile python-backend
-python scripts/skillctl.py recommend "add a protected API endpoint"
+python scripts/skillctl.py routing-context --profile minimal
+python scripts/skillctl.py search "add a protected API endpoint" --json --explain
 ```
 
-The `recommend` command provides **advisory lexical matching**, not semantic reasoning or a security assessment. Use `--json --explain` to inspect candidate evidence, exclusions, uncertainty and text-derived workflow risk. The agent must still inspect the task and project before choosing its workflow. See [routing diagnostics](docs/skill-routing.md#candidate-evidence-and-uncertainty) and [activation metrics](docs/skill-evaluation-records.md).
+The **existing `task-routing` skill** guides the agent's decisions about technical skills, LIGHT/STANDARD/DEEP and R0/R1/R2 using real task evidence. `routing-context` exports bounded YAML/JSON describing AET's architecture and a selected profile's skills; `search` remains optional lexical discovery. `recommend` abstains from classifying workflow based on prompt keywords. See [routing ownership](docs/skill-routing.md#routing-ownership--agent-decision-deterministic-discovery) and [activation metrics](docs/skill-evaluation-records.md).
 
 ### Choose an installation method
 

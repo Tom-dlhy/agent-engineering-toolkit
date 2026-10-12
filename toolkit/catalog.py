@@ -41,13 +41,11 @@ _ALIASES = {
 }
 _NEGATIVE = re.compile(r"\b(?:do not|don't|not for|avoid using|ne pas utiliser)\b", re.I)
 _ACTIONS = frozenset("modify change fix edit update refactor restrict remove migrate delete destroy deploy rotate disable relax bypass alter rewrite perform execute implement add create build".split())
-_BOUNDARIES = frozenset("auth authentication authorization permissions iam secrets credentials tenant ownership encryption production prod sensitive personal".split())
 _EXCLUSION_SCOPE = re.compile(r"^(?:do not use|don't use|do not apply|do not substitute|not for|avoid using|ne pas utiliser)\b", re.I)
 _GENERIC_IDENTITY = frozenset("ui cloud python data api service engineering selection design quality platform architecture library components".split())
 _CHOICE_GENERIC = frozenset("selection compare choice decision revising provider solution library architecture".split())
 _WORDING_ACTIONS = frozenset({"fix", "edit", "update"})
 _OPERATIONAL = frozenset("predicate filter endpoint policy code checks guard rule rules handler".split())
-_COMPLEXITY = frozenset("architecture api endpoint backend frontend integration refactor workflow design component pipeline selection compare".split())
 
 
 def tokenize(text: str) -> set[str]:
@@ -269,61 +267,44 @@ def search(
     return list(discover(query, catalog, allowed=allowed, limit=limit).candidates)
 
 
+def routing_metadata(skill: Skill) -> dict[str, object]:
+    """Describe one catalog entry for an agent, without loading its body/references."""
+    positive, negative = _description_parts(skill.description)
+    scope, cautions = [], []
+    for clause in negative:
+        if _EXCLUSION_SCOPE.match(clause):
+            scope.append(clause.strip())
+        else:
+            cautions.append(clause.strip())
+    return {
+        "name": skill.name, "domain": skill.domain,
+        "path": skill.path + "/SKILL.md", "use_when": positive.strip(),
+        "avoid_when": scope, "cautions": cautions, "keywords": list(skill.keywords),
+    }
+
+
 def workflow_advice(query: str, *, observed: ChangeSignals | None = None) -> WorkflowAdvice:
-    """Keep inferred text separate from observed policy inputs and authorization."""
-    if observed is not None:
-        decision = assess(observed)
-        return WorkflowAdvice(decision.workflow, "confirmed" if decision.workflow == "deep" else "observed",
-                              "observed_change_signals", decision.rationale, decision.unmet_gates)
-    clauses = [part.strip() for part in re.split(r"[;.]|\b(?:and then|and|then|et|puis)\b", _normalized(query)) if part.strip()]
-    if len(clauses) > 1:
-        suggestions = []
-        inherited_actions: set[str] = set()
-        for clause in clauses:
-            clause_actions = _action_words(clause) | (_routing_tokens(clause) & {"explain", "describe", "expliquer", "decrire"})
-            if clause_actions:
-                inherited_actions = clause_actions
-            elif inherited_actions:
-                # Coordinated objects share the request's action: "delete files
-                # and customer data" cannot lose the deletion consequence.
-                clause = " ".join(sorted(inherited_actions)) + " " + clause
-            suggestions.append(workflow_advice(clause))
-        order = {"light": 0, "standard": 1, "deep": 2}
-        strongest = max(suggestions, key=lambda item: order[item.workflow])
-        return WorkflowAdvice(strongest.workflow, strongest.risk, strongest.source,
-                              ("compound request: strongest indicated consequence retained",) + strongest.rationale,
-                              strongest.required_checks)
-    words = _routing_tokens(query)
-    checks = ("Inspect affected code/data, reversibility and permissions; suggestion is not authorization.",)
-    action = _action_words(query)
-    # An explanation about a migration is not a request to execute it.
-    informational = bool(words & {"explain", "describe", "expliquer", "decrire"})
-    boundary = words & _BOUNDARIES
-    if _simple_edit(words, action):
-        return WorkflowAdvice("light", "insufficient", "request_heuristic",
-                              ("isolated wording edit; inspect diff to confirm scope",), checks)
-    doc_only = bool(words & {"documentation", "docs"}) and not action - _WORDING_ACTIONS and not words & _OPERATIONAL
-    if doc_only:
-        return WorkflowAdvice("light", "insufficient", "request_heuristic",
-                              ("documentation request; no operational change established",), checks)
-    consequential = bool(action and (boundary or words & {"irreversible", "destructive"} or
-                                     {"ownership", "filter"} <= words or
-                                     (action & {"delete", "remove", "destroy"} and
-                                      words & {"data", "database", "records", "customer"})))
-    if consequential or (not informational and words & {"migrate", "migration"} and words & {"data", "database"}):
-        return WorkflowAdvice("deep", "potential", "request_heuristic",
-                              ("requested action may change a trust/data/rollback boundary",), checks)
-    if {"local", "reversible"} <= words and not (action - {"refactor", "fix", "edit", "update"}) and not boundary and not words & {"shared", "contract", "integration"}:
-        return WorkflowAdvice("light", "insufficient", "request_heuristic",
-                              ("request describes a local reversible change; scope remains unverified",), checks)
-    if action or words & _COMPLEXITY:
-        return WorkflowAdvice("standard", "potential" if boundary or action else "insufficient", "request_heuristic",
-                              ("engineering action or integration; consequences require inspection",), checks)
-    return WorkflowAdvice("light", "insufficient", "request_heuristic",
-                          ("insufficient impact information; no safety conclusion",), checks)
+    """No classification from free text: the agent owns the contextual decision.
+
+    Only explicit, caller-supplied structured observations can use the separate
+    deterministic policy. They are NOT verified facts or authorization.
+    """
+    if observed is None:
+        return WorkflowAdvice(
+            "unclassified", "unknown", "agent_decision_required",
+            ("Read task-routing and inspect the requested change, project contracts and impact.",),
+            ("Assess impact, reversibility, scope, tests and user approvals.",
+             "Choose LIGHT/STANDARD/DEEP and R0/R1/R2 from observed evidence.",
+             "Do not treat discovery ranking or an absent risk keyword as a safety verdict."),
+        )
+    decision = assess(observed)
+    return WorkflowAdvice(
+        decision.workflow, "reported_high_impact" if decision.workflow == "deep" else "reported",
+        "caller_supplied_change_signals", decision.rationale, decision.unmet_gates,
+    )
 
 
 def suggest_workflow(query: str) -> tuple[str, str]:
-    """Compatible advisory tuple; never a security decision or authorization."""
+    """Legacy tuple API, now explicitly abstaining rather than guessing from words."""
     advice = workflow_advice(query)
-    return advice.workflow, "; ".join(advice.rationale) + " (risk: " + advice.risk + ")"
+    return advice.workflow, "; ".join(advice.rationale)
