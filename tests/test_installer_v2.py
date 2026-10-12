@@ -19,6 +19,9 @@ class InstallerV2Tests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.base = Path(self.tmp.name)
+        env = patch.dict("os.environ", {"AET_TRUST_HOME": str(self.base / "trusted")})
+        env.start()
+        self.addCleanup(env.stop)
         self.source = self.base / "source"
         self.project = self.base / "project"
         self.project.mkdir()
@@ -144,20 +147,120 @@ class InstallerV2Tests(unittest.TestCase):
     def test_recover_interrupted_transaction_from_journal(self):
         self.manager.apply("install", "small")
         target = self.project / ".agents/skills/alpha"
+        state = self.manager._state()
         tx = self.manager.meta / ("tx-" + "a" * 32)
         (tx / "backups").mkdir(parents=True)
         target.rename(tx / "backups/alpha")
         target.mkdir()
-        (target / "SKILL.md").write_text("partial", encoding="utf-8")
+        (target / "SKILL.md").write_text("new staged", encoding="utf-8")
+        from toolkit.managed_installer import _files, _digest
+        after = _files(target)
+        before_state_hash = _digest(self.manager.state_path.read_bytes())
+        updated = self.manager.trust.sign({
+            **{k: v for k, v in state.items() if k != "signature"},
+            "installed_at": "simulated",
+        })
         state_backup = tx / "previous-state.json"
         self.manager.state_path.rename(state_backup)
-        self.manager._write_json(self.manager.journal, {
-            "transaction": tx.name, "had_state": True,
-            "operations": [{"skill": "alpha", "had_original": True}],
+        journal = self.manager.trust.sign({
+            "schema": "aet.transaction.v2",
+            "transaction": tx.name,
+            "target": str(self.project),
+            "agent": "codex",
+            "scope": "project",
+            "had_state": True,
+            "before_state_sha": before_state_hash,
+            "after_state_sha": _digest(self.manager._json_bytes(updated)),
+            "operations": [{"skill": "alpha", "had_original": True,
+                            "before": state["files"]["alpha"], "after": after}],
         })
+        self.manager._write_json(self.manager.journal, journal)
         self.manager.apply("install", "small")
         self.assertEqual(self.manager.inspect()["installed"]["alpha"], "clean")
         self.assertFalse(self.manager.journal.exists())
+
+    def test_forged_journal_cannot_delete_unmanaged_folder(self):
+        from toolkit.managed_installer import _digest
+        victim = self.project / ".agents/skills/alpha"
+        victim.mkdir(parents=True)
+        (victim / "SKILL.md").write_text("user's untracked content")
+        self.manager.meta.mkdir()
+        tx = self.manager.meta / ("tx-" + "b" * 32)
+        (tx / "backups").mkdir(parents=True)
+        forged = {"schema": "aet.transaction.v2", "transaction": tx.name,
+                  "target": str(self.project), "agent": "codex", "scope": "project",
+                  "had_state": False, "before_state_sha": None,
+                  "after_state_sha": "a" * 64,
+                  "operations": [{"skill": "alpha", "had_original": False,
+                                  "before": None,
+                                  "after": {"SKILL.md": _digest((victim / "SKILL.md").read_bytes())}}]}
+        self.manager._write_json(self.manager.journal, forged)
+        with self.assertRaisesRegex((InstallError, ValueError), "trust|ownership|unsigned|missing"):
+            self.manager.apply("install", "small")
+        self.assertEqual((victim / "SKILL.md").read_text(), "user's untracked content")
+
+    def test_authenticated_recovery_refuses_concurrent_change(self):
+        from toolkit.managed_installer import _files, _digest
+        self.manager.apply("install", "small")
+        victim = self.project / ".agents/skills/alpha"
+        tx = self.manager.meta / ("tx-" + "c" * 32)
+        (tx / "backups").mkdir(parents=True)
+        state = self.manager._state()
+        original = _files(victim)
+        before_sha = _digest(self.manager.state_path.read_bytes())
+        victim.rename(tx / "backups/alpha")
+        victim.mkdir()
+        (victim / "SKILL.md").write_text("user concurrent edit")
+        journal = self.manager.trust.sign({
+            "schema": "aet.transaction.v2", "transaction": tx.name,
+            "target": str(self.project), "agent": "codex", "scope": "project",
+            "had_state": True, "before_state_sha": before_sha,
+            "after_state_sha": "f"*64,
+            "operations": [{"skill":"alpha", "had_original":True,
+                            "before":original,
+                            "after":{"SKILL.md": "e"*64}}],
+        })
+        self.manager._write_json(self.manager.journal, journal)
+        with self.assertRaisesRegex(InstallError, "modified during interruption"):
+            self.manager.apply("repair")
+        self.assertEqual((victim / "SKILL.md").read_text(), "user concurrent edit")
+        self.assertTrue((tx / "backups/alpha/SKILL.md").exists())
+
+    def test_signed_state_rejects_tampering(self):
+        self.manager.apply("install", "small")
+        state = json.loads(self.manager.state_path.read_text())
+        state["files"]["alpha"]["SKILL.md"] = "a" * 64
+        self.manager._write_json(self.manager.state_path, state)
+        with self.assertRaisesRegex(InstallError, "authentication"):
+            self.manager.apply("uninstall")
+        self.assertTrue((self.project / ".agents/skills/alpha/SKILL.md").exists())
+
+    def test_explicit_legacy_state_sealing_required(self):
+        self.manager.apply("install", "small")
+        state = json.loads(self.manager.state_path.read_text())
+        state.pop("signature")
+        self.manager._write_json(self.manager.state_path, state)
+        with self.assertRaisesRegex(InstallError, "unsigned"):
+            self.manager.apply("update")
+        with self.assertRaises(InstallError):
+            self.manager.seal_legacy("NO")
+        result = self.manager.seal_legacy("I-VERIFIED-OWNERSHIP")
+        self.assertTrue(result["sealed"])
+        self.assertEqual(self.manager.inspect()["installed"]["alpha"], "clean")
+
+    def test_concurrent_write_after_plan_aborts_without_overwrite(self):
+        self.manager.apply("install", "small")
+        dest = self.project / ".agents/skills/alpha/SKILL.md"
+        (self.alpha / "SKILL.md").write_text("new release")
+        real_plan = self.manager.plan
+        def race(command, profile=None, skills=()):
+            plan = real_plan(command, profile, skills)
+            dest.write_text("user edit", encoding="utf-8")
+            return plan
+        with patch.object(self.manager, "plan", side_effect=race):
+            with self.assertRaisesRegex(InstallError, "concurrent"):
+                self.manager.apply("update")
+        self.assertEqual(dest.read_text(), "user edit")
 
     def test_refuse_symlink_source_and_target(self):
         source_link = self.alpha / "leak"
