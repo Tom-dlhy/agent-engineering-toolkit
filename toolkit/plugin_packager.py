@@ -168,19 +168,36 @@ def verify(output: Path) -> dict:
         raise InstallError(f"invalid distribution: {exc}") from exc
 
 
-def archive(output: Path, zip_path: Path) -> None:
+def archive(output: Path, zip_path: Path) -> str:
+    """Build deterministic ZIP with canonical internal root, preserving modes."""
     verify(output)
-    if zip_path.exists():
+    if zip_path.exists() or zip_path.is_symlink():
         raise InstallError("archive already exists")
-    with zipfile.ZipFile(zip_path, "x", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
-        for path in sorted(output.rglob("*")):
-            if not path.is_file():
-                continue
-            info = zipfile.ZipInfo(output.name + "/" + path.relative_to(output).as_posix())
-            info.date_time = (2020, 1, 1, 0, 0, 0)
-            info.compress_type = zipfile.ZIP_DEFLATED
-            info.external_attr = 0o644 << 16
-            z.writestr(info, path.read_bytes(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+    temporary = zip_path.with_name(zip_path.name + ".staging")
+    if temporary.exists() or temporary.is_symlink():
+        raise InstallError("staging archive exists; inspect/remove it manually")
+    try:
+        with zipfile.ZipFile(temporary, "x", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
+            for path in sorted(output.rglob("*")):
+                if not path.is_file():
+                    continue
+                info = zipfile.ZipInfo("aet-distribution/" + path.relative_to(output).as_posix())
+                info.date_time = (2020, 1, 1, 0, 0, 0)
+                info.compress_type = zipfile.ZIP_DEFLATED
+                info.create_system = 3
+                info.external_attr = (0o755 if path.stat().st_mode & 0o111 else 0o644) << 16
+                z.writestr(info, path.read_bytes(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+        with zipfile.ZipFile(temporary) as z:
+            bad = z.testzip()
+            if bad:
+                raise InstallError("archive CRC verification failed: " + bad)
+        if zip_path.exists():
+            raise InstallError("archive destination appeared during packaging")
+        os.replace(temporary, zip_path)
+        return _digest(zip_path.read_bytes())
+    finally:
+        if temporary.exists():
+            temporary.unlink()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -208,7 +225,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             result = build(a.source, a.output, a.profile, tuple(a.skill), a.version, a.name)
             if a.zip:
-                archive(a.output, a.output.with_suffix(".zip"))
+                result["archive_sha256"] = archive(a.output, a.output.with_suffix(".zip"))
         print(json.dumps(result, indent=2))
         return 0
     except (InstallError, OSError) as exc:
