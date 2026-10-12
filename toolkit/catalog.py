@@ -34,14 +34,15 @@ _ALIASES = {
     "authentification": "authentication", "autorisation": "authorization",
     "modifier": "modify", "restreindre": "restrict", "supprimer": "remove",
     "migrer": "migrate", "donnees": "data",
+    "ajouter": "add", "implementer": "implement", "executer": "execute",
     "predicat": "predicate", "tenants": "tenant", "faute": "typo",
     "coquille": "typo", "corriger": "fix", "stockage": "storage",
     "refactorisation": "refactor", "locale": "local",
 }
 _NEGATIVE = re.compile(r"\b(?:do not|don't|not for|avoid using|ne pas utiliser)\b", re.I)
-_ACTIONS = frozenset("modify change fix edit update refactor restrict remove migrate delete destroy deploy rotate disable relax bypass alter rewrite".split())
+_ACTIONS = frozenset("modify change fix edit update refactor restrict remove migrate delete destroy deploy rotate disable relax bypass alter rewrite perform execute implement add create build".split())
 _BOUNDARIES = frozenset("auth authentication authorization permissions iam secrets credentials tenant ownership encryption production prod sensitive personal".split())
-_EXCLUSION_SCOPE = re.compile(r"^(?:do not use|don't use|do not substitute|not for|avoid using|ne pas utiliser)\b", re.I)
+_EXCLUSION_SCOPE = re.compile(r"^(?:do not use|don't use|do not apply|do not substitute|not for|avoid using|ne pas utiliser)\b", re.I)
 _GENERIC_IDENTITY = frozenset("ui cloud python data api service engineering selection design quality platform architecture library components".split())
 _WORDING_ACTIONS = frozenset({"fix", "edit", "update"})
 _OPERATIONAL = frozenset("predicate filter endpoint policy code checks guard rule rules handler".split())
@@ -161,10 +162,16 @@ def _description_parts(description: str) -> tuple[str, tuple[str, ...]]:
     return description[:boundaries[0].start()], tuple(description[match.start():end] for match, end in zip(boundaries, ends))
 
 
-def _simple_edit(words: set[str]) -> bool:
+def _action_words(text: str) -> set[str]:
+    # Discovery stopwords include "build"/"implement"; workflow consequences must
+    # retain these requested actions without changing the public tokenizer.
+    return {_ALIASES.get(word, word) for word in _WORDS.findall(_normalized(text))} & _ACTIONS
+
+
+def _simple_edit(words: set[str], actions: set[str] | None = None) -> bool:
     return (bool(words & {"typo", "spelling"})
             and bool(words & {"documentation", "docs", "label"})
-            and not words & (_ACTIONS - _WORDING_ACTIONS)
+            and not ((words & _ACTIONS) if actions is None else actions) - _WORDING_ACTIONS
             and not words & _OPERATIONAL)
 
 
@@ -265,7 +272,17 @@ def workflow_advice(query: str, *, observed: ChangeSignals | None = None) -> Wor
                               "observed_change_signals", decision.rationale, decision.unmet_gates)
     clauses = [part.strip() for part in re.split(r"[;.]|\b(?:and then|and|then|et|puis)\b", _normalized(query)) if part.strip()]
     if len(clauses) > 1:
-        suggestions = [workflow_advice(clause) for clause in clauses]
+        suggestions = []
+        inherited_actions: set[str] = set()
+        for clause in clauses:
+            clause_actions = _action_words(clause) | (_routing_tokens(clause) & {"explain", "describe", "expliquer", "decrire"})
+            if clause_actions:
+                inherited_actions = clause_actions
+            elif inherited_actions:
+                # Coordinated objects share the request's action: "delete files
+                # and customer data" cannot lose the deletion consequence.
+                clause = " ".join(sorted(inherited_actions)) + " " + clause
+            suggestions.append(workflow_advice(clause))
         order = {"light": 0, "standard": 1, "deep": 2}
         strongest = max(suggestions, key=lambda item: order[item.workflow])
         return WorkflowAdvice(strongest.workflow, strongest.risk, strongest.source,
@@ -273,11 +290,11 @@ def workflow_advice(query: str, *, observed: ChangeSignals | None = None) -> Wor
                               strongest.required_checks)
     words = _routing_tokens(query)
     checks = ("Inspect affected code/data, reversibility and permissions; suggestion is not authorization.",)
-    action = words & _ACTIONS
+    action = _action_words(query)
     # An explanation about a migration is not a request to execute it.
     informational = bool(words & {"explain", "describe", "expliquer", "decrire"})
     boundary = words & _BOUNDARIES
-    if _simple_edit(words):
+    if _simple_edit(words, action):
         return WorkflowAdvice("light", "insufficient", "request_heuristic",
                               ("isolated wording edit; inspect diff to confirm scope",), checks)
     doc_only = bool(words & {"documentation", "docs"}) and not action - _WORDING_ACTIONS and not words & _OPERATIONAL

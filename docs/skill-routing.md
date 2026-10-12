@@ -86,7 +86,7 @@ CI rejects profiles if this rough core + metadata estimate exceeds 2500 tokens o
 The finder retains deterministic weights for names, keywords, domains and **positive**
 description text. Description text starting at `Do not`, `Don't`, `Not for`,
 `Avoid using` or `Ne pas utiliser` is separated and never adds positive score.
-Only activation-scope markers (`Do not use`, `Do not substitute`, etc.)
+Only activation-scope markers (`Do not use`, `Do not apply`, `Do not substitute`, etc.)
 can suppress a candidate; procedural warnings such as `Do not assume` cannot.
 Fully matched exclusion clauses with at least two meaningful terms suppress a
 candidate; partial matches become an unfavorable scope check. This conservative
@@ -131,7 +131,8 @@ An authentication-documentation typo is LIGHT; restricting a tenant lookup or
 removing an ownership filter suggests DEEP; a database choice suggests STANDARD.
 An explanation about irreversible migration is not migration execution. Compound
 requests retain the strongest indicated consequence per clause: updating docs
-alongside an authorization fix cannot downgrade the fix. A
+alongside an authorization fix cannot downgrade the fix. Coordinated objects
+inherit the preceding action when they have no action of their own. A
 localized reversible refactor may be LIGHT; unverified scope remains explicit.
 
 Text-derived suggestions always have `source=request_heuristic`, with `risk=potential`

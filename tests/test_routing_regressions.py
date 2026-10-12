@@ -60,6 +60,8 @@ class RoutingRegressionTests(unittest.TestCase):
     def test_real_consequences_and_mentions(self):
         cases = {
             "restrict one tenant lookup": "deep",
+            "implement authorization checks": "deep",
+            "add a tenant ownership filter": "deep",
             "remove the ownership filter from lookup": "deep",
             "modifier le prédicat d'autorisation entre tenants": "deep",
             "perform an irreversible data migration": "deep",
@@ -181,11 +183,17 @@ class RoutingReviewRegressions(unittest.TestCase):
         self.assertNotIn("schema-migrations", {e.skill.name for e in result.excluded})
         self.assertIn("schema-migrations", {m.skill.name for m in result.candidates})
 
+    def test_do_not_apply_is_an_activation_scope_exclusion(self):
+        c = routing.load_catalog(ROOT)
+        self.assertNotIn("fastapi-service", {m.skill.name for m in routing.search("review FastAPI SQL internals", c)})
+
     def test_mixed_documentation_and_operational_changes(self):
         for query in ("Fix authentication and update docs",
                       "Fix a documentation typo and update authorization checks",
                       "Explain rollback then perform a data migration",
-                      "delete all customer data"):
+                      "delete all customer data",
+                      "fix documentation and authorization checks",
+                      "delete temporary files and customer data"):
             with self.subTest(query=query):
                 self.assertEqual(routing.suggest_workflow(query)[0], "deep")
 
