@@ -29,7 +29,7 @@ class DesignProductSkillsTests(unittest.TestCase):
         cls.catalog = load_catalog(ROOT)
 
     def test_catalog_size_and_independent_owners(self):
-        self.assertEqual(len(self.catalog), 177)
+        self.assertEqual(len(self.catalog), 178)
         design = {n: s for n, s in self.catalog.items() if s.domain == "design"}
         self.assertEqual(len(design), 16)
         self.assertEqual(set(NEW) & set(design), set(NEW))
