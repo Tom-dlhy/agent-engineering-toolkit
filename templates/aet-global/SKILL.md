@@ -1,10 +1,12 @@
 ---
 name: aet
 description: >-
-  Use when starting coding, debugging, architecture, frontend, backend, data,
-  cloud, security, testing, DevOps or other engineering work that may benefit
-  from AET specialist skills. Select relevant guidance from the bundled
-  library before substantial changes; do not load unrelated specialists.
+  Use when a nontrivial engineering task may benefit from AET expertise:
+  implementing or debugging software, designing architecture, reviewing
+  security, data, cloud, tests or infrastructure, or choosing technologies.
+  Do not use for spelling fixes, trivial formatting, straightforward factual
+  questions, or isolated reversible edits requiring no specialist guidance.
+  Select only relevant guides; never preload the whole library.
 ---
 
 # AET — lightweight gateway to engineering expertise

@@ -54,6 +54,17 @@ class GlobalGatewayTests(unittest.TestCase):
         template.write_text((ROOT / "templates/aet-global/SKILL.md").read_text(),
                             encoding="utf-8")
 
+    def test_gateway_native_description_has_explicit_activation_boundaries(self):
+        template = (ROOT / "templates/aet-global/SKILL.md").read_text(encoding="utf-8")
+        _, frontmatter, _ = template.split("---", 2)
+        description = yaml.safe_load(frontmatter)["description"].lower()
+        self.assertIn("nontrivial engineering", description)
+        self.assertIn("do not use for", description)
+        self.assertIn("spelling fixes", description)
+        self.assertIn("trivial formatting", description)
+        self.assertIn("reversible edits", description)
+        self.assertIn("select only relevant guides", description)
+
     def test_bundle_exposes_exactly_one_native_skill(self):
         bundle = self.base / "bundle"
         result = build_source(self.source, bundle)
