@@ -131,10 +131,12 @@ output now explicitly abstains. `workflow_advice(query)` returns
 The legacy `suggest_workflow(query)` tuple also returns `unclassified`
 rather than misrepresenting a keyword guess as a risk assessment.
 
-If a caller supplies actual structured observations,
+If a caller supplies actual nonempty structured impact/scope observations,
 `workflow_advice(query, observed=ChangeSignals(...))` delegates to the existing
 `adaptive_policy.assess`. Those observations are caller-reported, not
-independently verified. Neither output is authorization.
+independently verified. Empty/default `ChangeSignals` or flags reporting only
+tool/reviewer availability **do not establish low risk**: the API abstains.
+Neither output is authorization.
 
 The PR #38 routing regression fixtures remain **negative/positive discovery
 tests**, not a claim that offline code can measure model judgment. Evaluating

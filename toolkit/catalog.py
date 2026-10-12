@@ -289,7 +289,17 @@ def workflow_advice(query: str, *, observed: ChangeSignals | None = None) -> Wor
     Only explicit, caller-supplied structured observations can use the separate
     deterministic policy. They are NOT verified facts or authorization.
     """
-    if observed is None:
+    # Empty/default signals do not prove that a task is harmless.
+    # Tool and reviewer availability are not observations about impact.
+    observed_impact = bool(observed and any((
+        observed.local_reversible, observed.multi_component,
+        observed.shared_contract, observed.acceptance_uncertain,
+        observed.authorization_or_secrets, observed.sensitive_or_production_data,
+        observed.migration_with_rollback_risk,
+        observed.destructive_or_irreversible, observed.external_privileged_effect,
+        observed.independent_tasks, observed.long_running,
+    )))
+    if not observed_impact:
         return WorkflowAdvice(
             "unclassified", "unknown", "agent_decision_required",
             ("Read task-routing and inspect the requested change, project contracts and impact.",),

@@ -57,6 +57,13 @@ class RoutingRegressionTests(unittest.TestCase):
                 self.assertEqual(advice.workflow, expected)
                 self.assertEqual(advice.source, "caller_supplied_change_signals")
 
+    def test_empty_observed_signals_do_not_assert_light_is_safe(self):
+        for signals in (ChangeSignals(), ChangeSignals(reviewer_available=True)):
+            with self.subTest(signals=signals):
+                result = routing.workflow_advice("delete everything", observed=signals)
+                self.assertEqual(result.workflow, "unclassified")
+                self.assertEqual(result.source, "agent_decision_required")
+
     def test_exclusion_is_not_positive_evidence(self):
         skill = routing.Skill("widget", "ui", "skills/ui/widget",
                               "Use for widgets. Do not use for database selection.", ())
@@ -132,6 +139,10 @@ class RoutingContextTests(unittest.TestCase):
         self.assertNotIn("activated", report["scope"])
         self.assertNotIn("installed", report["scope"])
         self.assertIn("permissions", report["architecture"])
+        self.assertIn("personas", report["architecture"])
+        self.assertIn("profiles", report["architecture"])
+        self.assertIn("references", report["architecture"])
+        self.assertIn("evaluation", report["architecture"])
 
     def test_metadata_separates_scope_exclusions_from_cautions(self):
         skill = routing.Skill("sample", "core", "skills/core/sample",
