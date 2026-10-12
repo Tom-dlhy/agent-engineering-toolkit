@@ -75,3 +75,44 @@ An adversarial reviewer of the packet should ask: which lines are **claims**, wh
 
 ## Boundaries and completion
 **codebase-archeologist** discovers repository structure and behavior; you preserve validated context. **execution-orchestrator** consumes scoped packets for workers. **verification-before-done** confirms actual evidence. End when recipient can answer: what is the goal, what is fixed, what is verified, what is uncertain, what can I safely do next? Never confuse a summarization with actual saved memory or successful tool execution.
+
+## Continuity protocol for long agent workflows
+
+Inspired by the *small handoff packet and durable progress evidence*
+in mature execution workflows. Do not create a ledger for a one-line
+change or claim a chat summary is a persistent store.
+
+**Trigger economics:** LIGHT local fix -> no resume document.
+STANDARD multi-step work -> compact task/decision summary if another
+agent or session will continue. DEEP long-running work -> durable
+per-plan ledger, explicit revision and recovery checkpoints with
+verification before resuming.
+
+Packet format has **identity before memory**:
+- Plan/spec identity and approved task scope.
+- Verified repository SHA, branch/ref and exact tests that ran.
+- Completed task IDs with commits; tasks STARTED versus VERIFIED;
+  allowed file boundaries and external side effects.
+- FACT/DECISION/ASSUMPTION/UNKNOWN in separate entries, with timestamps
+  where origin matters.
+- Review level and actual reviewer status; pending production/merge
+  approvals; next reversible action.
+
+**Resume protocol:** reconcile saved packet against latest Git state,
+source-controlled spec and fresh tool outputs. A line saying "done"
+without matching commit/test is not a permission to skip verification.
+If branch advanced since the packet, invalidate stale CI/review claims
+and inspect changed interfaces before dispatching another worker.
+A ledger cannot authorize deletion or external writes.
+
+**Compression policy:** keep only details necessary for the next
+choice; use references to versioned source for large logs, not inline
+copies. Prune old tool chatter, do not prune security stop conditions,
+known bad migration attempts or approved non-goals. Avoid private
+tokens, raw customer data and company credentials.
+
+Example: task 3 reportedly completed before context compaction,
+but referenced commit no longer belongs to current feature branch.
+Do not blindly re-run or mark done: compare Git history, test output
+and current contract, flag uncertainty, then select a safe next
+action. Distinguish "report in chat" from saved workspace file.
