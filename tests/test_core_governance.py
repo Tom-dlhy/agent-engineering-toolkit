@@ -23,6 +23,7 @@ from validate_skills import validate_repository
 
 CORE = (
     "task-routing",
+    "implementation-planning",
     "skill-authoring",
     "systematic-debugging",
     "verification-before-done",
@@ -74,10 +75,10 @@ class CoreGovernanceTests(unittest.TestCase):
             (ROOT / "evals" / "core-routing.yaml").read_text(encoding="utf-8")
         )
 
-    def test_five_existing_core_skills_without_duplication(self) -> None:
+    def test_six_existing_core_skills_without_duplication(self) -> None:
         found = {x.name for x in self.skills.values() if x.domain == "core"}
         self.assertEqual(found, set(CORE))
-        self.assertEqual(len(self.skills), 177)
+        self.assertEqual(len(self.skills), 178)
 
     def test_all_core_skills_have_targeted_substantial_local_references(self) -> None:
         for name in CORE:
@@ -98,7 +99,7 @@ class CoreGovernanceTests(unittest.TestCase):
         registry = yaml.safe_load(
             (ROOT / "registry" / "skills.yaml").read_text(encoding="utf-8")
         )
-        self.assertEqual(len(registry["skills"]), 177)
+        self.assertEqual(len(registry["skills"]), 178)
         self.assertFalse(any("maturity" in row for row in registry["skills"]))
         self.assertNotIn("maturity", (ROOT / "toolkit" / "catalog.py").read_text())
 

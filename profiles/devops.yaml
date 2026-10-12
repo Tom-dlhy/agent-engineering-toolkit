@@ -2,6 +2,7 @@ name: devops
 description: CI/CD, platform engineering, IaC and release engineering.
 skills:
   - task-routing
+  - implementation-planning
   - verification-before-done
   - ci-cd-engineering
   - terraform-iac

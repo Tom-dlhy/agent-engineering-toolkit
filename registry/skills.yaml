@@ -405,6 +405,10 @@ skills:
     domain: core
     path: skills/core/requirements-discovery
     keywords: ["grill","requirements","discovery","clarify","scope","specification","interview","stakeholders","acceptance","elicitation"]
+  - name: implementation-planning
+    domain: core
+    path: skills/core/implementation-planning
+    keywords: ["implementation","planning","plan","tasks","dependency","interfaces","handoff","milestones","acceptance","testable","breakdown"]
   - name: skill-authoring
     domain: core
     path: skills/core/skill-authoring

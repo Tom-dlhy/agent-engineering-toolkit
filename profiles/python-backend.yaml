@@ -2,6 +2,7 @@ name: python-backend
 description: Production Python APIs, domain design, persistence and testing.
 skills:
   - task-routing
+  - implementation-planning
   - verification-before-done
   - systematic-debugging
   - modern-python

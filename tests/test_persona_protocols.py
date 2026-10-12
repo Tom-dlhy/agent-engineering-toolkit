@@ -48,13 +48,13 @@ class PersonaProtocolTests(unittest.TestCase):
         cls.examples = yaml.safe_load((ROOT / "evals" / "persona-routing.yaml").read_text())
 
     def test_15_independent_personas_and_unchanged_technical_leaves(self):
-        self.assertEqual(len(self.catalog), 177)
+        self.assertEqual(len(self.catalog), 178)
         actual = {name for name, s in self.catalog.items() if s.domain == "personas"}
         self.assertEqual(actual, set(PERSONAS))
         self.assertEqual(len({s.domain for s in self.catalog.values()}), 14)
         self.assertEqual(
             len(list((ROOT / "skills").glob("*/**/references/*.md"))),
-            415,
+            423,
         )
         for name in PERSONAS:
             s = self.catalog[name]

@@ -36,11 +36,11 @@ class QualityRefactorTests(unittest.TestCase):
             {s.name for s in self.catalog.values() if s.domain == "quality"},
             EXPECTED,
         )
-        self.assertEqual(len(self.catalog), 177)
+        self.assertEqual(len(self.catalog), 178)
 
     def test_uniform_quality_without_maturity_tiers(self):
         entries = yaml.safe_load((ROOT / "registry" / "skills.yaml").read_text())["skills"]
-        self.assertEqual(len(entries), 177)
+        self.assertEqual(len(entries), 178)
         self.assertFalse(any("maturity" in e for e in entries))
 
     def test_references_have_real_content_and_selective_triggers(self):
@@ -52,7 +52,7 @@ class QualityRefactorTests(unittest.TestCase):
                 self.assertIn("Do not", skill.description)
                 self.assertIn("## ", (ROOT / skill.path / "SKILL.md").read_text())
                 refs = indexed_references(skill, ROOT)
-                self.assertEqual(len(refs), 3)
+                self.assertEqual(len(refs), 6 if name == "git-pr-workflow" else 3)
                 for path in refs:
                     leaf = read_reference(skill, path, ROOT)
                     self.assertGreater(len(leaf), 1400, (name, path))
@@ -61,7 +61,7 @@ class QualityRefactorTests(unittest.TestCase):
                     self.assertIn("## ", leaf)
                     self.assertIn("https://", leaf)
                     count += 1
-        self.assertEqual(count, 21)
+        self.assertEqual(count, 24)
 
     def test_positive_routing(self):
         for item in self.fixtures["selection"]:
