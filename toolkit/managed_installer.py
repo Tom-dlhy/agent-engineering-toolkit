@@ -309,7 +309,7 @@ class ManagedInstaller:
             raise InstallError("selected skills missing from source: " + ", ".join(sorted(missing_sources)))
         desired: dict[str, dict[str, str]] = {}
         for name in selected:
-            desired[name] = previous[name] if command == "repair" else _files(available[name])
+            desired[name] = previous[name] if command in ("repair", "uninstall") else _files(available[name])
             if command == "repair" and _files(available[name]) != previous[name]:
                 raise InstallError(f"repair requires original source revision for {name}; use update")
         operations = []
