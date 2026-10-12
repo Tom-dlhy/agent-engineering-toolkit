@@ -30,7 +30,7 @@ python scripts/manage_install.py uninstall --agent codex --project /path/to/proj
 Switch --agent to claude for Claude Code. Switch --scope to user for installation
 under the corresponding home-directory agent skills path. Default is project.
 
-The per-agent ledger is stored in .aet/install-<scope>-<agent>.json and tracks
+The authenticated per-agent ledger is stored in .aet/install-<scope>-<agent>.json and tracks
 source revision, selected skills and SHA-256 per installed file. Preserve it
 to enable safe updates and removals. Do not hand-edit ownership state.
 
@@ -39,7 +39,7 @@ additions, no overwrite of unknown files, detection of edited/extra/symlinked
 files, refusal on conflicts, no implicit execution. Repair requires source
 files matching the originally installed SHA-256 values.
 
-**Recovery:** staging and backups are on the same filesystem. A journal records
+**Recovery:** staging and backups are on the same filesystem; authenticated trust keys are outside the target project. A journal records
 the transaction; normal failures roll back, and an interrupted transaction is
 rolled back at the next explicit mutating invocation. A process lock prevents
 concurrent toolkit operations on the same target. Read-only doctor reports
@@ -81,7 +81,7 @@ versions and source changes while copying. ZIP creation is deterministic.
 
 ~~~bash
 claude plugin marketplace add /absolute/path/to/dist/backend
-claude plugin install agent-engineering-toolkit@aet-local
+claude plugin install agent-engineering-toolkit@agent-engineering-toolkit-local
 codex plugin marketplace add /absolute/path/to/dist/backend
 # Install the plugin from the host's supported marketplace UI
 ~~~
@@ -159,3 +159,7 @@ credentials are used in standard CI.
 
 For several independently installed native profile packages, use unique
 plugin IDs with --name aet-<profile> when building each distribution.
+
+## Installer v2 safety changes
+
+See [security, legacy ledger sealing, release and native host verification](installer-v2-security.md). Earlier unsigned Installer v2 ledgers require explicit verified sealing before new updates or uninstall. Deleted/modified files and forged journals fail closed. The marketplace name is based on the plugin identity, not a shared aet-local identifier. Frozen lockfiles and release packaging require a clean Git source. Versioned profile archives may be published only through an explicitly created vX.Y.Z release tag on main.
