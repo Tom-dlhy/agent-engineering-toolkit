@@ -224,6 +224,9 @@ class InstallerV2Tests(unittest.TestCase):
         build(self.source, second, "small", version="1.0.0")
         self.assertEqual((first / "aet-distribution.json").read_bytes(),
                          (second / "aet-distribution.json").read_bytes())
+        first_zip, second_zip = self.base / "one.zip", self.base / "two.zip"
+        self.assertEqual(archive(first, first_zip), archive(second, second_zip))
+        self.assertEqual(first_zip.read_bytes(), second_zip.read_bytes())
 
 
     def test_lockfile_pins_exact_bytes_and_selection(self):
