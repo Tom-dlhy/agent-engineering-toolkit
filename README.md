@@ -115,10 +115,26 @@ The **existing `task-routing` skill** guides the agent's decisions about technic
 
 | Method | Best for | Who manages updates? |
 | --- | --- | --- |
-| **A. Managed skills (recommended)** | Adding a focused skill set to an existing project | AET's `manage_install.py` |
-| **B. Native local plugin marketplace** | Packaging a reusable curated plugin for supported host plugin workflows | Codex / Claude Code plugin tooling |
+| **A. Global AET (simplest)** | One native `aet` skill in every project, with all 178 specialist guides available on demand | AET's `aet_global.py` |
+| **B. Managed curated profiles** | Expose selected specialists as individual native skills inside a project | AET's `manage_install.py` |
+| **C. Native local plugin marketplace** | Packaging a curated plugin for host-managed installs | Codex / Claude Code plugin tooling |
 
-**Use one method per host/scope for overlapping skills** to avoid duplicate copies with unclear precedence.
+**Global install, in one step for both hosts** (from this checkout):
+
+```bash
+python scripts/aet_global.py plan
+python scripts/aet_global.py install --apply
+python scripts/aet_global.py doctor
+```
+
+Then start a new Codex/Claude Code session in **any unrelated project**.
+Only `aet` is exposed as a native skill; it links to compact domain indexes
+and all specialist content copied in its own directory. The host decides
+whether to invoke `aet`; this is not a guaranteed always-on hook.
+See [global agent discovery](docs/global-agent-discovery.md) for lifecycle,
+migration, safety, and behavior verification.
+
+**Use one method per host/scope for overlapping skills** to avoid duplicate copies with unclear precedence. Existing per-project and marketplace options remain below.
 
 ## Install for your coding agent
 
