@@ -165,7 +165,7 @@ class InstallerV2Tests(unittest.TestCase):
         journal = self.manager.trust.sign({
             "schema": "aet.transaction.v2",
             "transaction": tx.name,
-            "target": str(self.project),
+            "target": str(self.manager.base),
             "agent": "codex",
             "scope": "project",
             "had_state": True,
@@ -188,7 +188,7 @@ class InstallerV2Tests(unittest.TestCase):
         tx = self.manager.meta / ("tx-" + "b" * 32)
         (tx / "backups").mkdir(parents=True)
         forged = {"schema": "aet.transaction.v2", "transaction": tx.name,
-                  "target": str(self.project), "agent": "codex", "scope": "project",
+                  "target": str(self.manager.base), "agent": "codex", "scope": "project",
                   "had_state": False, "before_state_sha": None,
                   "after_state_sha": "a" * 64,
                   "operations": [{"skill": "alpha", "had_original": False,
@@ -213,7 +213,7 @@ class InstallerV2Tests(unittest.TestCase):
         (victim / "SKILL.md").write_text("user concurrent edit")
         journal = self.manager.trust.sign({
             "schema": "aet.transaction.v2", "transaction": tx.name,
-            "target": str(self.project), "agent": "codex", "scope": "project",
+            "target": str(self.manager.base), "agent": "codex", "scope": "project",
             "had_state": True, "before_state_sha": before_sha,
             "after_state_sha": "f"*64,
             "operations": [{"skill":"alpha", "had_original":True,
