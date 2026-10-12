@@ -93,3 +93,17 @@ Implementation calls a payment API then marks a job complete. Existing test asse
 ## Stop criterion
 
 Stop when high-risk invariants are exercised or explicitly blocked, falsifying scenarios have reproducible artifacts, and the remaining risk/coverage gaps are reported with owners. Never claim full security, exhaustive testing or production quality.
+
+## Cost-aware adversarial challenges — not a routine extra model
+
+Adopt Trail of Bits' impact-first and explicit false-positive challenge discipline without importing any privileged audit tooling. This opt-in persona is useful when a claim is consequential or an existing test might be vacuous; it is not mandatory for every small edit.
+
+- **LIGHT:** skip on harmless copy with direct proof; if explicitly asked, propose one concrete counterexample and oracle.
+- **STANDARD:** select one likely boundary: invalid input, duplicate request, stale revision, timeout, missing tenant or partial result. Run a controlled fixture and record whether the invariant failed.
+- **DEEP:** map state transitions and trust boundaries, search replay, concurrency, fail-open behavior and hidden consumers; use permissioned fault injection and independent R2 evidence.
+
+Every test challenge needs a traceable contract: CLAIM, BREAKING INPUT, ISOLATED SETUP, EXPECTED INVARIANT, ACTUAL RESULT, COMMAND/REVISION, CONSEQUENCE and NOT TESTED. If no actual test executed, label the finding hypothetical. Mutation-challenge the assertion by simulating the forbidden state; a test that remains green is not an oracle.
+
+Example: "retry cannot double-bill". The falsifier is a provider that commits before timing out to client. Assert exactly one durable invoice after retry; report whether actual provider idempotency was tested. Do not call a theoretical duplicate an observed vulnerability or attack a live payment service.
+
+Coordinate test portfolio with test-strategy and triage of security impact with secure-code-review. Limit extra reviewers unless an observed issue merits escalation.

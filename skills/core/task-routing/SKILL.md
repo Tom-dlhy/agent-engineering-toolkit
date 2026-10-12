@@ -133,3 +133,22 @@ adjudicates actual feedback; verification-before-done checks final evidence.
 Report the chosen workflow, review level, executor, selected skills and
 rejected costly alternatives when non-obvious, tools unavailable, and the
 first falsifiable check. Never use a heuristic result as authorization.
+
+## Research-backed selection: route the task, not vocabulary
+
+Adapt the comparative skill-selection approach of Anthropic skill-creator and GitHub's curated agent-skill-stack concept. The lexical search rank is a candidate list, never proof of correct activation.
+
+1. **Cheap shortlist:** from installed-profile metadata and actual user intent, select up to three candidates and include NONE as a valid option. Consider positive/negative triggers. Normalize French/English concepts, but keep proper technology names unchanged. A match on "base" must not confuse Base UI with a database without inspecting the rest of the request.
+2. **Bounded evidence:** inspect impacted files, requested artifact and contract ownership for only the shortlist. Pick one PRIMARY skill and only truly orthogonal SECONDARY specialists. No repository-wide skill-body scan.
+3. **Activation evidence:** identify whether the host actually exposed and loaded the selected skill. A registry hit is not native activation; an absent subagent tool must not be invented.
+4. **Dynamic reassessment:** reroute on observed new dependencies, authentication boundaries, irreversible effects or failed tests. De-escalate if actual change is harmless copy, while preserving any mandatory approval.
+
+| Request | Wrong shortcut | Evidence-led route |
+|---|---|---|
+| Documentation typo on a production page | DEEP from keyword production | LIGHT/R0, no review agent |
+| Tenant B reads tenant A's ID | LIGHT from one-line patch | DEEP/R2, authorization specialist |
+| Base UI Select | Database selection from base | UI provider skill |
+| Intermittent pytest | Test-adversary for every failure | systematic-debugging and flaky methodology |
+| Improve agent answer quality | llm-integration by default | llm-evaluation for measured experiments |
+
+For changed triggers create positive, negative, ambiguity and multilingual examples. Offline lexical rank tests only assert rank. Native tests must separately record skill actually loaded, references consumed, task success, false activation and tokens **only when host telemetry exists**. Compare the old skill against the modified one; false activation and wasted R1/R2 reviews are regressions. Never claim actual agent routing was measured from YAML fixtures.

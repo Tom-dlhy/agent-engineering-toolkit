@@ -44,3 +44,49 @@ compatibility matrix, operator and stop conditions.
 Official: https://alembic.sqlalchemy.org/en/latest/ and
 https://docs.sqlalchemy.org/en/20/orm/session_transaction.html and
 https://docs.github.com/en/actions/deployment/about-deployments/deploying-with-github-actions .
+
+## Change window, compatibility and rollback rehearsal
+
+**Read when:** application or infrastructure rollout changes durable
+state, schema, external effects or availability characteristics.
+
+### Preflight and authorization packet
+
+Record old and target version/digest, dependencies, health baseline,
+SLO and business invariant, deployment owner, approval authority,
+exact backup/restore evidence, irreversible operations and
+an explicit STOP threshold. Version a deployable artifact and
+promote the tested digest, not an unverified rebuild.
+
+When schema compatibility spans releases, prefer a staged
+expand/backfill/migrate-consumers/contract sequence with rollback-safe
+transitions. Verify what older app versions do during migration
+and whether backfill rerun is idempotent. A binary rollback does not
+undo deleted columns, charges or notifications.
+
+### Rehearsal matrix
+
+| Failure point | Required observation |
+|---|---|
+| Before rollout | Known-good health and version baseline |
+| New version partial rollout | Compatibility of old/new readers and writers |
+| Migration interrupted halfway | Resumable and consistent state or documented repair |
+| Remote effect accepted but response lost | No duplicate on retry, reconciliation available |
+| Revert requested | Defined safe rollback or forward-repair procedure |
+
+### GO/NO-GO
+
+A release remains NO-GO when critical failures, unverified restore for
+irreversible data paths or missing approvals persist. CONDITIONAL GO
+must name specific accepted risk and owner, never assume acceptance.
+Use actual staged metrics and stop thresholds; no universal 5%/10%
+rollout cadence fits all infrastructures.
+
+Example: queue consumer upgrade changes event schema. Deploy dual
+reader first, then producer, confirm dead-letter/replay behavior,
+finally remove compatibility after measured old-consumer retirement.
+Do not unconditionally force a code rollback when accumulated
+messages already use the new event shape.
+
+Inspiration:
+https://github.com/github/awesome-copilot/tree/main/skills/devops-rollout-plan

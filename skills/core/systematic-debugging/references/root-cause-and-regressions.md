@@ -44,3 +44,54 @@ disproved alternatives, what remains vulnerable, and what tests actually ran?
 
 Sources: https://docs.pytest.org/en/stable/ and
 https://martinfowler.com/articles/practical-test-pyramid.html .
+
+## Causal debugging playbook and stop conditions
+
+**Read when:** a bug has survived one attempted fix, a failure crosses
+components or the diagnosis is uncertain.
+
+### Minimal experiment matrix
+
+| Observation | Proposed hypothesis | Disproving probe | Escalate if |
+|---|---|---|---|
+| Fails only on CI | race/shared fixture/runner difference | Reproduce at pinned seed/concurrency and compare local env | Same failure cannot be triggered under controlled conditions |
+| Fails after deploy | config/contract/revision drift | Compare exact artifact digest and config, not only branch name | Customer data or permission boundaries involved |
+| Duplicate remote action | timeout after remote commit | Fake provider commits then drops response | Real side effect may have been repeated |
+| Test passes intermittently | order/time dependency | Repeat with randomized order and fixed fake clock | Flakiness hides security invariant |
+
+### Verification steps
+
+A fix request can include three states: observed symptom, causal claim,
+and desired outcome. Link them with the smallest experiment: capture
+trace or minimal fixture, predict observation before running, run it,
+record result and eliminate/disprove alternative explanation. If the
+observation is contrary to hypothesis, do not keep patching that
+hypothesis. Prefer bisection when a reproducible historical boundary
+exists; compare before/after environment only where inputs stay equal.
+
+For behavior bugs prefer an observable RED failure and GREEN result;
+record test name and exact SHA on both versions. The failure must be
+the correct assertion, not import errors. For nondeterministic bugs
+use controlled scheduling, event synchronization, fixed seeds and
+state inspection rather than arbitrary timeouts. A synthetic
+reproducer can establish a mechanism but not prove the real external
+provider matches the same semantics.
+
+### Defect-limiting safety
+
+Never probe live customer records destructively, forcibly retry
+payment writes, alter runtime auth or rotate secrets to "test" a theory
+without explicit owner approval. If production symptoms continue but
+reproduction is blocked, instrument safely with redacted correlation
+IDs, measure incidence and report uncertainty.
+
+### Exit record
+
+Issue + source revision + first violated boundary + hypotheses
+disproved + accepted cause confidence + test command/real result +
+negative tests + external checks NOT RUN + user-visible remaining risk.
+A patch with no causal evidence can be proposed as a guarded mitigation,
+but must not be labeled a confirmed root-cause correction.
+
+Primary inspiration:
+https://github.com/obra/superpowers/tree/main/skills/systematic-debugging

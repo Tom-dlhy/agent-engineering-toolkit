@@ -50,3 +50,42 @@ external-skill-audit owns third-party agent instruction intake;
 agent-tool-safety owns LLM tool authorization and injection;
 git-pr-workflow owns PR collaboration. Security review complements,
 but is not replaced by, SAST/DAST or passing ordinary unit tests.
+
+## Differential security review — inspect the actual risk path
+
+Adapt Trail of Bits' differential-review and audit-context-building:
+understand behavior and assumptions first, then analyze the changed
+attack surface with explicit source-to-sink evidence. Do not turn every
+small PR into a multi-agent security audit.
+
+| Level | Procedure | Evidence |
+|---|---|---|
+| LIGHT / R0 | No security boundary: inspect diff for obvious accidental secrets and changed permissions | Targeted check, no speculative vulnerability list |
+| STANDARD / R1 | Inspect modified entry points, callers and validation, compare changed invariants and tests | Reachable scenario, impacted contract, negative oracle |
+| DEEP / R2 | Prioritized threat model, relevant git history, trust-boundary paths, privilege/tenant checks, replay and fail-open behavior | Independent findings, safe reproduction and explicit coverage gaps |
+
+**Pre-analysis:** identify who controls entry points, which principal
+performs actions, sensitive assets, implicit caller guarantees, external
+sinks and relevant existing guards. Separate source code behavior from
+unverified architectural diagrams; use codebase-archeologist only when
+genuine unfamiliarity justifies its context cost.
+
+**Differential pass:** identify removed checks, new privileged operations,
+changed default configurations and transitive callers. Inspect git
+history selectively where removed security code could be a regression.
+File count is not risk: a one-line removal of a tenant predicate can
+be R2, while 200 localization changes are not automatically vulnerable.
+
+**Adversarial pass:** for each hypothesis name controlled input,
+preconditions, actual reachable source -> validation -> auth -> sink,
+existing mitigations and safe negative test. Include status of
+reproduction (confirmed, plausible, disproven, not tested). Don't
+submit live payloads, disclose secrets or invent an exploit from static
+appearance alone. Validate false positives before assigning severity.
+
+**Review packet:** file:line and SHA, threat actor, asset, exploit
+preconditions, impact/likelihood rationale, minimal fix, regression oracle,
+required review level and what was not assessed. Security requirements are
+gates: unavailable independent R2 review remains BLOCKED; reducing cost
+does not waive known vulnerabilities. Agent tool permissions belong to
+agent-tool-safety rather than ordinary web code review.

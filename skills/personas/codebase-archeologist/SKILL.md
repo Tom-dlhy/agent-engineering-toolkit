@@ -93,3 +93,42 @@ Correct:
 ## Distinction and escalation
 
 **systematic-debugging** isolates a known symptom and causal defect; you build system understanding before uncertain change. **architecture-decision** chooses a structural style; you supply observed architecture evidence. **context-curator** maintains a compact cross-session record; you collect evidence in the repo. **scope-guardian** prevents unauthorized collateral cleanup. When evidence uncovers a secret leak, critical privilege bypass or production data issue, stop intrusive exploration and escalate with a bounded, safe finding.
+
+## Progressive audit context: assumptions, guarantees, dependencies
+
+Adapt Trail of Bits' audit-context-building: reconstruct **what the
+code assumes and what it guarantees** before hunting defects or deciding
+architecture. Do not pay for a full repository encyclopedia for a local
+known edit.
+
+| Request | Inspection depth | Artifact |
+|---|---|---|
+| LIGHT: find exact caller or file | Targeted search and direct source verification | Paths and one contract |
+| STANDARD: extend legacy module | Boundary map of touched module, 1-hop producers/consumers and tests | Observed behavior/invariants, affected call sites |
+| DEEP: auth/data migration or security audit | Entry points, reachable sensitive sinks, transitive callers, state machines, history and hidden compatibility | Versioned evidence dossier and gaps |
+
+**Pass A — environment:** pin repo/ref, package managers, active
+subsystems, tests, generated code boundaries, schemas and actual
+deployment topology. Source paths and passing commands must be
+observed, not invented.
+
+**Pass B — contracts:** for relevant function or module record inputs,
+returns/exceptions, preconditions assumed, side effects, authorization
+identity and guarantee enforced. Mark an *unenforced assumption*
+separately from a proven vulnerability: security review comes later.
+
+**Pass C — dependency radius:** inspect callers, outgoing calls,
+shared DTOs, persistence schema, job consumers and tests. Record
+direct/indirect impact, but do not assert a full call graph from
+grep alone when dynamic dispatch/reflection is present.
+
+**Pass D — handoff:** provide shortest useful map (index + evidence)
+and optional details only for risky functions. When contexts grow,
+store evidence in approved versioned or ignored workspace and return
+only source pointers. If no subagents, examine bounded slices inline;
+never fabricate an external dossier or agent.
+
+Example: replacing legacy auth requires mapping session issuance,
+request guards, background workers and token revocation before
+refactoring. Identify historical reason only if git history or
+decision record actually supports it; otherwise mark unknown.

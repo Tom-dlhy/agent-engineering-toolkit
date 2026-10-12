@@ -65,3 +65,55 @@ DoS load on public/customer infrastructure without permission.
 Official: https://hypothesis.readthedocs.io/en/latest/ ,
 https://docs.python.org/3/library/asyncio-task.html and
 https://docs.pytest.org/en/stable/how-to/flaky.html .
+
+## Risk-based RED/GREEN and test-oracle challenge
+
+**Read when:** tests cover retries, parallelism, user authorization,
+state machines or bugs that can pass a naive happy-path assertion.
+
+### Build an oracle from invariants
+
+For a cross-tenant route, assert denial **and** no leaked result,
+metadata, audit privilege or unauthorized DB write. For retryable
+remote effects, assert exactly-once *observable business result* with
+a stable idempotency token even after local timeout. For migrations,
+assert old and new consumer compatibility across staged release order.
+Do not mirror implementation logic inside a mock as the test oracle.
+
+A useful mutation test removes the guard or changes a branch condition.
+If the test stays green, it fails to detect the defect. This is an
+oracle challenge, not permission to ship mutated code. Perform only
+in isolated local/disposable workspaces.
+
+### Red -> green -> safe refactor
+
+1. Prepare fixture and expected observation.
+2. Run on current buggy baseline; inspect whether failure is precisely
+   the intended assertion. If test passes, check it isn't redundant,
+   vacuous or testing the wrong call path.
+3. Apply minimal code correction; run identical test and compare.
+4. Refactor without weakening tests; verify negative and happy path.
+5. Run integration/contract checks affected by the change, on exact HEAD.
+
+Do not demand test-first for a typo or mechanical generated snapshot
+where a direct output check is more meaningful. R2 requires real
+security/data recovery evidence proportional to risk, not arbitrary
+100% coverage.
+
+### Controlled fault injection
+
+Use disposable DB/services and inject faults at side-effect boundaries:
+before commit, after commit before ACK, retry during in-flight
+operation, duplicate event delivery, stale permission, and cancellation.
+Record deterministic seed/order, expected durable state and cleanup.
+A stress run without controlled interleavings cannot prove race freedom.
+If the real broker/provider cannot be used, name that limitation.
+
+Concrete case: document upload into object storage followed by DB row.
+Fail object upload after metadata insert; assert no accessible orphaned
+row or documented reconciliation state. Fail DB write after object upload;
+assert compensating cleanup or recoverable orphan queue. Do not hide
+partial-failure behavior behind a mock that always succeeds.
+
+Method inspiration:
+https://github.com/obra/superpowers/tree/main/skills/test-driven-development

@@ -27,6 +27,19 @@ Run consented held-out A/B tasks with agent logs and measurable correctness,
 latency and human correction before such claims. See
 [adaptive methodology](adaptive-engineering-methodology.md).
 
+## Research-driven operational deepening (2026-10-12)
+
+Fourteen existing skills across six priority sectors were expanded in place,
+with eight already-registered expert reference leaves deepened. The
+source-pinned audit and scope decisions are in
+[methodology source review](methodology-source-review-2026-10.md).
+Twenty held-out cases in evals/methodology-depth.yaml are **unexecuted**;
+tests/test_methodology_depth.py checks their structure and the existence
+of the methods. scripts/summarize_skill_evals.py only aggregates
+externally observed, comparable old-skill/new-skill records and refuses
+to invent missing token data. Behavioral quality, actual activation and
+measured token savings remain open until native tests are authorized/run.
+
 ## Next priorities — validate behavior, not grow the catalog
 
 1. **Discovery/routing:** address the observed lexical router's weak handling of natural French queries, synonyms and ambiguous tokens (for example `base` matching `base-ui` for a database-selection question). Benchmark positive, negative and multi-domain routing before considering a more complex retrieval system. **This is a separate code change; it is not fixed by documentation updates.**
