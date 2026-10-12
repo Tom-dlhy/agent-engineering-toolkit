@@ -16,7 +16,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from toolkit.catalog import load_catalog, load_profile, search, suggest_workflow
+from toolkit.catalog import load_catalog, load_profile, search, suggest_workflow, workflow_advice
+from toolkit.adaptive_policy import ChangeSignals
 from toolkit.knowledge import indexed_references, read_reference
 from context_budget import estimate
 from validate_skills import validate_repository
@@ -115,10 +116,20 @@ class CoreGovernanceTests(unittest.TestCase):
             with self.subTest(query=query):
                 self.assertEqual(search(query, self.skills), [])
 
-    def test_light_standard_deep_are_workflow_not_trust(self) -> None:
+    def test_free_text_routes_to_agent_not_lexical_risk_classifier(self) -> None:
         for case in self.fixtures["workflows"]:
             with self.subTest(query=case["query"]):
-                self.assertEqual(suggest_workflow(case["query"])[0], case["expected"])
+                self.assertEqual(suggest_workflow(case["query"])[0], "unclassified")
+                self.assertEqual(workflow_advice(case["query"]).source, "agent_decision_required")
+
+    def test_observed_consequences_use_structured_policy(self) -> None:
+        for case in self.fixtures["observed_workflows"]:
+            with self.subTest(name=case["name"]):
+                decision = workflow_advice(
+                    case["name"], observed=ChangeSignals(**case["signals"])
+                )
+                self.assertEqual(decision.workflow, case["expected"])
+                self.assertEqual(decision.source, "caller_supplied_change_signals")
 
     def test_reference_read_is_opt_in_and_context_incremental(self) -> None:
         base, count = estimate("minimal", ROOT)

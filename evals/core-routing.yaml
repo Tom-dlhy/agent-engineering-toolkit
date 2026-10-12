@@ -1,4 +1,5 @@
-# Deterministic lexical baseline. Host-agent behavior requires separate real evals.
+# Deterministic lexical discovery; agent decisions require actual project evidence.
+# These are not claims of native model activation or behavior.
 version: 1
 selection:
   - query: "triage workflow routing light mode"
@@ -33,11 +34,22 @@ selection:
     expected: architecture-decision
     intent: negative-core
 workflows:
+  # Pure text yields an abstention, even when risk looks obvious to a human.
   - query: "correct a typo in documentation"
-    expected: light
   - query: "build a backend API"
-    expected: standard
   - query: "migrate production database permissions"
+observed_workflows:
+  - name: "local reversible documentation edit"
+    signals: {local_reversible: true}
+    expected: light
+  - name: "cross-module ordinary API change"
+    signals: {multi_component: true}
+    expected: standard
+  - name: "tenant authorization change"
+    signals: {authorization_or_secrets: true}
+    expected: deep
+  - name: "irreversible customer data deletion"
+    signals: {destructive_or_irreversible: true}
     expected: deep
 no_match:
   - "zzzxxyyqq"
