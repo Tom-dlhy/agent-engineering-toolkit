@@ -20,6 +20,8 @@ import uuid
 
 import yaml
 
+from toolkit.installer_trust import Trust, TrustError, canonical
+
 ROOT = Path(__file__).resolve().parents[1]
 AGENTS = {"codex": ".agents/skills", "claude": ".claude/skills"}
 SCHEMA = "aet.install.v2"
@@ -105,8 +107,18 @@ def _source(root: Path) -> tuple[dict[str, Path], str]:
         name = _safe_name(entry["name"])
         rel = _safe_relative(entry["path"])
         folder = root / rel
-        if not folder.resolve(strict=True).is_relative_to(allowed) or folder.name != name:
+        # Do not resolve every registry entry: a stale unrelated skill must
+        # never prevent uninstall or inspection of an installed one.
+        parts = Path(rel).parts
+        if len(parts) < 3 or parts[0] != "skills" or folder.name != name:
             raise InstallError(f"invalid registry source: {rel}")
+        if folder.exists():
+            if not folder.resolve(strict=True).is_relative_to(allowed):
+                raise InstallError(f"invalid registry source: {rel}")
+            cursor = root
+            for part in parts:
+                cursor = cursor / part
+                _no_link(cursor)
         if name in entries:
             raise InstallError(f"duplicate skill: {name}")
         entries[name] = folder
@@ -115,9 +127,15 @@ def _source(root: Path) -> tuple[dict[str, Path], str]:
             ["git", "-C", str(root), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True, timeout=5,
         ).stdout.strip()
+        dirty = subprocess.run(
+            ["git", "-C", str(root), "status", "--porcelain", "--untracked-files=all"],
+            check=True, capture_output=True, text=True, timeout=10,
+        ).stdout.strip()
+        if dirty:
+            revision = "dirty-" + revision[:12]
     except (OSError, subprocess.SubprocessError):
         revision = ""
-    if not re.fullmatch(r"[0-9a-f]{40}", revision):
+    if not re.fullmatch(r"[0-9a-f]{40}|dirty-[0-9a-f]{12}", revision):
         revision = "snapshot"
     return entries, revision
 
@@ -186,7 +204,7 @@ def _assert_locked(plan: dict, lock: dict) -> None:
 
 class ManagedInstaller:
     def __init__(self, root: Path, agent: str, scope: str, project: Path | None = None,
-                 home: Path | None = None):
+                 home: Path | None = None, trust_home: Path | None = None):
         if agent not in AGENTS or scope not in ("project", "user"):
             raise InstallError("agent must be codex/claude; scope must be project/user")
         self.root = root.resolve(strict=True)
@@ -200,6 +218,7 @@ class ManagedInstaller:
         self.state_path = self.meta / f"install-{scope}-{agent}.json"
         self.journal = self.meta / f"pending-{scope}-{agent}.json"
         self.lock_path = self.meta / f"lock-{scope}-{agent}"
+        self.trust = Trust(self.base, scope, agent, trust_home=trust_home)
         _parents_safe(self.base, self.target)
         _parents_safe(self.base, self.meta)
 
@@ -210,6 +229,7 @@ class ManagedInstaller:
         _no_link(self.state_path)
         try:
             record = json.loads(self.state_path.read_text(encoding="utf-8"))
+            self.trust.check(record)
             if (record["schema"] != SCHEMA or record["agent"] != self.agent
                     or record["scope"] != self.scope or not isinstance(record["selected"], list)
                     or not isinstance(record["files"], dict)):
@@ -228,7 +248,7 @@ class ManagedInstaller:
                     if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{64}", sha):
                         raise InstallError("invalid stored digest")
             return record
-        except (OSError, ValueError, KeyError, TypeError) as exc:
+        except (OSError, ValueError, KeyError, TypeError, TrustError) as exc:
             raise InstallError(f"invalid state; refusing to claim ownership: {exc}") from exc
 
     def _status(self, name: str, expected: dict[str, str]) -> tuple[str, dict[str, str] | None]:
@@ -262,8 +282,12 @@ class ManagedInstaller:
             raise InstallError(f"unknown operation: {command}")
         state = self._state()
         previous = state["files"]
-        available, revision = _source(self.root)
-        requested = _requested(self.root, profile, skills)
+        if command == "uninstall":
+            available, revision = {}, state["revision"]
+            requested = [_safe_name(s) for s in skills]
+        else:
+            available, revision = _source(self.root)
+            requested = _requested(self.root, profile, skills)
         if command == "repair":
             selected = list(previous)
         elif command == "uninstall":
@@ -274,7 +298,7 @@ class ManagedInstaller:
             selected = list(dict.fromkeys([*previous, *requested]))
             if not selected:
                 raise InstallError("specify --profile or --skill for initial installation")
-        missing_sources = set(selected) - set(available)
+        missing_sources = set(selected) - set(available) if command != "uninstall" else set()
         if missing_sources:
             raise InstallError("selected skills missing from source: " + ", ".join(sorted(missing_sources)))
         desired: dict[str, dict[str, str]] = {}
@@ -319,9 +343,10 @@ class ManagedInstaller:
                                          if present_files[k] != baseline[k]),
             }
             operations.append({"skill": name, "action": action, "status": status,
+                               "observed": present,
                                "file_diff": {k: v for k, v in diff.items() if v}})
         return {"command": command, "selected": selected, "desired": desired,
-                "operations": operations, "revision": revision if command != "repair" else state["revision"]}
+                "operations": operations, "revision": revision if command not in ("repair", "uninstall") else state["revision"]}
 
     @contextmanager
     def _locked(self):
