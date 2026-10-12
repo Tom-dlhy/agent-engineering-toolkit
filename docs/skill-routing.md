@@ -12,6 +12,9 @@ The CLI uses deterministic word matching, not LLM calls. It reads local files as
 
 ## Typical workflow
 
+The managed Installer v2 is preferred; the legacy copy-only CLI is deprecated. See [Installer v2](installer-v2.md) for safe maintenance commands.
+
+
 ~~~bash
 python scripts/skillctl.py profiles
 python scripts/skillctl.py search "Design an accessible React dashboard" --profile web-app
@@ -23,8 +26,8 @@ python scripts/context_budget.py --all
 python scripts/context_budget.py --profile ui-ux-design --activated responsive-visual-qa
 
 # Profile installation without network access
-python scripts/install_profile.py --profile ui-ux-design --agent claude --project /my/app
-python scripts/install_profile.py --profile ui-ux-design --agent claude --project /my/app --apply
+python scripts/manage_install.py install --profile ui-ux-design --agent claude --project /my/app
+python scripts/manage_install.py install --profile ui-ux-design --agent claude --project /my/app --apply
 ~~~
 
 Styles such as `bento-grid` and `glassmorphism` are **catalog opt-ins**, not part of the general `ui-ux-design` profile. Select them explicitly via `--skill` when a brief requires the technique; do not treat a design request as automatic permission to add effects.

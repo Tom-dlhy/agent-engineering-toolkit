@@ -54,6 +54,8 @@ def build(root: Path, output: Path, profile: str | None = None,
     unknown = set(selected) - set(available)
     if unknown:
         raise InstallError("unknown skills: " + ", ".join(sorted(unknown)))
+    if revision.startswith("dirty-"):
+        raise InstallError("source checkout is dirty; commit changes before packaging")
     version = version or ("0.0.0-g" + revision[:12] if revision != "snapshot" else "0.0.0-dev")
     if not VERSION.fullmatch(version):
         raise InstallError(f"not a SemVer version: {version}")
@@ -79,6 +81,7 @@ def build(root: Path, output: Path, profile: str | None = None,
                     source_mode = (available[name_skill] / rel).stat().st_mode
                     path.chmod(0o755 if source_mode & 0o111 else 0o644)
         desc = "Curated vendor-neutral agent engineering skills (no automatic hooks)."
+        marketplace = name + "-local"
         _write(plugin / "plugin.json", {
             "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
             "name": name, "version": version, "description": desc,
@@ -94,14 +97,14 @@ def build(root: Path, output: Path, profile: str | None = None,
             "author": {"name": "Agent Engineering Toolkit"},
         })
         _write(output / ".agents/plugins/marketplace.json", {
-            "name": "aet-local", "interface": {"displayName": "Agent Engineering Toolkit"},
+            "name": marketplace, "interface": {"displayName": "Agent Engineering Toolkit"},
             "plugins": [{"name": name, "source": {
                 "source": "local", "path": "./plugins/" + name},
                 "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
                 "category": "Developer Tools"}],
         })
         _write(output / ".claude-plugin/marketplace.json", {
-            "name": "aet-local", "owner": {"name": "Agent Engineering Toolkit"},
+            "name": marketplace, "owner": {"name": "Agent Engineering Toolkit"},
             "plugins": [{"name": name, "source": "./plugins/" + name,
                          "description": desc, "version": version}],
         })
@@ -110,7 +113,7 @@ def build(root: Path, output: Path, profile: str | None = None,
             "This directory is generated. Do not edit skill files in place.\n\n"
             "Claude Code: register the directory containing .claude-plugin/marketplace.json\n"
             "with 'claude plugin marketplace add /absolute/path/to/this-directory',\n"
-            "then 'claude plugin install " + name + "@aet-local'.\n\n"
+            "then 'claude plugin install " + name + "@" + marketplace + "'.\n\n"
             "Codex: 'codex plugin marketplace add /absolute/path/to/this-directory';\n"
             "install via the host's plugin directory or configured marketplace.\n\n"
             "These native plugins are managed by the host, not by the AET copy installer.\n"
@@ -155,6 +158,20 @@ def verify(output: Path) -> dict:
         if not re.fullmatch(r"[a-z][a-z0-9]*(?:-[a-z0-9]+)*", plugin_name):
             raise InstallError("invalid plugin identity")
         plugin = output / "plugins" / plugin_name
+        expected_marketplace = plugin_name + "-local"
+        for location in (".agents/plugins/marketplace.json", ".claude-plugin/marketplace.json"):
+            marketplace_data = json.loads((output / location).read_text(encoding="utf-8"))
+            if marketplace_data.get("name") != expected_marketplace:
+                raise InstallError("marketplace identity mismatch")
+            entries = marketplace_data.get("plugins")
+            if not isinstance(entries, list) or len(entries) != 1 or entries[0].get("name") != plugin_name:
+                raise InstallError("marketplace entry mismatch")
+            source = entries[0].get("source")
+            if location.startswith(".agents"):
+                if not isinstance(source, dict) or source.get("path") != "./plugins/" + plugin_name:
+                    raise InstallError("Codex plugin source mismatch")
+            elif source != "./plugins/" + plugin_name:
+                raise InstallError("Claude plugin source mismatch")
         for manifest in ("plugin.json", ".codex-plugin/plugin.json", ".claude-plugin/plugin.json"):
             parsed = json.loads((plugin / manifest).read_text(encoding="utf-8"))
             if parsed["name"] != plugin_name or parsed["version"] != state["version"]:

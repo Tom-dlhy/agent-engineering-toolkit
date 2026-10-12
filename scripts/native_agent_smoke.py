@@ -37,6 +37,33 @@ def prepare(output: Path) -> dict:
     return result
 
 
+def validate_host(agent: str, distribution: Path) -> dict:
+    """Validate actual native manifest support without running a model."""
+    verify(distribution)
+    binary = shutil.which(agent)
+    if not binary:
+        raise InstallError("missing native agent CLI: " + agent)
+    if agent == "claude":
+        checks = [
+            [binary, "plugin", "validate", str(distribution.resolve())],
+            [binary, "plugin", "validate", str(distribution.resolve() / "plugins" /
+                                            json.loads((distribution / "aet-distribution.json").read_text())["plugin"])],
+        ]
+    elif agent == "codex":
+        checks = [[binary, "plugin", "marketplace", "list"]]
+    else:
+        raise InstallError("unsupported agent")
+    results = []
+    for command in checks:
+        x = subprocess.run(command, capture_output=True, text=True,
+                           stdin=subprocess.DEVNULL, timeout=40)
+        results.append({"argv": command[1:], "exit_code": x.returncode,
+                        "stdout": x.stdout[-2500:], "stderr": x.stderr[-1500:]})
+    return {"agent": agent, "checks": results,
+            "passed": all(x["exit_code"] == 0 for x in results),
+            "note": "Codex list is a discovery preflight, not plugin activation proof."}
+
+
 def run(agent: str, distribution: Path, timeout: int) -> dict:
     integrity = verify(distribution)
     manifest = json.loads((distribution / "aet-distribution.json").read_text(encoding="utf-8"))
@@ -47,7 +74,16 @@ def run(agent: str, distribution: Path, timeout: int) -> dict:
         raise InstallError("agent CLI is not on PATH: " + agent)
     version = subprocess.run([binary, "--version"], capture_output=True, text=True,
                              timeout=15).stdout.strip()[:300]
-    plugin = distribution.resolve() / "plugins" / "agent-engineering-toolkit"
+    plugin_name = manifest["plugin"]
+    plugin = distribution.resolve() / "plugins" / plugin_name
+    host_checks = validate_host(agent, distribution)
+    if not host_checks["passed"]:
+        raise InstallError("host native plugin preflight failed")
+    if agent == "codex":
+        installed_sources = " ".join(
+            item["stdout"] + item["stderr"] for item in host_checks["checks"])
+        if str(distribution.resolve()) not in installed_sources:
+            raise InstallError("Codex marketplace list does not contain this exact distribution path")
     with tempfile.TemporaryDirectory(prefix="aet-agent-probe-") as isolated:
         def invoke(message: str):
             if agent == "claude":
@@ -74,7 +110,8 @@ def run(agent: str, distribution: Path, timeout: int) -> dict:
         positive = invoke(PROMPT)
         negative = invoke(NEGATIVE)
     return {"agent": agent, "version": version, "distribution": str(distribution),
-            "integrity": integrity, "positive": positive, "negative": negative,
+            "integrity": integrity, "native_host_preflight": host_checks,
+            "positive": positive, "negative": negative,
             "passed": positive["exit_code"] == 0 and positive["positive_token_seen"]
                       and negative["exit_code"] == 0
                       and not negative["positive_token_seen"],
@@ -83,7 +120,7 @@ def run(agent: str, distribution: Path, timeout: int) -> dict:
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("command", choices=("prepare", "run"))
+    p.add_argument("command", choices=("prepare", "validate", "run"))
     p.add_argument("--output", type=Path, required=True,
                    help="Fresh output for prepare; built probe distribution for run")
     p.add_argument("--agent", choices=("claude", "codex"))
@@ -95,6 +132,10 @@ def main(argv=None):
     try:
         if args.command == "prepare":
             result = prepare(args.output)
+        elif args.command == "validate":
+            if not args.agent:
+                raise InstallError("validate requires --agent")
+            result = validate_host(args.agent, args.output)
         else:
             if not args.agent or not args.allow_paid_agent_run:
                 raise InstallError("run requires --agent and --allow-paid-agent-run")
