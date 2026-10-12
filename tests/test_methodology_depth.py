@@ -49,10 +49,6 @@ class MethodologyDepthTests(unittest.TestCase):
 
     def test_no_new_skills_or_personas(self):
         self.assertEqual(len(self.skills), 178)
-        self.assertEqual(
-            {n for n, s in self.skills.items() if s.domain == "personas"},
-            {n for n, s in self.skills.items() if s.domain == "personas"}
-        )
         self.assertEqual(len([s for s in self.skills.values() if s.domain == "personas"]), 15)
 
     def test_all_fourteen_exist_with_operational_protocols(self):

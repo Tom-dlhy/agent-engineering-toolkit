@@ -115,3 +115,7 @@ assert "independent R2 risk review unavailable" in decision.unmet_gates
 ~~~
 
 A high-impact change with an unavailable reviewer remains implementable in an authorized development environment but **cannot be reported as independently reviewed**. The decision.ready_for_integration property only summarizes known missing gates; it does not grant merge/deploy authorization or establish complete real-world safety.
+
+## Research-driven deepening
+
+Fourteen existing skills now include proportional execution methods sourced from a pinned review of recognized public GitHub repos: debugging/TDD/discovery, paired skill evaluations, differential security review, safe tool authorization, preflight deployment and compact codebase handoff. See [source and adaptation decisions](methodology-source-review-2026-10.md). These additions do not prove native model adherence or quantified savings; inspect [unexecuted behavior scenarios](../evals/methodology-depth.yaml) and use the offline [paired-observation summarizer](../scripts/summarize_skill_evals.py) only for trace-backed native runs.
