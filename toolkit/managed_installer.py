@@ -217,6 +217,8 @@ class ManagedInstaller:
             selected = [_safe_name(n) for n in record["selected"]]
             if len(selected) != len(set(selected)) or set(record["files"]) != set(selected):
                 raise InstallError("installation state has inconsistent selection")
+            if not (record.get("revision") is None or isinstance(record.get("revision"), str)):
+                raise InstallError("invalid source revision")
             for n, hashes in record["files"].items():
                 _safe_name(n)
                 if not isinstance(hashes, dict) or "SKILL.md" not in hashes:
@@ -304,7 +306,20 @@ class ManagedInstaller:
                 action = "replace" if present is not None else "restore"
             else:
                 action = "unchanged"
-            operations.append({"skill": name, "action": action, "status": status})
+            baseline, candidate = prev or {}, want or {}
+            present_files = present or {}
+            diff = {
+                "upstream_added": sorted(set(candidate) - set(baseline)),
+                "upstream_removed": sorted(set(baseline) - set(candidate)),
+                "upstream_changed": sorted(k for k in set(candidate) & set(baseline)
+                                           if candidate[k] != baseline[k]),
+                "local_added": sorted(set(present_files) - set(baseline)),
+                "local_missing": sorted(set(baseline) - set(present_files)),
+                "local_modified": sorted(k for k in set(present_files) & set(baseline)
+                                         if present_files[k] != baseline[k]),
+            }
+            operations.append({"skill": name, "action": action, "status": status,
+                               "file_diff": {k: v for k, v in diff.items() if v}})
         return {"command": command, "selected": selected, "desired": desired,
                 "operations": operations, "revision": revision if command != "repair" else state["revision"]}
 
@@ -313,7 +328,7 @@ class ManagedInstaller:
         self.meta.mkdir(parents=True, exist_ok=True)
         _parents_safe(self.base, self.meta)
         _no_link(self.lock_path)
-        with self.lock_path.open("a+b") as lock:
+        with os.fdopen(os.open(self.lock_path, os.O_CREAT | os.O_RDWR, 0o600), "r+b") as lock:
             try:
                 if os.name == "nt":
                     import msvcrt
@@ -418,6 +433,9 @@ class ManagedInstaller:
                         output = dest / rel
                         output.parent.mkdir(parents=True, exist_ok=True)
                         output.write_bytes(data)
+                        if os.name != "nt":
+                            source_mode = (available[name] / rel).stat().st_mode
+                            output.chmod(0o755 if source_mode & 0o111 else 0o644)
                 had_state = self.state_path.exists()
                 journal = {"transaction": tx_name, "had_state": had_state,
                            "operations": [{"skill": o["skill"],
