@@ -2,6 +2,7 @@ name: web-app
 description: Modern web applications with UI, UX, backend, data and quality.
 skills:
   - task-routing
+  - implementation-planning
   - verification-before-done
   - systematic-debugging
   - stack-advisor

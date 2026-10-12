@@ -320,3 +320,7 @@ content drive layout/typography; defaults and demo themes are scaffolds.
 [Contrasting design briefs](evals/ui-visual-briefs.yaml).
 Do not automatically import outside skills or claim a page is visually
 validated without viewing rendered screenshots.
+
+## Adaptive implementation and review
+
+The [adaptive engineering methodology](docs/adaptive-engineering-methodology.md) defines independent LIGHT/STANDARD/DEEP rigor, R0/R1/R2 review and inline/subagent/parallel execution decisions. The optional implementation-planning Core skill creates task-level contracts only for sufficiently complex work. No reviewer/subagent is required for a safe cosmetic edit; sensitive changes retain independent safety gates. These are operational methods, not evidence of tested model behavior; see evaluation fixtures and current CI.

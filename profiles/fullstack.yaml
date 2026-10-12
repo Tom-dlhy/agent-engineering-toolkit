@@ -2,6 +2,7 @@ name: fullstack
 description: Focused full-stack set; not an entire catalog and never load all bodies.
 skills:
   - task-routing
+  - implementation-planning
   - verification-before-done
   - systematic-debugging
   - stack-advisor
