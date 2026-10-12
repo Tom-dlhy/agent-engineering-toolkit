@@ -273,5 +273,16 @@ class InstallerV2Tests(unittest.TestCase):
         self.assertTrue(verify(output)["valid"])
 
 
+    def test_live_probe_package_and_no_prompt_token_leak(self):
+        from scripts.native_agent_smoke import prepare, PROMPT, TOKEN
+        self.assertNotIn(TOKEN, PROMPT)
+        output = self.base / "native-probe"
+        prepared = prepare(output)
+        self.assertEqual(prepared["skills"], ["aet-activation-probe"])
+        self.assertTrue(verify(output)["valid"])
+        probe = output / "plugins/agent-engineering-toolkit/skills/aet-activation-probe/SKILL.md"
+        self.assertIn(TOKEN, probe.read_text(encoding="utf-8"))
+
+
 if __name__ == "__main__":
     unittest.main()
