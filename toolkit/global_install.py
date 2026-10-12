@@ -11,7 +11,6 @@ import argparse
 from collections import defaultdict
 import json
 from pathlib import Path
-import re
 import tempfile
 
 import yaml
@@ -142,9 +141,14 @@ def run(command: str, agents: tuple[str, ...], *, source: Path = ROOT,
             conflicts = [op for op in plan["operations"]
                          if op["action"].startswith("conflict")]
             if conflicts:
+                summary = [
+                    {"skill": op["skill"], "action": op["action"],
+                     "status": op["status"], "file_diff": op["file_diff"]}
+                    for op in conflicts
+                ]
                 raise InstallError(
-                    f"{agent}: existing files require review; no changes made: "
-                    + json.dumps(conflicts)
+                    f"{agent}: conflicts; existing files require review; "
+                    "no changes made: " + json.dumps(summary)
                 )
             plans[agent] = plan
 
