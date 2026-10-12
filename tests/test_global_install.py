@@ -71,7 +71,7 @@ class GlobalGatewayTests(unittest.TestCase):
         self.assertIn("fastapi-service", (skill / "index/backend.md").read_text())
         self.assertIn("Do not use for a typo",
                       (skill / "index/core.md").read_text())
-        self.assertEqual(len(_files(skill)), 8)
+        self.assertEqual(len(_files(skill)), 9)
         self.assertFalse((bundle / "skills/backend/fastapi-service").exists())
 
     def test_preview_is_read_only_and_install_is_global_both_hosts(self):
