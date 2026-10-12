@@ -2,7 +2,7 @@
 
 This toolkit distinguishes **library size**, **installation profile size** and **activation size**.
 
-1. The library holds 177 local `SKILL.md` files and may grow to hundreds.
+1. The library holds 178 local `SKILL.md` files and may grow to hundreds.
 2. A profile installs only a curated subset (5–20 skills).
 3. The model sees a brief name/description, not a full skill body.
 4. Only 1–3 directly relevant skill bodies should be read for ordinary tasks.
@@ -19,6 +19,8 @@ The managed Installer v2 is preferred; the legacy copy-only CLI is deprecated. S
 python scripts/skillctl.py profiles
 python scripts/skillctl.py search "Design an accessible React dashboard" --profile web-app
 python scripts/skillctl.py recommend "Migrate production IAM permissions" --profile cloud-engineering
+# Evidence, exclusions and uncertainty; never an activation/authorization decision
+python scripts/skillctl.py recommend "choisir une base de données pour mon SaaS" --json --explain
 python scripts/skillctl.py show responsive-visual-qa
 
 # Compare approximate metadata footprints
@@ -34,7 +36,7 @@ Styles such as `bento-grid` and `glassmorphism` are **catalog opt-ins**, not par
 
 ## Persona activation versus workflow and technical knowledge
 
-Personas are deliberate *operating modes*, not technical source-of-truth skills and not automatically launched subagents. A user can explicitly request `grill-master`, `test-adversary` or `learning-mentor` while a relevant technical skill supplies API knowledge. Use at most one primary persona in an ordinary task; compose another only if its **independent outcome** is requested, and apply the project's LIGHT/STANDARD/DEEP safety process separately. All 12 are **opt-in** and deliberately absent from general installation profiles. Installed availability varies by host; this repository's discovery does not imply native Claude/Codex invocation.
+Personas are deliberate *operating modes*, not technical source-of-truth skills and not automatically launched subagents. A user can explicitly request `grill-master`, `test-adversary` or `learning-mentor` while a relevant technical skill supplies API knowledge. Use at most one primary persona in an ordinary task; compose another only if its **independent outcome** is requested, and apply the project's LIGHT/STANDARD/DEEP safety process separately. All 15 are **opt-in** and deliberately absent from general installation profiles. Installed availability varies by host; this repository's discovery does not imply native Claude/Codex invocation.
 
 ### Leadership-persona routing boundaries
 
@@ -69,7 +71,7 @@ No new default profile contents and no automatic activation. Exact selection is 
 | --- | --- | --- | --- |
 | Light | Tiny docs/UI/bug fixes | 0–1 | Single agent, targeted tests |
 | Standard | Normal features/refactors | 1–2 initially | Single implementer + review on demand |
-| Deep | Security, auth, migrations, architecture, prod | 2–3 initially, additional by evidence | Explicit plan, risk checks, optional independent reviewers |
+| Deep | Changed trust/data boundary, irreversible writes or unsafe rollback | 2–3 initially, additional by evidence | Explicit plan, risk checks, optional independent reviewers |
 
 Use `workflows/<level>.md` for the full protocol. The selector is *advisory*. It cannot authorize destructive actions, deployment or privileged cloud operations.
 
@@ -79,15 +81,91 @@ Use `workflows/<level>.md` for the full protocol. The selector is *advisory*. It
 
 CI rejects profiles if this rough core + metadata estimate exceeds 2500 tokens or the installed count exceeds 20. This is a **guardrail**, not a guarantee about real consumption.
 
-## Router failure modes
+## Candidate evidence and uncertainty
 
-- The current skill finder is an **English-oriented lexical scorer**, not a multilingual semantic retriever. It normalizes accents but does **not** translate `données` into `database`, `authentification` into `authentication`, or infer a complete task intention from French syntax.
-- A documented **known regression**: a natural query such as `choisir une base de données pour mon SaaS` can rank `base-ui` above `database-selection` because `base` matches the UI library name. Other French questions can produce no useful match. This is **not resolved** by this documentation-only change; it is a separate implementation/evaluation priority in [the roadmap](roadmap.md).
-- Overlapping generic terms (`base`, `react`, `ui`) can make irrelevant provider skills score highly on compound technology-choice requests. Inspect the request's intent, user-selected stack and negative activation triggers **before** applying recommendations.
-- No match should yield **no recommendation**, not a fabricated match. A score indicates only lexical overlap; it is not a confidence percentage, guarantee of expertise or authorization to activate/install.
-- The keyword registry is edited and reviewed alongside a new skill. Maintain positive, negative, ambiguity and natural-language test cases in relevant language(s); do not bulk-add synonyms without measuring collateral false positives.
-- Negative triggers in each skill description remain authoritative: a high lexical score alone should not force an invocation. Domain-specific skill selection can require explicit user/agent judgment until the router is improved.
-- The CLI is intentionally non-mutating. It never installs tools, executes skill scripts or makes network calls.
+The finder retains deterministic weights for names, keywords, domains and **positive**
+description text. Description text starting at `Do not`, `Don't`, `Not for`,
+`Avoid using` or `Ne pas utiliser` is separated and never adds positive score.
+Only activation-scope markers (`Do not use`, `Do not substitute`, etc.)
+can suppress a candidate; procedural warnings such as `Do not assume` cannot.
+Fully matched exclusion clauses with at least two meaningful terms suppress a
+candidate; partial matches become an unfavorable scope check. This conservative
+parser does not understand every conditional/negative construction. Metadata
+exclusions still need human/agent review.
+
+A small, reviewed alias set handles database compounds (`base de données`,
+`bases de données`, `data base`) and selected FR/EN choice/diagnosis/action terms.
+It is **not general translation**. Database compounds no longer contribute `base`
+to Base UI. Debugging favors diagnostic keywords; `*-selection` candidates require
+explicit choice/comparison evidence. Simple documentation spelling edits can
+return zero skills. Negative query clauses introduced by `do not use`, `without`,
+`sans`, etc. are removed from positive scoring until punctuation or `but`/`mais`/`and`/`et`.
+Clause scope remains heuristic; rephrase complex mixed intentions or inspect them
+manually.
+
+`discover(query, catalog, allowed=..., limit=...)` returns:
+
+- `candidates`: scores and favorable `reasons`, plus `unfavorable` checks.
+- `excluded`: named candidates and matched exclusion reasons.
+- `uncertainty`: `lexical`, `ambiguous` (tied leaders or unfavorable evidence for
+  the leader), or `insufficient` (no candidates). These are labels, not probabilities.
+- `required_checks`: inspect actual task/stack before activation; **zero skills is valid**.
+
+An unidentified component library remains a stack check; installed visibility is
+not evidence that the user selected it. A higher score does not settle conflicting
+stacks, competence or permission. `allowed` still restricts discovery to a profile;
+`limit < 1`, empty requests and noise yield no candidates.
+
+Compatibility: `Skill` construction is unchanged; `Match` adds a defaulted
+`unfavorable` field. `search(...)` still returns a list of matches and
+`suggest_workflow(query)` still returns `(workflow, reason)`. `search --json` retains
+its list/row shape. Opt-in `search --json --explain` returns a diagnostic object.
+New `recommend --json` returns that object with `workflow`; text `--explain`
+prints the same exclusions, uncertainty and required checks. No discovery command
+activates/installs a skill, executes its scripts or makes network/model calls.
+
+## Workflow evidence, not authorization
+
+`workflow_advice(query)` inspects requested actions and consequences together.
+An authentication-documentation typo is LIGHT; restricting a tenant lookup or
+removing an ownership filter suggests DEEP; a database choice suggests STANDARD.
+An explanation about irreversible migration is not migration execution. Compound
+requests retain the strongest indicated consequence per clause: updating docs
+alongside an authorization fix cannot downgrade the fix. A
+localized reversible refactor may be LIGHT; unverified scope remains explicit.
+
+Text-derived suggestions always have `source=request_heuristic`, with `risk=potential`
+or `insufficient`, even for DEEP. They cannot confirm a boundary change, determine
+real rollback safety or authorize execution. Inspect the diff, data and permissions.
+This is a bounded lexical heuristic, not a reliable security assessment. Unknown
+impact can yield a tentative LIGHT default marked insufficient; it must **not** be
+read as a safety verdict.
+
+For actual observed facts, callers can use
+`workflow_advice(query, observed=ChangeSignals(...))`, which delegates to
+`adaptive_policy.assess` without fabricating observations from the text.
+It sets `source=observed_change_signals`, `risk=confirmed` for observed DEEP risks
+or `observed` for other observed outcomes, and exposes unmet gates as required
+checks. This reports caller-supplied facts, not independently verified code and
+not authorization. The structured policy's review/execution rules are unchanged.
+
+## Router failure modes and validation
+
+- Accents and selected FR/EN aliases are supported; unconstrained French/English
+  syntax, other languages, polysemy and compound negations can still misroute.
+- Generic overlaps and description syntax can hide ambiguity. Inspect metadata,
+  user-selected stack and exclusions before applying any recommendation.
+- Scores/uncertainty are not confidence percentages, expertise certificates or
+  evidence of actual native invocation.
+- Maintain positive, negative, ambiguity and natural-language cases alongside
+  registry changes. Do not bulk-add synonyms without measuring false positives.
+- [Regression fixtures](../evals/routing-regressions.yaml) test the five audited
+  failures, FR/EN variants and candidate inclusion/exclusion properties. Existing
+  domain routing suites remain required. These deterministic checks do not measure
+  Codex/Claude behavior or performance gains.
+- Paired native evaluation records use the separate
+  [activation evidence contract](skill-evaluation-records.md); missing telemetry is
+  unknown, not an observed activation failure.
 
 ## Quality and selection
 

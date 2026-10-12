@@ -108,7 +108,7 @@ python scripts/skillctl.py search "FastAPI Pydantic API" --profile python-backen
 python scripts/skillctl.py recommend "add a protected API endpoint"
 ```
 
-The `recommend` command provides **advisory lexical matching**, not semantic reasoning or a security assessment. The agent must still inspect the task and project before choosing its workflow.
+The `recommend` command provides **advisory lexical matching**, not semantic reasoning or a security assessment. Use `--json --explain` to inspect candidate evidence, exclusions, uncertainty and text-derived workflow risk. The agent must still inspect the task and project before choosing its workflow. See [routing diagnostics](docs/skill-routing.md#candidate-evidence-and-uncertainty) and [activation metrics](docs/skill-evaluation-records.md).
 
 ### Choose an installation method
 

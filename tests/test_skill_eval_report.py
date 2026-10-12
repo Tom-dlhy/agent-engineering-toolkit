@@ -44,7 +44,7 @@ class PairedEvalTests(unittest.TestCase):
         self.assertEqual(r["candidate_pass"], 0)
 
     def test_wrong_skill_activation_is_counted(self):
-        r = compare_pairs([record("baseline"), record("candidate", activated=None)])
+        r = compare_pairs([record("baseline"), record("candidate", activated="unwanted-skill")])
         self.assertEqual(r["candidate_false_activations"], 1)
 
     def test_incomparable_runs_rejected(self):
@@ -64,6 +64,72 @@ class PairedEvalTests(unittest.TestCase):
                            [{**b, "tokens": -100}, c]):
             with self.subTest(value=str(input_data)[:100]), self.assertRaises(EvalInputError):
                 compare_pairs(input_data)
+
+
+class ActivationEvidenceTests(unittest.TestCase):
+    def report(self, **changes):
+        return compare_pairs([record("baseline"), {**record("candidate"), **changes}])
+
+    def test_legacy_null_is_unknown_not_false_or_missed(self):
+        result = self.report(activated_skill=None)
+        self.assertEqual(result["candidate_false_activations"], 0)
+        self.assertEqual(result.get("candidate_unknown_activations"), 1)
+        self.assertEqual(result.get("candidate_missed_activations"), 0)
+        self.assertEqual(result.get("candidate_legacy_activation_mismatches"), 1)
+
+    def test_observed_absence_is_missed(self):
+        result = self.report(activated_skill=None, activation_observed=True)
+        self.assertEqual(result["candidate_false_activations"], 0)
+        self.assertEqual(result.get("candidate_missed_activations"), 1)
+
+    def test_not_run_is_neither_failure_nor_observed_activation(self):
+        result = self.report(status="NOT_RUN", activated_skill=None, activation_observed=True)
+        self.assertEqual(result["candidate_false_activations"], 0)
+        self.assertEqual(result.get("candidate_not_run_activations"), 1)
+        self.assertEqual(result.get("candidate_missed_activations"), 0)
+
+    def test_explicit_unobserved_named_activation_is_unknown(self):
+        result = self.report(activation_observed=False)
+        self.assertEqual(result.get("candidate_unknown_activations"), 1)
+        self.assertEqual(result.get("candidate_correct_activations"), 0)
+
+    def test_legacy_named_activation_remains_reported_observation(self):
+        result = self.report()
+        self.assertEqual(result.get("schema_version"), 2)
+        self.assertEqual(result.get("candidate_correct_activations"), 1)
+
+    def test_negative_control_observed_absence_and_unwanted_activation(self):
+        for activated, category in ((None, "correct_non_activation"), ("widget", "false_activation")):
+            b, c = record("baseline"), record("candidate", activated=activated)
+            b.update(expected_skill=None, activated_skill=None, activation_observed=True)
+            c.update(expected_skill=None, activation_observed=True)
+            result = compare_pairs([b, c])
+            self.assertEqual(result["paired_results"][0].get("candidate_activation"), category)
+
+    def test_omitted_telemetry_is_unknown_without_mutating_records(self):
+        b, c = record("baseline"), record("candidate")
+        del c["activated_skill"]
+        result = compare_pairs([b, c])
+        self.assertEqual(result["candidate_unknown_activations"], 1)
+        self.assertNotIn("activated_skill", c)
+
+    def test_observed_absence_requires_explicit_null(self):
+        b, c = record("baseline"), record("candidate")
+        del c["activated_skill"]
+        c["activation_observed"] = True
+        with self.assertRaises(EvalInputError):
+            compare_pairs([b, c])
+
+    def test_blocked_without_telemetry_is_unknown(self):
+        result = self.report(status="BLOCKED", activated_skill=None)
+        self.assertEqual(result["candidate_unknown_activations"], 1)
+        self.assertEqual(result["candidate_false_activations"], 0)
+
+    def test_invalid_observation_flag_and_empty_skill_names_rejected(self):
+        for changes in ({"activation_observed": 1}, {"activation_observed": None},
+                        {"activated_skill": ""}, {"expected_skill": "  "}):
+            with self.subTest(changes=changes), self.assertRaises(EvalInputError):
+                self.report(**changes)
 
 
 if __name__ == "__main__":
