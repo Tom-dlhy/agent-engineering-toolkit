@@ -10,7 +10,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from toolkit.managed_installer import ManagedInstaller, InstallError
+from toolkit.managed_installer import ManagedInstaller, InstallError, generate_lock, read_lock, _assert_locked
 from toolkit.plugin_packager import archive, build, verify
 
 
@@ -224,6 +224,33 @@ class InstallerV2Tests(unittest.TestCase):
         build(self.source, second, "small", version="1.0.0")
         self.assertEqual((first / "aet-distribution.json").read_bytes(),
                          (second / "aet-distribution.json").read_bytes())
+
+
+    def test_lockfile_pins_exact_bytes_and_selection(self):
+        lock = generate_lock(self.source, "codex", "small")
+        self.assertEqual(lock["selected"], ["alpha"])
+        self.manager.meta.mkdir(parents=True, exist_ok=True)
+        path = self.manager.meta / "skills-lock-codex.json"
+        self.manager._write_json(path, lock)
+        loaded = read_lock(path, "codex")
+        _assert_locked(self.manager.plan("install", skills=("alpha",)), loaded)
+        self.manager.apply("install", skills=("alpha",), lock=loaded)
+        (self.alpha / "SKILL.md").write_text("upstream changed", encoding="utf-8")
+        with self.assertRaisesRegex(InstallError, "source differs"):
+            self.manager.apply("update", skills=("alpha",), lock=loaded)
+        self.assertEqual(self.manager.inspect()["installed"]["alpha"], "clean")
+
+    def test_lockfile_rejects_wrong_agent_and_traversal(self):
+        lock = generate_lock(self.source, "codex", skills=("beta",))
+        self.manager.meta.mkdir(parents=True, exist_ok=True)
+        path = self.manager.meta / "skills-lock-codex.json"
+        self.manager._write_json(path, lock)
+        with self.assertRaises(InstallError):
+            read_lock(path, "claude")
+        lock["files"]["beta"]["../outside"] = "f" * 64
+        self.manager._write_json(path, lock)
+        with self.assertRaises(InstallError):
+            read_lock(path, "codex")
 
 
 if __name__ == "__main__":
