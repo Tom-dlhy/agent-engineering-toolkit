@@ -12,6 +12,8 @@ from typing import Iterable
 
 import yaml
 
+from toolkit.adaptive_policy import ChangeSignals, assess
+
 ROOT = Path(__file__).resolve().parents[1]
 _WORDS = re.compile(r"[a-z0-9]+")
 _STOP = frozenset(
@@ -20,17 +22,30 @@ _STOP = frozenset(
     "want when with you your this that implement implementation skill skills feature"
     .split()
 )
-_DEEP = frozenset({
-    "auth", "authentication", "authorization", "production", "prod", "migration",
-    "migrate", "secrets", "credential", "credentials", "billing", "payment",
-    "gdpr", "rgpd", "security", "permissions", "iam", "encryption", "incident",
-    "delete", "destroy", "destructive", "terraform", "database",
-})
-_STANDARD = frozenset({
-    "architecture", "architect", "api", "endpoint", "backend", "frontend", "integration",
-    "refactor", "refactoring", "workflow", "design", "feature", "component", "test",
-    "deploy", "cloud", "stack", "ux", "ui", "pipeline",
-})
+# Bounded aliases, not translation or semantic intent recognition. Compound
+# database phrases are collapsed before tokenization so "base" cannot select UI.
+_PHRASES = ((r"\bbases? de donnees\b", "database"),
+            (r"\bdata bases?\b", "database"))
+_ALIASES = {
+    "choisir": "selection", "choose": "selection", "choosing": "selection",
+    "select": "selection", "selecting": "selection", "comparer": "compare",
+    "diagnostiquer": "debug", "debugging": "debug", "diagnose": "debug",
+    "paiement": "payment", "fournisseur": "provider", "duplique": "duplicate",
+    "authentification": "authentication", "autorisation": "authorization",
+    "modifier": "modify", "restreindre": "restrict", "supprimer": "remove",
+    "migrer": "migrate", "donnees": "data",
+    "ajouter": "add", "implementer": "implement", "executer": "execute",
+    "predicat": "predicate", "tenants": "tenant", "faute": "typo",
+    "coquille": "typo", "corriger": "fix", "stockage": "storage",
+    "refactorisation": "refactor", "locale": "local",
+}
+_NEGATIVE = re.compile(r"\b(?:do not|don't|not for|avoid using|ne pas utiliser)\b", re.I)
+_ACTIONS = frozenset("modify change fix edit update refactor restrict remove migrate delete destroy deploy rotate disable relax bypass alter rewrite perform execute implement add create build".split())
+_EXCLUSION_SCOPE = re.compile(r"^(?:do not use|don't use|do not apply|do not substitute|not for|avoid using|ne pas utiliser)\b", re.I)
+_GENERIC_IDENTITY = frozenset("ui cloud python data api service engineering selection design quality platform architecture library components".split())
+_CHOICE_GENERIC = frozenset("selection compare choice decision revising provider solution library architecture".split())
+_WORDING_ACTIONS = frozenset({"fix", "edit", "update"})
+_OPERATIONAL = frozenset("predicate filter endpoint policy code checks guard rule rules handler".split())
 
 
 def tokenize(text: str) -> set[str]:
@@ -59,6 +74,7 @@ class Match:
     skill: Skill
     score: int
     reasons: tuple[str, ...]
+    unfavorable: tuple[str, ...] = ()
 
 
 def load_catalog(root: Path = ROOT) -> dict[str, Skill]:
@@ -101,49 +117,204 @@ def load_profile(name: str, root: Path = ROOT) -> tuple[str, ...]:
     return tuple(data["skills"])
 
 
+@dataclass(frozen=True)
+class Exclusion:
+    skill: Skill
+    reasons: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class Discovery:
+    candidates: tuple[Match, ...]
+    excluded: tuple[Exclusion, ...]
+    uncertainty: str
+    required_checks: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class WorkflowAdvice:
+    workflow: str
+    risk: str
+    source: str
+    rationale: tuple[str, ...]
+    required_checks: tuple[str, ...]
+
+
+def _normalized(text: str) -> str:
+    clean = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode().lower()
+    for pattern, replacement in _PHRASES:
+        clean = re.sub(pattern, replacement, clean)
+    return clean
+
+
+def _routing_tokens(text: str) -> set[str]:
+    return {_ALIASES.get(w, w) for w in tokenize(_normalized(text))}
+
+
+def _description_parts(description: str) -> tuple[str, tuple[str, ...]]:
+    # Exclusions are metadata, never positive evidence. Unknown negative syntax
+    # must still be reviewed by the caller; this recognizes the library's form.
+    boundaries = list(_NEGATIVE.finditer(description))
+    if not boundaries:
+        return description, ()
+    ends = [match.start() for match in boundaries[1:]] + [len(description)]
+    return description[:boundaries[0].start()], tuple(description[match.start():end] for match, end in zip(boundaries, ends))
+
+
+def _action_words(text: str) -> set[str]:
+    # Discovery stopwords include "build"/"implement"; workflow consequences must
+    # retain these requested actions without changing the public tokenizer.
+    return {_ALIASES.get(word, word) for word in _WORDS.findall(_normalized(text))} & _ACTIONS
+
+
+def _simple_edit(words: set[str], actions: set[str] | None = None) -> bool:
+    return (bool(words & {"typo", "spelling"})
+            and bool(words & {"documentation", "docs", "label"})
+            and not ((words & _ACTIONS) if actions is None else actions) - _WORDING_ACTIONS
+            and not words & _OPERATIONAL)
+
+
+def discover(
+    query: str, catalog: dict[str, Skill], *,
+    allowed: Iterable[str] | None = None, limit: int = 3,
+) -> Discovery:
+    """Generate explainable candidates; never activate/install or decide safety.
+
+    Fully matched short exclusion clauses suppress candidates. Partial matches
+    and missing stack evidence remain explicit checks, not fabricated facts.
+    """
+    clean = _normalized(query)
+    negated: set[str] = set()
+    def remove_negative(match: re.Match[str]) -> str:
+        negated.update(_routing_tokens(match.group(1)))
+        return " "
+    positive_query = re.sub(r"\b(?:do not use|don't use|exclude|without|sans|ne pas utiliser)\s+([^,.;]+?)(?=[,;.]|\bbut\b|\bmais\b|\band\b|\bet\b|$)",
+                            remove_negative, clean)
+    tokens = _routing_tokens(positive_query)
+    checks = ("Inspect task scope and the selected stack before activation; zero skills is valid.",)
+    if not tokens or limit < 1 or _simple_edit(tokens):
+        return Discovery((), (), "insufficient" if not tokens else "lexical", checks)
+    names = set(allowed) if allowed is not None else None
+    matches: list[Match] = []
+    excluded: list[Exclusion] = []
+    for skill in catalog.values():
+        if names is not None and skill.name not in names:
+            continue
+        positive, negative = _description_parts(skill.description)
+        groups = (("name", _routing_tokens(skill.name), 6),
+                  ("keywords", _routing_tokens(" ".join(skill.keywords)), 4),
+                  ("domain", _routing_tokens(skill.domain), 2),
+                  ("description", _routing_tokens(positive), 1))
+        score = 0
+        positive_overlap: set[str] = set()
+        reasons: list[str] = []
+        for label, words, weight in groups:
+            overlap = tokens & words
+            positive_overlap.update(overlap)
+            score += weight * len(overlap)
+            if overlap:
+                reasons.append(label + ": " + ", ".join(sorted(overlap)))
+        negative_reasons: list[str] = []
+        unfavorable: list[str] = []
+        for text in negative:
+            marker = _EXCLUSION_SCOPE.match(text)
+            if marker is None:
+                continue  # Safety/procedure warnings are not activation scopes.
+            text = text[marker.end():]
+            # Conservative literal clauses: no negation inference from one word.
+            for clause in re.split(r"[,.;]|\bor\b", text):
+                terms = _routing_tokens(clause) - {"not", "only", "selected", "existing", "specific"}
+                if len(terms) >= 2 and terms <= tokens:
+                    negative_reasons.append("explicit exclusion: " + clause.strip())
+                elif len(terms & tokens) >= 2:
+                    unfavorable.append("check exclusion scope: " + clause.strip())
+        if score and skill.name.endswith("-selection") and not tokens & {"selection", "compare", "choice", "decision", "revising"}:
+            negative_reasons.append("technology choice is not requested explicitly")
+        if score and skill.name.endswith("-selection") and not positive_overlap - _CHOICE_GENERIC:
+            negative_reasons.append("no evidence for this choice's technical domain")
+        identity = _routing_tokens(skill.name) - _GENERIC_IDENTITY
+        negated_identity = negated & identity
+        if negated_identity and not tokens & negated_identity:
+            negative_reasons.append("explicitly negated in request: " + ", ".join(sorted(negated & identity)))
+        if negative_reasons:
+            # Record matched exclusions even when removing their description
+            # tokens leaves no positive score.
+            excluded.append(Exclusion(skill, tuple(negative_reasons)))
+            continue
+        if not score:
+            continue
+        if "debug" in tokens and "debug" in _routing_tokens(" ".join(skill.keywords)):
+            score += 10
+            reasons.append("diagnosis intent")
+        if skill.domain == "ui":
+            identity = _routing_tokens(skill.name) - {"ui", "components"}
+            if not identity & tokens:
+                unfavorable.append("component library not identified; confirm selected stack")
+        matches.append(Match(skill, score, tuple(reasons), tuple(unfavorable)))
+    ranked = sorted(matches, key=lambda m: (-m.score, m.skill.name))
+    candidates = tuple(ranked[:limit])
+    ambiguous = bool(candidates and (candidates[0].unfavorable or
+                                    (len(ranked) > 1 and ranked[0].score == ranked[1].score)))
+    uncertainty = "ambiguous" if ambiguous else "lexical" if candidates else "insufficient"
+    return Discovery(candidates, tuple(excluded), uncertainty, checks)
+
+
 def search(
     query: str, catalog: dict[str, Skill], *,
     allowed: Iterable[str] | None = None, limit: int = 3,
 ) -> list[Match]:
-    """Deterministic lexical ranking; empty query / no evidence -> no result."""
-    tokens = tokenize(query)
-    if not tokens or limit < 1:
-        return []
-    names = set(allowed) if allowed is not None else None
-    matches: list[Match] = []
-    for skill in catalog.values():
-        if names is not None and skill.name not in names:
-            continue
-        name_parts = tokenize(skill.name)
-        domain_parts = tokenize(skill.domain)
-        keyword_parts = tokenize(" ".join(skill.keywords))
-        desc_parts = tokenize(skill.description)
-        in_name, in_keywords = tokens & name_parts, tokens & keyword_parts
-        in_domain, in_desc = tokens & domain_parts, tokens & desc_parts
-        # Generic "core" or "quality" domains should not dominate a specific match.
-        score = 6 * len(in_name) + 4 * len(in_keywords) + 2 * len(in_domain) + len(in_desc)
-        if not score:
-            continue
-        reasons: list[str] = []
-        if in_name:
-            reasons.append("name: " + ", ".join(sorted(in_name)))
-        if in_keywords:
-            reasons.append("keywords: " + ", ".join(sorted(in_keywords)))
-        if in_domain:
-            reasons.append("domain: " + ", ".join(sorted(in_domain)))
-        if not reasons and in_desc:
-            reasons.append("description: " + ", ".join(sorted(in_desc)))
-        matches.append(Match(skill, score, tuple(reasons)))
-    return sorted(matches, key=lambda m: (-m.score, m.skill.name))[:limit]
+    """Compatible candidate-list interface; use discover for diagnostics."""
+    return list(discover(query, catalog, allowed=allowed, limit=limit).candidates)
+
+
+def routing_metadata(skill: Skill) -> dict[str, object]:
+    """Describe one catalog entry for an agent, without loading its body/references."""
+    positive, negative = _description_parts(skill.description)
+    scope, cautions = [], []
+    for clause in negative:
+        if _EXCLUSION_SCOPE.match(clause):
+            scope.append(clause.strip())
+        else:
+            cautions.append(clause.strip())
+    return {
+        "name": skill.name, "domain": skill.domain,
+        "path": skill.path + "/SKILL.md", "use_when": positive.strip(),
+        "avoid_when": scope, "cautions": cautions, "keywords": list(skill.keywords),
+    }
+
+
+def workflow_advice(query: str, *, observed: ChangeSignals | None = None) -> WorkflowAdvice:
+    """No classification from free text: the agent owns the contextual decision.
+
+    Only explicit, caller-supplied structured observations can use the separate
+    deterministic policy. They are NOT verified facts or authorization.
+    """
+    # Empty/default signals do not prove that a task is harmless.
+    # Tool and reviewer availability are not observations about impact.
+    observed_impact = bool(observed and any((
+        observed.local_reversible, observed.multi_component,
+        observed.shared_contract, observed.acceptance_uncertain,
+        observed.authorization_or_secrets, observed.sensitive_or_production_data,
+        observed.migration_with_rollback_risk,
+        observed.destructive_or_irreversible, observed.external_privileged_effect,
+        observed.independent_tasks, observed.long_running,
+    )))
+    if not observed_impact:
+        return WorkflowAdvice(
+            "unclassified", "unknown", "agent_decision_required",
+            ("Read task-routing and inspect the requested change, project contracts and impact.",),
+            ("Assess impact, reversibility, scope, tests and user approvals.",
+             "Choose LIGHT/STANDARD/DEEP and R0/R1/R2 from observed evidence.",
+             "Do not treat discovery ranking or an absent risk keyword as a safety verdict."),
+        )
+    decision = assess(observed)
+    return WorkflowAdvice(
+        decision.workflow, "reported_high_impact" if decision.workflow == "deep" else "reported",
+        "caller_supplied_change_signals", decision.rationale, decision.unmet_gates,
+    )
 
 
 def suggest_workflow(query: str) -> tuple[str, str]:
-    """Advisory heuristic, not a security decision or authorization mechanism."""
-    words = tokenize(query)
-    deep = words & _DEEP
-    if deep:
-        return "deep", "potentially high-impact topic: " + ", ".join(sorted(deep))
-    standard = words & _STANDARD
-    if standard:
-        return "standard", "nontrivial engineering topic: " + ", ".join(sorted(standard))
-    return "light", "no higher-risk indicator in the request"
+    """Legacy tuple API, now explicitly abstaining rather than guessing from words."""
+    advice = workflow_advice(query)
+    return advice.workflow, "; ".join(advice.rationale)

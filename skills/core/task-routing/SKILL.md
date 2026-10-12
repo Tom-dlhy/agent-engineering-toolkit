@@ -39,9 +39,12 @@ target repo conventions and approved side effects. Identify:
 - **Permissions:** an explicit approval for merge/deploy/delete is distinct
   from an approval to implement source changes.
 
-A keyword-based suggested workflow from toolkit.catalog is advisory only:
-"production wording" in a CSS description need not mean DEEP, while
-"restrict one tenant lookup" is sensitive even if it is one line.
+Do not delegate this decision to toolkit.catalog or a keyword classifier.
+The finder returns candidates, never a workflow verdict. For "production"
+in a CSS documentation sentence, inspect the real change before choosing LIGHT;
+for a one-line tenant lookup restriction, inspect the authorization boundary
+before choosing DEEP. If facts are unavailable, describe the uncertainty rather
+than claiming the task is safe.
 
 ## Step 2 — choose the minimal safe workflow
 
@@ -96,7 +99,13 @@ calls and reviewer rounds **and** cost of escaped defects.
 ## Step 5 — progressive discovery and escalation
 
 Read metadata for candidate installed skills first; check positive and
-negative triggers. Select primary skill and only truly orthogonal helpers.
+negative triggers. Host-exposed names/descriptions are the first choice; when
+the host does not expose enough, request a small explicit profile catalog via
+`python scripts/skillctl.py routing-context --profile minimal` in an AET
+checkout. The YAML reports AET architecture and metadata of only the chosen
+profile (or explicit skills), not the entire library. It does not install or
+activate skills. Compare candidates by actual task intent and repository
+context; select one primary skill, genuinely orthogonal helpers, or NONE.
 Load their SKILL.md, then specific local references on observed need.
 Avoid blindly opening whole reference trees or loading a persona to fix
 a simple syntax bug. An uninstalled skill's registry entry does not imply
@@ -137,9 +146,14 @@ first falsifiable check. Never use a heuristic result as authorization.
 ## Research-backed selection: route the task, not vocabulary
 
 Adapt the comparative skill-selection approach of Anthropic skill-creator and GitHub's curated agent-skill-stack concept. The lexical search rank is a candidate list, never proof of correct activation.
+The agent (not Python) owns skill choice and workflow/review judgments. Only
+explicit caller-reported structured change signals can be evaluated by
+`toolkit.adaptive_policy.assess`, and even those are not verified facts.
+The legacy `suggest_workflow()` API abstains with `unclassified` for free text.
+No skill selection grants permission to commit, merge, deploy or delete.
 
-1. **Cheap shortlist:** from installed-profile metadata and actual user intent, select up to three candidates and include NONE as a valid option. Consider positive/negative triggers. Normalize French/English concepts, but keep proper technology names unchanged. A match on "base" must not confuse Base UI with a database without inspecting the rest of the request.
-2. **Bounded evidence:** inspect impacted files, requested artifact and contract ownership for only the shortlist. Pick one PRIMARY skill and only truly orthogonal SECONDARY specialists. No repository-wide skill-body scan.
+1. **Cheap shortlist:** from host-visible installed metadata, or scoped `routing-context` YAML when useful, identify up to three plausible candidates and include NONE. Compare positive and negative activation triggers and the actual project stack. Treat multilingual/paraphrased intent as a reasoning problem, not a requirement to add synonym rules to Python. A match on "base" must not confuse Base UI with a database.
+2. **Bounded evidence:** inspect impacted files, requested artifact and contract ownership for only the shortlist. Decide the workflow from consequential changes (for example payment writes, tenant isolation, migration rollback and irreversible deletion), not words in documentation. Pick one PRIMARY skill and only truly orthogonal SECONDARY specialists. No repository-wide skill-body scan.
 3. **Activation evidence:** identify whether the host actually exposed and loaded the selected skill. A registry hit is not native activation; an absent subagent tool must not be invented.
 4. **Dynamic reassessment:** reroute on observed new dependencies, authentication boundaries, irreversible effects or failed tests. De-escalate if actual change is harmless copy, while preserving any mandatory approval.
 

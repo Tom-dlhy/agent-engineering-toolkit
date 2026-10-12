@@ -1,0 +1,31 @@
+# Discovery-only evidence: these are not native-agent decisions or activations.
+version: 2
+selection:
+  - query: choisir une base de données pour mon SaaS
+    include: [database-selection]
+    exclude: [base-ui]
+  - query: choose a database for my SaaS
+    include: [database-selection]
+    exclude: [base-ui]
+  - query: debug duplicate payment after provider timeout
+    include: [systematic-debugging]
+    exclude: [cloud-provider-selection]
+  - query: Implement a Base UI Dialog render
+    include: [base-ui]
+    exclude: [database-selection]
+  - query: Do not use FastAPI; review SQLAlchemy AsyncSession
+    include: [python-persistence]
+    exclude: [fastapi-service]
+unclassified:
+  - Fix a typo in authentication documentation
+  - restrict one tenant lookup
+  - modify billing logic
+  - delete all customer data
+  - migrate production database permissions
+  - choose a database for my SaaS
+  - ''
+no_match:
+  - Fix a typo in authentication documentation
+  - corriger une faute dans la documentation d'authentification
+  - ''
+  - zzzxxyyqq

@@ -3,9 +3,12 @@ from __future__ import annotations
 
 import argparse
 import json
+from dataclasses import asdict
 from pathlib import Path
 
-from toolkit.catalog import ROOT, load_catalog, load_profile, search, suggest_workflow, tokenize
+import yaml
+
+from toolkit.catalog import ROOT, load_catalog, load_profile, discover, workflow_advice, routing_metadata
 from toolkit.knowledge import indexed_references, read_reference
 
 
@@ -20,10 +23,17 @@ def main(argv: list[str] | None = None) -> int:
     query.add_argument("--profile", help="Restrict candidates to installed profile")
     query.add_argument("--limit", type=int, default=3)
     query.add_argument("--json", action="store_true", help="Machine-readable results")
+    query.add_argument("--explain", action="store_true", help="Include exclusions, uncertainty and checks")
     recommend = commands.add_parser("recommend", help="Advisory workflow level + up to 3 skill names")
     recommend.add_argument("query")
     recommend.add_argument("--profile")
     recommend.add_argument("--limit", type=int, default=3)
+    recommend.add_argument("--json", action="store_true", help="Machine-readable recommendation")
+    recommend.add_argument("--explain", action="store_true", help="Include exclusions, uncertainty and checks")
+    context = commands.add_parser("routing-context", help="Bounded YAML/JSON architecture and catalog metadata for an agent")
+    context.add_argument("--profile", help="Curated profile whose skills are cataloged, not proof of host installation")
+    context.add_argument("--skill", action="append", default=[], help="Explicit extra skill name (repeatable)")
+    context.add_argument("--json", action="store_true", help="Return JSON instead of YAML")
     show = commands.add_parser("show", help="Read one selected skill, without scanning other bodies")
     show.add_argument("name")
     refs = commands.add_parser("references", help="List declared leaf paths for a single skill (no leaf bodies)")
@@ -40,25 +50,84 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "profiles":
             for path in sorted((args.root / "profiles").glob("*.yaml")):
                 print(f"{path.stem:20} {len(load_profile(path.stem, args.root))} skills")
+        elif args.command == "routing-context":
+            if not args.profile and not args.skill:
+                raise ValueError("routing-context requires --profile or --skill; never dump all 178 skills")
+            names = list(load_profile(args.profile, args.root)) if args.profile else []
+            names.extend(args.skill)
+            names = list(dict.fromkeys(names))
+            if len(names) > 20:
+                raise ValueError("routing-context is limited to 20 selected skills")
+            unknown = [name for name in names if name not in catalog]
+            if unknown:
+                raise ValueError("unknown skills: " + ", ".join(unknown))
+            payload = {
+                "schema_version": 1,
+                "scope": {"profile": args.profile, "cataloged_not_proven_installed": True,
+                          "skill_count": len(names)},
+                "architecture": {
+                    "global_contract": "AGENTS.md",
+                    "decision_owner": "skills/core/task-routing/SKILL.md",
+                    "profiles": "profiles/*.yaml: curated candidate sets, not host installation evidence",
+                    "discovery": "registry/skills.yaml + skill frontmatter",
+                    "skills": "skills/<domain>/<name>/SKILL.md: self-contained domain decisions",
+                    "references": "skills/**/references/*.md: selectively loaded technical depth",
+                    "personas": "skills/personas/: opt-in operating modes, not mandatory subagents",
+                    "knowledge_loading": "metadata -> selected SKILL.md -> needed references only",
+                    "evaluation": "evals/ + tests/: offline contracts; native agent outcomes need separate traces",
+                    "installation": "scripts/manage_install.py: explicit project/profile install",
+                    "workflow_guides": ["workflows/light.md", "workflows/standard.md", "workflows/deep.md"],
+                    "review_levels": ["R0 self", "R1 targeted independent", "R2 deep risk-led"],
+                    "permissions": "No skill/route grants merge, deploy or destructive authority",
+                    "finder": "advisory candidates only; agent evaluates intent, scope and exclusions",
+                },
+                "skills": [routing_metadata(catalog[name]) for name in names],
+            }
+            if args.json:
+                print(json.dumps(payload, ensure_ascii=False, indent=2))
+            else:
+                print(yaml.safe_dump(payload, allow_unicode=True, sort_keys=False))
         elif args.command in ("search", "recommend"):
             allowed = load_profile(args.profile, args.root) if args.profile else None
-            results = search(args.query, catalog, allowed=allowed, limit=args.limit)
-            if args.command == "recommend":
-                mode, reason = suggest_workflow(args.query)
-                print(f"Suggested workflow: {mode} ({reason})")
-                print("Advisory only: verify complexity, permissions and user intent.")
-            if getattr(args, "json", False):
-                print(json.dumps([
-                    {"name": m.skill.name, "domain": m.skill.domain,
-                     "path": m.skill.path + "/SKILL.md", "score": m.score,
-                     "reason": "; ".join(m.reasons)}
-                    for m in results
-                ], ensure_ascii=False, indent=2))
+            discovery = discover(args.query, catalog, allowed=allowed, limit=args.limit)
+            advice = workflow_advice(args.query)
+            rows = [
+                {"name": m.skill.name, "domain": m.skill.domain,
+                 "path": m.skill.path + "/SKILL.md", "score": m.score,
+                 "reason": "; ".join(m.reasons)}
+                for m in discovery.candidates
+            ]
+            if args.json:
+                # Preserve the established search --json list; expanded shape is
+                # explicitly opt-in. recommend --json is a new interface.
+                if args.explain or args.command == "recommend":
+                    for row, match in zip(rows, discovery.candidates):
+                        row.update(favorable=list(match.reasons), unfavorable=list(match.unfavorable))
+                    report = {"candidates": rows,
+                              "excluded": [{"name": e.skill.name, "reasons": list(e.reasons)} for e in discovery.excluded],
+                              "uncertainty": discovery.uncertainty,
+                              "required_checks": list(discovery.required_checks)}
+                    if args.command == "recommend":
+                        report["workflow"] = asdict(advice)
+                    print(json.dumps(report, ensure_ascii=False, indent=2))
+                else:
+                    print(json.dumps(rows, ensure_ascii=False, indent=2))
             else:
-                for match in results:
+                if args.command == "recommend":
+                    print("Workflow: agent decision required (inspect project impact using task-routing)")
+                    print("Advisory only: verify complexity, permissions and user intent.")
+                for match in discovery.candidates:
                     print(f"{match.skill.name}: {match.skill.path}/SKILL.md | score={match.score} | {', '.join(match.reasons)}")
-                if not results:
-                    print("No confident lexical match; ask for context or choose manually.")
+                    if match.unfavorable:
+                        print("  Check: " + "; ".join(match.unfavorable))
+                if not discovery.candidates:
+                    print("No confident lexical match; ask for context or choose manually; zero skills is valid.")
+                if args.explain:
+                    print("Uncertainty: " + discovery.uncertainty)
+                    for exclusion in discovery.excluded:
+                        print("Excluded " + exclusion.skill.name + ": " + "; ".join(exclusion.reasons))
+                    for check in discovery.required_checks + (advice.required_checks if args.command == "recommend" else ()):
+                        print("Required check: " + check)
         elif args.command in ("references", "read-ref"):
             if args.name not in catalog:
                 raise ValueError("unknown skill: " + args.name)

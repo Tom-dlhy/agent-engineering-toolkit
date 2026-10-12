@@ -2,7 +2,7 @@
 
 This toolkit distinguishes **library size**, **installation profile size** and **activation size**.
 
-1. The library holds 177 local `SKILL.md` files and may grow to hundreds.
+1. The library holds 178 local `SKILL.md` files and may grow to hundreds.
 2. A profile installs only a curated subset (5–20 skills).
 3. The model sees a brief name/description, not a full skill body.
 4. Only 1–3 directly relevant skill bodies should be read for ordinary tasks.
@@ -18,7 +18,11 @@ The managed Installer v2 is preferred; the legacy copy-only CLI is deprecated. S
 ~~~bash
 python scripts/skillctl.py profiles
 python scripts/skillctl.py search "Design an accessible React dashboard" --profile web-app
-python scripts/skillctl.py recommend "Migrate production IAM permissions" --profile cloud-engineering
+# AET architecture + scoped metadata; agent decides skills, workflow and review
+python scripts/skillctl.py routing-context --profile cloud-engineering
+python scripts/skillctl.py routing-context --skill database-selection --skill task-routing
+# Optional lexical candidates and uncertainty diagnostics, never automatic activation
+python scripts/skillctl.py search "choisir une base de données pour mon SaaS" --json --explain
 python scripts/skillctl.py show responsive-visual-qa
 
 # Compare approximate metadata footprints
@@ -34,7 +38,7 @@ Styles such as `bento-grid` and `glassmorphism` are **catalog opt-ins**, not par
 
 ## Persona activation versus workflow and technical knowledge
 
-Personas are deliberate *operating modes*, not technical source-of-truth skills and not automatically launched subagents. A user can explicitly request `grill-master`, `test-adversary` or `learning-mentor` while a relevant technical skill supplies API knowledge. Use at most one primary persona in an ordinary task; compose another only if its **independent outcome** is requested, and apply the project's LIGHT/STANDARD/DEEP safety process separately. All 12 are **opt-in** and deliberately absent from general installation profiles. Installed availability varies by host; this repository's discovery does not imply native Claude/Codex invocation.
+Personas are deliberate *operating modes*, not technical source-of-truth skills and not automatically launched subagents. A user can explicitly request `grill-master`, `test-adversary` or `learning-mentor` while a relevant technical skill supplies API knowledge. Use at most one primary persona in an ordinary task; compose another only if its **independent outcome** is requested, and apply the project's LIGHT/STANDARD/DEEP safety process separately. All 15 are **opt-in** and deliberately absent from general installation profiles. Installed availability varies by host; this repository's discovery does not imply native Claude/Codex invocation.
 
 ### Leadership-persona routing boundaries
 
@@ -69,7 +73,7 @@ No new default profile contents and no automatic activation. Exact selection is 
 | --- | --- | --- | --- |
 | Light | Tiny docs/UI/bug fixes | 0–1 | Single agent, targeted tests |
 | Standard | Normal features/refactors | 1–2 initially | Single implementer + review on demand |
-| Deep | Security, auth, migrations, architecture, prod | 2–3 initially, additional by evidence | Explicit plan, risk checks, optional independent reviewers |
+| Deep | Changed trust/data boundary, irreversible writes or unsafe rollback | 2–3 initially, additional by evidence | Explicit plan, risk checks, optional independent reviewers |
 
 Use `workflows/<level>.md` for the full protocol. The selector is *advisory*. It cannot authorize destructive actions, deployment or privileged cloud operations.
 
@@ -79,15 +83,68 @@ Use `workflows/<level>.md` for the full protocol. The selector is *advisory*. It
 
 CI rejects profiles if this rough core + metadata estimate exceeds 2500 tokens or the installed count exceeds 20. This is a **guardrail**, not a guarantee about real consumption.
 
-## Router failure modes
+## Routing ownership — agent decision, deterministic discovery
 
-- The current skill finder is an **English-oriented lexical scorer**, not a multilingual semantic retriever. It normalizes accents but does **not** translate `données` into `database`, `authentification` into `authentication`, or infer a complete task intention from French syntax.
-- A documented **known regression**: a natural query such as `choisir une base de données pour mon SaaS` can rank `base-ui` above `database-selection` because `base` matches the UI library name. Other French questions can produce no useful match. This is **not resolved** by this documentation-only change; it is a separate implementation/evaluation priority in [the roadmap](roadmap.md).
-- Overlapping generic terms (`base`, `react`, `ui`) can make irrelevant provider skills score highly on compound technology-choice requests. Inspect the request's intent, user-selected stack and negative activation triggers **before** applying recommendations.
-- No match should yield **no recommendation**, not a fabricated match. A score indicates only lexical overlap; it is not a confidence percentage, guarantee of expertise or authorization to activate/install.
-- The keyword registry is edited and reviewed alongside a new skill. Maintain positive, negative, ambiguity and natural-language test cases in relevant language(s); do not bulk-add synonyms without measuring collateral false positives.
-- Negative triggers in each skill description remain authoritative: a high lexical score alone should not force an invocation. Domain-specific skill selection can require explicit user/agent judgment until the router is improved.
-- The CLI is intentionally non-mutating. It never installs tools, executes skill scripts or makes network calls.
+**`task-routing` is the existing decision skill.** Do not add a duplicate
+`choose_skill`. When selection is ambiguous or consequential, the agent must
+inspect the user request, actual repository, affected contracts, side effects,
+reversibility, available tools and explicit permissions. It then decides:
+
+1. Zero or one primary specialist and only genuinely independent helpers.
+2. LIGHT / STANDARD / DEEP as *execution rigor*.
+3. R0 / R1 / R2 as *review assurance*, separately from skill count.
+
+A tiny authorization change may need DEEP/R2; a documentation typo mentioning
+authentication does not. No keyword or model decision grants merge/deploy/
+destructive permission. If facts are missing, ask for context or state that
+classification is pending; do not silently assume safety.
+
+### Machine-readable architecture and available skills
+
+```bash
+python scripts/skillctl.py routing-context --profile minimal
+python scripts/skillctl.py routing-context --profile python-backend --json
+python scripts/skillctl.py routing-context --skill database-selection --skill task-routing
+```
+
+The **YAML by default** is generated from the existing registry and each
+skill's frontmatter description. There is no second copy of the 178 skill
+definitions to keep synchronized. Output includes the contract and workflow
+paths, review levels, the scoped skills' paths, positive activation scopes,
+exclusions and safety cautions. The command requires an explicit profile or
+skill list and is capped at 20 entries; it does not bulk-load bodies or
+references. Profiles describe AET catalog membership, **not proof that a
+specific host installed or activated the skills**. The host's installed skill
+metadata should be preferred when already available.
+
+### CLI discovery remains a fallback, not a workflow engine
+
+`search` and `discover` provide explainable **lexical candidates** with
+exclusions, checks and uncertainty. They cannot understand arbitrary French,
+negation or nuanced intent. `search --json` retains its legacy list shape;
+`--explain` exposes additional diagnostics.
+
+`recommend` still prints candidates for compatibility, but its workflow
+output now explicitly abstains. `workflow_advice(query)` returns
+`workflow=unclassified`, `risk=unknown`,
+`source=agent_decision_required` for free text.
+The legacy `suggest_workflow(query)` tuple also returns `unclassified`
+rather than misrepresenting a keyword guess as a risk assessment.
+
+If a caller supplies actual nonempty structured impact/scope observations,
+`workflow_advice(query, observed=ChangeSignals(...))` delegates to the existing
+`adaptive_policy.assess`. Those observations are caller-reported, not
+independently verified. Empty/default `ChangeSignals` or flags reporting only
+tool/reviewer availability **do not establish low risk**: the API abstains.
+Neither output is authorization.
+
+The PR #38 routing regression fixtures remain **negative/positive discovery
+tests**, not a claim that offline code can measure model judgment. Evaluating
+the agent's choice of skills, workflow and cost requires real host traces and
+held-out tasks.
+
+See [activation evidence records](skill-evaluation-records.md) for separately
+tracked correct, missed, unwanted, unknown and not-run activation states.
 
 ## Quality and selection
 
