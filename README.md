@@ -1,326 +1,301 @@
+<div align="center">
+
 # Agent Engineering Toolkit
 
-**Vendor-neutral AI engineering skills, workflows and quality gates — modular by design, economical in context.**
+**Better engineering decisions for coding agents. Without the heavyweight workflow on every change.**
 
-A growing library of **177 first-party skills across 14 domains**, with **20 small installation profiles**, lightweight `light / standard / deep` workflows, optional agent role briefs, and a **deterministic local skill finder**. Designed for Claude Code, Codex and other compatible environments without requiring an LLM API call to discover skills.
+A modular, vendor-neutral library of engineering skills, practical playbooks and verification methods for **Codex**, **Claude Code** and compatible Agent Skills environments.
 
-> Status (2026-10-12, following merged Snowflake PR #29; Databricks specialist expansion proposed): the original **12 technical domains** have undergone source-reviewed refactors; the data-platforms domain now contains Snowflake and Databricks specialists; the catalog has **177 skills (including 15 opt-in personas), 415 technical reference leaves and 20 installation profiles**. A single authoring contract applies to every skill, without maturity tiers. This is a **documentation and deterministic-CI milestone**, not proof of production correctness, skill-routing quality or improvement in real agent outcomes. Next: fix observed discovery limitations and run held-out baseline-vs-toolkit evaluations.
+[![CI](https://github.com/Tom-dlhy/agent-engineering-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/Tom-dlhy/agent-engineering-toolkit/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2ea44f.svg)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-3776ab.svg)](https://www.python.org/)
 
-## Installer v2 — managed lifecycle and native plugins
+**178 skills** · **14 domains** · **423 expert references** · **20 curated profiles**
 
-The new installer is available **opt-in**. It provides cumulative and
-idempotent skills, per-file SHA ownership, read-only doctor, update/repair/
-uninstall, journaled recovery, user scope and verifiable native Claude Code/
-Codex plugin marketplaces. The legacy copy-only installer is deprecated. Signed ownership records are required for managed operations; old unsigned ledgers require explicit audited sealing before migration.
+[Get started](#quick-start) · [Install for Codex](#codex) · [Install for Claude Code](#claude-code) · [Architecture](#architecture) · [Documentation](#documentation)
 
-~~~bash
-python scripts/manage_install.py plan --agent codex --profile web-app --project /path/to/app
-python scripts/manage_install.py install --agent codex --profile web-app --project /path/to/app --apply
-python scripts/manage_install.py doctor --agent codex --project /path/to/app
-python scripts/package_plugins.py build --profile web-app --output dist/web-app --version 1.0.0 --apply
-python scripts/package_plugins.py verify --output dist/web-app
-~~~
+</div>
 
-Read the [Installer v2 guide](docs/installer-v2.md) and the [security/migration runbook](docs/installer-v2-security.md). Live host activation tests
-are still required before asserting full production/SOTA qualification.
+---
 
-## Why
+## The idea
 
-The number of skills in a repository should not determine the cost of every agent session:
+Coding agents can write code quickly. Getting them to consistently **choose an appropriate approach, understand a project's constraints, test the right things and know when to stop** is a different problem.
 
-- **177 skills stored** in the library; only **5–20 installed** in a project profile.
-- **Names, descriptions and task keywords** enable local discovery; only 1–3 relevant skill bodies should be read in a typical task.
-- **Risk-aware workflows** prevent costly multi-agent review loops on trivial edits.
-- **Validation and tests** run without using any LLM tokens.
-- **No automatic third-party downloads or execution**; security and licensing come before convenience.
+Agent Engineering Toolkit (AET) is a collection of reusable engineering knowledge and operating methods designed around that problem.
 
-## Snowflake platform expertise (explicit opt-in)
+It is **not** a new coding agent, a model wrapper, or a prompt that asks an assistant to "follow best practices." It supplies concrete methods and specialized references that an existing agent can consult when they actually matter.
 
-Five provider-specific Snowflake skills live under `skills/data-platforms/`: `snowflake-query-performance`, `snowflake-data-pipelines`, `snowflake-snowpark-ml`, `snowflake-cortex-ai` and `snowflake-security-governance`. Each has one actionable SKILL.md and **three selectively loaded references** covering Snowflake SQL/API contracts, operational failures, security, reproducible examples and verification. They do not replace `data/lakehouse-engineering`, `data/data-pipeline-quality`, `ai/llm-evaluation` or existing Cloud IAM experts.
+The goal is simple:
 
-~~~bash
-python scripts/skillctl.py search "Snowflake Cortex semantic views"
-python scripts/skillctl.py show snowflake-snowpark-ml
-python scripts/skillctl.py references snowflake-data-pipelines
-python scripts/skillctl.py read-ref snowflake-data-pipelines references/dynamic-tables-streams-tasks.md
-# Install deliberately in a target repo only when required; no general profile grows.
-python scripts/manage_install.py install --skill snowflake-query-performance --agent codex --project /path/to/project
-~~~
+> **Broad knowledge on disk. Focused expertise in context. Rigor proportional to risk.**
 
-See the [Snowflake governance and source audit](docs/snowflake-platform-audit.md).
+### What makes it different
 
-## Databricks platform expertise (explicit opt-in)
+| Principle | In practice |
+| --- | --- |
+| **Progressive disclosure** | Discover a skill through short metadata, load its `SKILL.md` when useful, then open only the relevant `references/`. |
+| **Right-sized execution** | LIGHT, STANDARD and DEEP workflows adapt planning, tests and review to the real change—not just its size or keywords. |
+| **Review with a purpose** | R0 self-review, R1 focused independent review, R2 risk-led review. Extra agents are optional, not a default tax. |
+| **Knowledge before duplication** | Extend an existing skill or add a reference before introducing another overlapping skill. |
+| **Provider independence** | The same engineering method can serve different agent hosts; provider-specific APIs belong to clearly scoped specialists. |
+| **Evidence over claims** | Deterministic checks, tests, explicit limitations and repeatable evaluation scenarios. A green CI job is not proof of better model performance. |
+| **Safe by default** | No automatic external skill execution, no unapproved merge/deploy, and no implicit overwrite of user-owned files. |
 
-Six first-party platform specialists complement Snowflake without replacing it:
-`databricks-spark-delta`, `databricks-lakeflow-pipelines`, `databricks-unity-catalog`, `databricks-mlflow-mlops`, `databricks-automation-bundles` and `databricks-ai-governance`. Each has three deep local references containing Databricks-specific methods, current API/version gates, negative scenarios and source links; no paid cloud operations or credentials are required. **Declarative Automation Bundles** is the current name of Asset Bundles; **Unity Gateway** is distinct from legacy AI Gateway endpoints.
+## How it works
 
-~~~bash
-python scripts/skillctl.py search "Databricks Lakeflow Auto Loader AUTO CDC"
-python scripts/skillctl.py show databricks-mlflow-mlops
-python scripts/skillctl.py references databricks-automation-bundles
-python scripts/skillctl.py read-ref databricks-ai-governance references/agents-mcp-and-service-policies.md
-# Preview single-skill installation (no changes until --apply).
-python scripts/manage_install.py install --skill databricks-lakeflow-pipelines --agent claude --project /path/to/project
-~~~
+AET separates **what an agent needs to know** from **how much process a task warrants**.
 
-See [Databricks source/governance audit](docs/databricks-platform-audit.md).
+```text
+                              YOUR TASK
+                                  |
+                     discover relevant metadata
+                                  |
+                 registry/skills.yaml + profiles/
+                                  |
+                     select a focused SKILL.md
+                                  |
+              +-------------------+-------------------+
+              |                                       |
+        methods & decisions                      references/
+       in the selected skill                 only when necessary
+              |                                       |
+              +-------------------+-------------------+
+                                  |
+                         implement & verify
+                                  |
+             LIGHT / STANDARD / DEEP  +  R0 / R1 / R2
+```
+
+The two axes are deliberately independent:
+
+- **Knowledge depth:** metadata → skill → targeted technical reference.
+- **Execution rigor:** LIGHT for a narrow reversible edit; STANDARD for ordinary implementation; DEEP for consequential security, persistence or operational risk.
+
+For example, fixing a label should not dispatch three reviewers. A one-line change to a tenant authorization rule may warrant negative security tests and an independent review.
+
+These are **instructions and decision protocols**, not an autonomous enforcement engine. AET's CLI provides deterministic local discovery; actual skill loading and agent behavior depend on the host.
+
+## What's included
+
+| Area | Examples |
+| --- | --- |
+| **Core & quality** | Task routing, requirements discovery, implementation planning, debugging, testing, secure code review, Git/PR workflows, release readiness |
+| **Architecture & backend** | DDD, hexagonal design, API contracts, event-driven systems, FastAPI, Python, TypeScript, persistence, observability |
+| **Frontend, UI & design** | React, TanStack Start, Next.js, Vue, accessibility, visual QA, design systems and provider-specific component guidance |
+| **Cloud & DevOps** | AWS, GCP, Azure, Cloudflare, Terraform, Kubernetes, CI/CD, IAM, infrastructure operations |
+| **Data & AI** | PostgreSQL, Snowflake, Databricks, pipelines, LLM integrations, RAG, MCP, agent orchestration and evaluations |
+| **Optional personas** | Execution orchestration, codebase archaeology, adversarial testing, review feedback, incident response and more |
+
+The catalog includes **15 opt-in personas**. Personas are operating modes, not automatically running subagents. A typical installation contains only **5–20 selected skills**, not the entire catalog.
+
+Explore the [catalog](docs/catalog.md), [skill routing](docs/skill-routing.md), [adaptive engineering methodology](docs/adaptive-engineering-methodology.md) and [roadmap](docs/roadmap.md).
 
 ## Quick start
 
-Requirements: Python 3.12+ and PyYAML.
+**Requirements:** Git, Python **3.12+**, and a working installation of Codex and/or Claude Code if you want to use the skills there. AET's local utilities require PyYAML; ordinary discovery and managed copying do **not** require an LLM API key.
 
-~~~bash
+```bash
+git clone https://github.com/Tom-dlhy/agent-engineering-toolkit.git
+cd agent-engineering-toolkit
+
+python3 -m venv .venv
+source .venv/bin/activate             # Windows PowerShell: .venv\Scripts\Activate.ps1
 python -m pip install -r requirements-dev.txt
+
+python scripts/skillctl.py profiles
+python scripts/skillctl.py search "FastAPI Pydantic API" --profile python-backend
+python scripts/skillctl.py recommend "add a protected API endpoint"
+```
+
+The `recommend` command provides **advisory lexical matching**, not semantic reasoning or a security assessment. The agent must still inspect the task and project before choosing its workflow.
+
+### Choose an installation method
+
+| Method | Best for | Who manages updates? |
+| --- | --- | --- |
+| **A. Managed skills (recommended)** | Adding a focused skill set to an existing project | AET's `manage_install.py` |
+| **B. Native local plugin marketplace** | Packaging a reusable curated plugin for supported host plugin workflows | Codex / Claude Code plugin tooling |
+
+**Use one method per host/scope for overlapping skills** to avoid duplicate copies with unclear precedence.
+
+## Install for your coding agent
+
+The examples below run **from the AET repository** after completing Quick start. Replace `/absolute/path/to/your-project` with the repository where you actually code.
+
+### Codex
+
+**Option A — managed project skills (recommended)**
+
+```bash
+PROJECT=/absolute/path/to/your-project
+
+# Preview first: no files changed
+python scripts/manage_install.py plan \
+  --agent codex --project "$PROJECT" --profile web-app
+
+# Install only the selected profile
+python scripts/manage_install.py install \
+  --agent codex --project "$PROJECT" --profile web-app --apply
+
+# Inspect ownership and drift
+python scripts/manage_install.py doctor --agent codex --project "$PROJECT"
+```
+
+The installer manages `<project>/.agents/skills/<skill-name>/`. Open the target project with Codex and start a fresh session so its available skills can be discovered. You can explicitly mention a skill when testing, for example: *"Use the fastapi-service skill to review this endpoint."*
+
+To add a **single specialist** without changing your existing selection:
+
+```bash
+python scripts/manage_install.py install \
+  --agent codex --project "$PROJECT" --skill aws-bedrock --apply
+```
+
+**Option B — local Codex plugin marketplace**
+
+If your Codex host supports local plugin marketplaces, build a curated distribution:
+
+```bash
+python scripts/package_plugins.py build \
+  --profile web-app --name aet-web-app --version 0.1.0 \
+  --output dist/aet-web-app --apply --zip
+
+python scripts/package_plugins.py verify --output dist/aet-web-app
+codex plugin marketplace add ./dist/aet-web-app
+codex plugin marketplace list
+```
+
+Adding a marketplace registers a **source**; it does not itself prove that the plugin is enabled. Install/enable `aet-web-app@aet-web-app-local` using your host's plugin browser or supported configuration, then verify it in a new Codex session. Local plugin availability varies by Codex surface and version.
+
+See [OpenAI's official plugin documentation](https://developers.openai.com/plugins/build/plugins).
+
+### Claude Code
+
+**Option A — managed project skills (recommended)**
+
+```bash
+PROJECT=/absolute/path/to/your-project
+
+# Preview first
+python scripts/manage_install.py plan \
+  --agent claude --project "$PROJECT" --profile web-app
+
+# Install to the target project
+python scripts/manage_install.py install \
+  --agent claude --project "$PROJECT" --profile web-app --apply
+
+# Verify the managed installation
+python scripts/manage_install.py doctor --agent claude --project "$PROJECT"
+```
+
+The installer manages `<project>/.claude/skills/<skill-name>/`. Start Claude Code inside your target project. Claude can select a relevant installed skill, or you can invoke one explicitly, such as `/fastapi-service`, to confirm it is available.
+
+**Option B — Claude Code local plugin marketplace**
+
+Build the same curated distribution shown above (once), then:
+
+```bash
+claude plugin validate ./dist/aet-web-app
+claude plugin marketplace add ./dist/aet-web-app
+claude plugin install aet-web-app@aet-web-app-local
+claude plugin list
+```
+
+Restart the Claude Code session and inspect the installed plugin's skills. The example's plugin ID and marketplace name come from `--name aet-web-app`; a different `--name` changes both identifiers. If you use project-scope managed skills, **do not also install an overlapping plugin into that same scope**.
+
+See [Claude Code's marketplace guide](https://code.claude.com/docs/en/plugin-marketplaces) and [skills documentation](https://code.claude.com/docs/en/skills).
+
+### Updating, repairing and removing managed skills
+
+AET's managed installer records per-file hashes and ownership so it can detect local edits rather than overwriting them silently. The commands below work for **both** hosts—replace `codex` with `claude` as needed.
+
+```bash
+# Inspect first
+python scripts/manage_install.py doctor --agent codex --project "$PROJECT"
+python scripts/manage_install.py update --agent codex --project "$PROJECT"
+
+# Apply reviewed updates
+python scripts/manage_install.py update --agent codex --project "$PROJECT" --apply
+
+# Remove only this managed skill (preview, then apply)
+python scripts/manage_install.py uninstall --agent codex --project "$PROJECT" --skill aws-bedrock
+python scripts/manage_install.py uninstall --agent codex --project "$PROJECT" --skill aws-bedrock --apply
+```
+
+`repair` is also available for missing managed files when the original source bytes are present. Additional support for user-level scope, frozen lockfiles, recovery and legacy-ledger adoption is documented in the [managed installer guide](docs/installer-v2.md) and [security runbook](docs/installer-v2-security.md). Existing unmanaged skills are **not** adopted automatically.
+
+## Repository architecture
+
+```text
+agent-engineering-toolkit/
+├── skills/
+│   ├── core/                    # discovery, planning, verification
+│   ├── quality/                 # tests, security, reviews, releases
+│   ├── architecture/
+│   ├── backend/  frontend/  ui/  design/
+│   ├── cloud/    data/      data-platforms/
+│   ├── ai/       stacks/    growth/
+│   └── personas/                # opt-in, self-contained operating modes
+│       ...
+├── registry/                    # skill inventory, metadata, provenance
+├── profiles/                    # curated selections; not monolithic bundles
+├── workflows/                   # light.md, standard.md, deep.md
+├── agents/                      # optional implementation/review role briefs
+├── toolkit/                     # routing, reference loading, safe installer
+├── scripts/                     # discovery, packaging, verification CLIs
+├── evals/                       # selection and behavioral test specifications
+├── tests/                       # deterministic contract and security tests
+├── examples/                    # runnable, scoped integration fixtures
+└── docs/                        # architecture, audits, maintenance guidance
+```
+
+A typical technical skill contains:
+
+```text
+skills/backend/fastapi-service/
+├── SKILL.md                     # when to use, procedure, decision points
+└── references/                  # deeper material loaded selectively
+    ├── schemas-and-errors.md
+    ├── security-and-trust-boundaries.md
+    └── testing-and-deployment.md
+```
+
+The full library stays on disk. Installed profiles expose a selected subset. The model should read only the relevant skill body and the technical references required for the task. **Library size is not the same as session context size.**
+
+Read the [architecture](docs/architecture.md) and [progressive expertise design](docs/progressive-expertise.md) for the full contract.
+
+## Verification and security
+
+This repository includes catalog checks, tests for several executable examples, context-budget guardrails and cross-platform installer tests.
+
+```bash
 python scripts/validate_skills.py
 python -m unittest discover -s tests -v
+python scripts/context_budget.py --all --budget 2500
+```
 
-# Find focused skills and an advisory workflow mode
-python scripts/skillctl.py search "Python DDD clean architecture" --profile python-backend
-python scripts/skillctl.py recommend "AWS IAM migration" --profile cloud-engineering
-python scripts/skillctl.py profiles
-python scripts/skillctl.py show python-ddd
-python scripts/skillctl.py references aws-bedrock
-python scripts/skillctl.py read-ref aws-bedrock references/converse-api.md
+The context budget is a **characters ÷ 4 proxy**, not an exact token bill. The project also includes evaluation fixtures, but most native agent behavior tests still require actual Codex/Claude sessions and observed outputs.
 
-# Measure only the reference that is explicitly opened
-python scripts/context_budget.py --profile aws-platform --activated aws-bedrock --reference aws-bedrock:references/converse-api.md
+AET does **not** claim measured token savings, universal model compatibility, guaranteed code correctness, or production security certification. Native plugin manifests and packaged files are tested structurally; verify actual loading on your host before treating a distribution as accepted.
 
-# Compare approximate always-on context sizes
-python scripts/context_budget.py --all
+External skills must pass review for overlap, licensing, scripts, dependencies and prompt-injection risk before inclusion. There is no automatic external skill execution, credential access or unapproved production action.
 
-# Safe local installation: preview first, then copy
-python scripts/manage_install.py install --agent codex --profile python-backend --project /path/to/project
-python scripts/manage_install.py install --agent codex --profile python-backend --project /path/to/project --apply
+See [security](SECURITY.md), [contributing](CONTRIBUTING.md) and the [roadmap](docs/roadmap.md).
 
-# For Claude Code use --agent claude; no overwrite of existing installed skills
-~~~
+## Contributing
 
-The managed Installer v2 writes only when `--apply` is provided, tracks owned files, and offers update/repair/uninstall. The legacy copy-only script is deprecated. It copies selected skills to `.agents/skills` (Codex) or `.claude/skills` (Claude Code). Copy/adapt `AGENTS.md` into a target project separately to adopt shared conventions. Never install every profile indiscriminately.
+Useful contributions improve an existing skill's **behavior, technical depth, activation precision or test coverage**. New skills should solve an independent problem—not rename an existing responsibility.
 
-## Operational persona skills (explicit opt-in)
+Changes are developed through focused PRs and validated in CI. **Passing CI or being mergeable never authorizes an automatic merge.**
 
-Fifteen **self-contained, source-independent behavior protocols** in `skills/personas/` provide focused operating modes: deep interviews, adversarial critique/testing, repository archaeology, scope control, plan orchestration, product strategy, review adjudication, reliable handoffs, incident response, decisions, mentoring, **engineering leadership, privacy governance and cross-media branding** (logos, video storyboards and promotional campaigns). These are **not** duplicative framework/API references or automatically enabled subagents. They have no external reference leaves: the full operational method is in each selected `SKILL.md`. Install only the requested persona with `--skill`; selecting one does not override security, owner authorization or the chosen light/standard/deep workflow.
+## License
 
-~~~bash
-# Inspect before applying; no existing profile needs to grow
-python scripts/skillctl.py show grill-master
-python scripts/manage_install.py install --skill grill-master --agent codex --project /path/to/project
-python scripts/manage_install.py install --skill grill-master --agent codex --project /path/to/project --apply
-~~~
+[MIT](LICENSE). Original first-party material; external projects may inform the methodology without their executables or skills being silently imported.
 
-See [persona design, activation boundaries and evaluation criteria](docs/persona-protocols.md). A branding-lead coordinates creative identity and promotional media, while design/brand-identity-visualization and design/interaction-motion retain their distinct execution scopes.
+---
 
-## UI library expertise
+<div align="center">
 
-35 optional provider skills across web, native and Flutter; plus one `ui-component-research` skill. The original `ui-library-selection` is **extended** in `skills/stacks`, never duplicated. See [UI skills](docs/ui-skills.md). Install only the chosen provider using `--skill` and read its optional references when needed.
+**A large engineering library should make an agent more capable—not every task more expensive.**
 
-## Explore
-
-- [Progressive expertise refactor and quality standard](docs/progressive-expertise.md)
-- [Historical expertise audit and current evaluation backlog](docs/expertise-audit.md)
-- [Opt-in persona protocols and governance](docs/persona-protocols.md)
-- [Design refactor decision matrix and evidence](docs/design-refactor-audit.md)
-- [Growth skill audit, experimentation and lifecycle governance](docs/growth-refactor-audit.md)
-- [Stack selection audit and identity solution boundaries](docs/stacks-refactor-audit.md)
-- [Design product experience specialists and chart-provider boundaries](docs/design-product-skills.md)
-- [Catalog and authoring conventions](docs/catalog.md)
-- [Progressive disclosure and token budgets](docs/skill-routing.md)
-- [Architecture](docs/architecture.md)
-- [Roadmap](docs/roadmap.md)
-- [Contributing](CONTRIBUTING.md)
-- [Security and third-party intake](SECURITY.md)
-
-The library covers Python DDD and hexagonal architecture, API design, modern Python and TypeScript, AWS/GCP/Azure/Cloudflare and IaC, data engineering, LLM applications, UI/UX and glassmorphism, testing, security and release workflows.
-
-## Development policy
-
-Open a focused feature branch and PR. CI validates skill metadata/profile references, runs unit and selected integration tests, and enforces a **rough** context-budget guardrail; it does **not** validate every provider API, deployed behavior or model-agent outcome. Never push directly to `main`. **A green CI and mergeable PR are necessary checks, not merge authorization: merge into `main` only after the repository owner's explicit approval.** See [Contributing](CONTRIBUTING.md) and the [evaluation roadmap](docs/roadmap.md).
-
-Original content is MIT licensed. Third-party sources such as [ECC](https://github.com/affaan-m/ECC), [Superpowers](https://github.com/obra/superpowers), [Anthropic Cybersecurity Skills](https://github.com/mukul975/Anthropic-Cybersecurity-Skills) and [Brag](https://github.com/latent-spaces/brag) inspired the architecture; **none of their skills are copied into the project at this stage**.
-
-## Design craft and growth (optional)
-
-Source-curated visual craft and motion references enhance existing design skills; new opt-in content strategy, technical SEO, AI search visibility, brand-board visualization and requirements discovery skills have narrow independent triggers. Install via a focused profile or individual --skill:
-
-~~~bash
-python scripts/manage_install.py install --profile design-craft --agent codex --project /path/to/project
-python scripts/manage_install.py install --profile growth-marketing --agent claude --project /path/to/project
-python scripts/skillctl.py references interaction-motion
-python scripts/skillctl.py read-ref interaction-motion references/easing-and-implementation.md
-~~~
-
-All commands preview installations by default. No external scripts are executed or external source data copied; see [selection and pinned provenance](docs/design-growth-source-review.md). Do not treat AI visibility as a guaranteed ranking or inclusion mechanism.
-
-## Python production engineering and LLM providers
-
-Python V2 adds focused expertise on application architecture, HTTPX clients, SQLAlchemy persistence, observability, FastAPI lifecycle, async/worker capacity, cloud-native AI inference and LangChain/LiteLLM tradeoffs. **The catalog keeps one narrow activated SKILL.md and selectively read deep references**, instead of loading all Python/provider material for a simple bug fix.
-
-~~~bash
-python scripts/skillctl.py search "FastAPI lifespan Pydantic HTTPX" --profile python-backend
-python scripts/skillctl.py search "Azure Foundry Responses" --profile python-llm-production
-python scripts/skillctl.py references python-llm-gateways
-python scripts/skillctl.py read-ref python-llm-gateways references/litellm-routing.md
-python scripts/context_budget.py --profile python-llm-production --activated python-llm-gateways --reference python-llm-gateways:references/litellm-routing.md
-~~~
-
-See [Python architecture and stack decision matrix](docs/python-engineering-v2.md) for lightweight vs production choices and official provider docs. Provider-specific model IDs, quotas, SDK versions and endpoints require verification in the target project; docs are not deployment authorization.
-
-## Quality engineering (risk-based, primary-source reviewed)
-
-Seven focused Quality specialists cover testing, code security, dependency
-supply chains, performance profiling, release decisions, GitHub PR workflows
-and adversarial external-skill intake. Their activation pages selectively route
-to **21 local deep reference leaves** (19 added in this refactor). The documented
-method uses pytest/Playwright/Hypothesis, OWASP ASVS, NIST SSDF, GitHub security
-guidance, SLSA, Python cProfile and k6 as appropriate; it does not load all
-Quality materials for a routine code edit.
-
-~~~bash
-python scripts/skillctl.py search "pytest integration contract regression"
-python scripts/skillctl.py references secure-code-review
-python scripts/skillctl.py read-ref secure-code-review references/threat-boundaries-asvs.md
-python -m unittest discover -s tests -p 'test_quality_contract_examples.py' -v
-~~~
-
-See [Quality audit, citations and evidence limitations](docs/quality-refactor-audit.md).
-Source guidance is linked, not executed. A green structural CI is not
-proof of a production penetration test, load SLO or live cloud IAM.
-
-## Architecture expertise (source-reviewed)
-
-Eight existing Architecture skills were refactored without adding generic
-or duplicate skills. **24 selectively indexed local references** cover
-API/RFC/OpenAPI/AsyncAPI contracts, ADRs, domain boundaries, DDD,
-ports/adapters, modular monoliths, event delivery/outbox/sagas,
-technology decisions, benchmark evidence and reversible migrations.
-
-~~~bash
-python scripts/skillctl.py search "transactional outbox event saga"
-python scripts/skillctl.py references event-driven-design
-python scripts/skillctl.py read-ref event-driven-design references/outbox-inbox-and-idempotency.md
-python scripts/check_architecture_boundaries.py --root examples/architecture_boundaries --config examples/architecture_boundaries/boundaries.json
-python -m unittest discover -s tests -p 'test_architecture_boundaries.py' -v
-~~~
-
-Official source decisions and limitations:
-[Architecture category audit](docs/architecture-refactor-audit.md).
-The checker is for explicit Python import restrictions, **not a
-general proof of software architecture**. No user-count-based
-"microservices required" rule exists.
-
-## Backend production engineering (Python + Node TypeScript)
-
-Seven existing Backend skills now own **33 selectively readable references**
-(15 additional). They cover modern Python packaging/uv, FastAPI lifecycle,
-HTTPX retries/deadlines, SQLAlchemy isolation/async sessions, OpenTelemetry,
-Celery worker reliability and Node/TypeScript runtime/API behavior.
-Architecture, Quality and cloud/LLM concerns remain independently routed.
-
-~~~bash
-python scripts/skillctl.py search "TypeScript Node.js API runtime validation"
-python scripts/skillctl.py references typescript-api
-python scripts/skillctl.py read-ref typescript-api references/runtime-schema-and-security.md
-node --test examples/backend-typescript/tests/*.test.ts  # Node 24+
-python -m unittest discover -s tests -p 'test_backend_expertise.py' -v
-~~~
-
-[Official-source Backend audit](docs/backend-refactor-audit.md) distinguishes
-current provider semantics from illustrative code and unverified deployment
-claims. The Node example requires a separate strict TypeScript typecheck
-before production and is deliberately not a real authenticated service.
-
-## Data engineering — source-verified domain expertise
-
-Data contains **7 focused skills**: four strengthened (pipeline quality,
-relational design, PostgreSQL performance, schema migration) plus three
-new independent specialists (analytics modeling, lakehouse/warehouses,
-CDC and stateful streaming). Each activates only the relevant skill and
-reference leaves. **22 local references** cover dbt, Airflow, GX,
-PostgreSQL, Iceberg/Parquet, Snowflake, BigQuery, Debezium and Flink.
-
-~~~bash
-python scripts/skillctl.py search "dbt dimensional grain metrics"
-python scripts/skillctl.py references streaming-cdc-engineering
-python scripts/skillctl.py read-ref streaming-cdc-engineering references/debezium-cdc-and-wal.md
-python -m unittest discover -s tests -p 'test_data_replay_contract.py' -v
-# Disposable PostgreSQL integration tests also run in GitHub CI
-~~~
-
-The [Data audit](docs/data-refactor-audit.md) records first-party official
-sources, tested contract semantics and unverified production/cloud work.
-A green route test, DAG parse or SQL schema check is **not** proof of
-live Snowflake/BigQuery pricing, CDC recovery or universal correctness.
-
-## AI engineering — source-verified agents, retrieval and MCP
-
-Eight AI specialists provide **26 individually indexed deep references**:
-five existing skills refactored for typed provider behavior, tool
-authorization, LLM evaluations, RAG assessment and LiteLLM governance;
-three new independently triggered specialists for **agent orchestration,
-RAG implementation and MCP protocol integration**.
-
-~~~bash
-python scripts/skillctl.py search "mcp protocol server client transport oauth"
-python scripts/skillctl.py references agent-orchestration
-python scripts/skillctl.py read-ref agent-orchestration references/state-checkpoints-and-replay.md
-python -m unittest discover -s tests -p 'test_ai_security_contract.py' -v
-~~~
-
-See [AI technical/source audit](docs/ai-refactor-audit.md). MCP's
-2026-07-28 released stateless specification and SDK compatibility are
-reviewed; LangGraph checkpointers do not guarantee exactly-once external
-effects, and LiteLLM Proxy budgets require a functioning database.
-All examples are offline and must not be deployed as credentialed agents.
-
-## Cloud services — provider-specific production playbooks
-
-**41 Cloud skills** (22 new service specialists) have **82 on-demand reference
-leaves** for authentication, SDK, minimum permissions, diagnostics,
-rate limits and recovery. A narrow service selector avoids blindly
-loading the AWS, GCP, Azure and Cloudflare documentation together.
-Opt-in installation profiles: `aws-platform` (20), `gcp-platform`
-(15), `azure-platform` (15) and `cloudflare-edge` (12).
-
-~~~bash
-python scripts/skillctl.py search "GCP Cloud Run OIDC invoker"
-python scripts/skillctl.py references azure-service-bus
-python scripts/skillctl.py read-ref azure-service-bus references/connection-and-permissions.md
-python scripts/context_budget.py --profile gcp-platform --activated gcp-cloud-run --reference gcp-cloud-run:references/connection-and-permissions.md
-~~~
-
-See [cloud service-by-service connection map](docs/cloud-service-map.md)
-and [official-source audit](docs/cloud-refactor-audit.md). Reading skills
-**does not authenticate** an agent to cloud resources or authorize
-resource creation. Production requires owner-approved IAM/network/test.
-
-## Frontend framework engineering
-
-Seven focused frontend skills have 21 selectively readable deep references on React, Next.js, TanStack Start, Vue/Nuxt, Svelte/SvelteKit, Angular and Astro. The legacy combined Vue/Svelte skill was replaced rather than duplicated. A new 18-skill frontend-platform discovery profile is opt-in.
-
-~~~bash
-python scripts/skillctl.py search 'TanStack Start serverfunctions middleware csrf'
-python scripts/skillctl.py references tanstack-start
-python scripts/skillctl.py read-ref tanstack-start references/start-server-functions-auth.md
-node --test examples/frontend-boundaries/tests/*.test.mjs
-~~~
-
-[Frontend framework map](docs/frontend-framework-map.md) and [official source audit](docs/frontend-refactor-audit.md). The Node boundary example tests an educational server, not a real framework runtime; each production app still needs its own pinned typecheck/build and browser E2E.
-
-## UI: production component contracts without template-shaped design
-
-35 existing component-library specialists remain **opt-in** with two
-deep references each, now with vendor-specific version/composition
-warnings. The common ui-component-research has five leaves including
-upgrades, licensing and release tests. Existing frontend-design has a
-new art-direction and critique leaf: audience and authentic product
-content drive layout/typography; defaults and demo themes are scaffolds.
-
-[UI production rubric](docs/ui-production-quality.md) ·
-[Source and GitHub skill audit](docs/ui-refactor-audit.md) ·
-[Contrasting design briefs](evals/ui-visual-briefs.yaml).
-Do not automatically import outside skills or claim a page is visually
-validated without viewing rendered screenshots.
-
-## Adaptive implementation and review
-
-The [adaptive engineering methodology](docs/adaptive-engineering-methodology.md) defines independent LIGHT/STANDARD/DEEP rigor, R0/R1/R2 review and inline/subagent/parallel execution decisions. The optional implementation-planning Core skill creates task-level contracts only for sufficiently complex work. No reviewer/subagent is required for a safe cosmetic edit; sensitive changes retain independent safety gates. These are operational methods, not evidence of tested model behavior; see evaluation fixtures and current CI.
+</div>
