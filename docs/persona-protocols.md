@@ -135,3 +135,7 @@ engineering team's performance or merged code without direct evidence.
 Future held-out real-agent testing should verify these exclusions, source
 integrity, decision output quality, stop gates and real token impact. Static
 catalog and CI tests are not proof of behavioral improvement.
+
+## Adaptive implementation and code-review handoff
+
+execution-orchestrator now distinguishes INLINE, SUBAGENT-DRIVEN and proven independent PARALLEL execution without turning subagent count into a quality metric. Its R0/R1/R2 selection comes from task-routing and the risk of the actual diff. review-feedback-arbiter handles comments against current code with ACCEPT/MODIFY/REQUEST EVIDENCE/REJECT/DEFER/ALREADY RESOLVED, bounded re-review and test evidence. Both remain opt-in personas with no local reference leaves or mandatory profile addition. The independent Core implementation-planning skill provides executable task contracts; see [adaptive methodology](adaptive-engineering-methodology.md). No model-run evidence or automatic native activation is implied by these definitions.

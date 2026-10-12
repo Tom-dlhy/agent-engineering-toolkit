@@ -96,3 +96,22 @@ or that the outcomes equal or exceed Superpowers across real tasks.
 Behavioral held-out A/B tests and real native host traces are separate
 acceptance gates. Do not claim budget savings, quality superiority,
 automatic reviewer dispatch or production readiness without evidence.
+
+## Optional deterministic policy example
+
+The pure Python advisory uses structured observations, not untrusted keywords. It never dispatches, authorizes, edits files or substitutes for task-specific judgment:
+
+~~~python
+from toolkit.adaptive_policy import ChangeSignals, assess
+
+change = ChangeSignals(
+    local_reversible=True,
+    authorization_or_secrets=True,
+    reviewer_available=False,
+)
+decision = assess(change)
+assert (decision.workflow, decision.review, decision.execution) == ("deep", "R2", "inline")
+assert "independent R2 risk review unavailable" in decision.unmet_gates
+~~~
+
+A high-impact change with an unavailable reviewer remains implementable in an authorized development environment but **cannot be reported as independently reviewed**. The decision.ready_for_integration property only summarizes known missing gates; it does not grant merge/deploy authorization or establish complete real-world safety.

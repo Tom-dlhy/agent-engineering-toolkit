@@ -2,11 +2,30 @@
 
 ## Current state
 
-- 177 first-party skills across 14 domains (13 technical + 1 optional behavioral-persona domain), with light / standard / deep workflows independent of skill knowledge depth.
-- The original 12 technical domains underwent source-reviewed refactors (through merged PR #25); 15 independent self-contained personas are now proposed in their own opt-in domain. The catalog retains **415 technical reference leaves** and **20 installation profiles**.
+- 178 first-party skills across 14 domains (13 technical + 1 optional behavioral-persona domain), with light / standard / deep workflows independent of skill knowledge depth.
+- The original 12 technical domains underwent source-reviewed refactors (through merged PR #25); 15 independent self-contained personas are available opt-in in their own opt-in domain. The catalog retains **423 technical reference leaves** and **20 installation profiles**.
 - The AWS split, 35 UI provider branches and Design/Growth/Stacks selection skills use targeted references. Practical depth and real-world integration evidence still vary by skill.
 - Read-only catalog discovery, path-safe individual reference reads, secure opt-in installations and deterministic CI checks.
 - No imported third-party executable content, no self-updating prompts, no automatic merges.
+
+## Adaptive engineering methodology — implemented, real-agent proof pending
+
+The optional implementation-planning Core skill now provides task/interface
+contracts and three selective reference leaves. Existing task-routing,
+verification-before-done, git-pr-workflow, execution-orchestrator and
+review-feedback-arbiter own risk-based workflow, R0/R1/R2 review, inline/
+delegated/parallel execution, safe worktrees, branch finalization and review
+feedback. The toolkit.adaptive_policy module is a deterministic **advisory**
+on structured observations; test cases cover low-risk edits, one-line
+authorization risk, missing reviewer/approval and parallel-isolation refusals.
+Three engineering profiles opt into planning; minimal and fullstack retain
+their original inventory. No additional persona is created.
+
+Known limits: static CI does not prove Codex/Claude runtime activation,
+the actual number of model tokens saved, or behavioral parity with Superpowers.
+Run consented held-out A/B tasks with agent logs and measurable correctness,
+latency and human correction before such claims. See
+[adaptive methodology](adaptive-engineering-methodology.md).
 
 ## Next priorities — validate behavior, not grow the catalog
 
@@ -44,7 +63,7 @@ Python 3.x packaging, architecture, FastAPI, HTTPX, SQLAlchemy, observability an
 
 ## Quality category refactor
 
-Seven Quality skills have 21 task-scoped references and a source-driven audit;
+Seven Quality skills have 24 task-scoped references and a source-driven audit;
 deterministic routing/integrity tests and a local negative-test fixture were
 added. Next evidence improvements: target-language E2E suites against real
 apps, approved staging k6 profiles, security/ASVS review rehearsal, SLSA
