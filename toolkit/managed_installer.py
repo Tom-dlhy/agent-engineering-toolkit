@@ -528,6 +528,7 @@ class ManagedInstaller:
                     _safe_relative(rel)
                     if not isinstance(digest, str) or not re.fullmatch(r"[a-f0-9]{64}", digest):
                         raise InstallError("invalid legacy checksum")
+                _parents_safe(self.base, self.target / name)
                 if _existing(self.target / name) != hashes:
                     raise InstallError(f"legacy folder changed: {name}")
             raw["sources"] = {name: raw.get("revision") for name in files}
@@ -598,6 +599,12 @@ class ManagedInstaller:
                     "files": plan["desired"], "sources": sources,
                     "installed_at": datetime.now(timezone.utc).isoformat(),
                 }, create=True)
+                # Source provenance must still match the plan after staging.
+                # Otherwise a dirty tree could be mislabeled by a clean HEAD.
+                if command != "uninstall":
+                    _, current_revision = _source(self.root)
+                    if current_revision != plan["revision"]:
+                        raise InstallError("source changed while installing; abort and re-plan")
                 # Revalidate even after potentially lengthy staging. Ensure an
                 # editor did not modify a skill while we were copying it.
                 for op in plan["operations"]:
