@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -40,8 +41,11 @@ def _inventory(root: Path) -> dict[str, str]:
 
 
 def build(root: Path, output: Path, profile: str | None = None,
-          skills: tuple[str, ...] = (), version: str | None = None) -> dict:
+          skills: tuple[str, ...] = (), version: str | None = None,
+          name: str = PLUGIN) -> dict:
     """Create a fresh marketplace tree. Refuse any pre-existing output."""
+    if not re.fullmatch(r"[a-z][a-z0-9]*(?:-[a-z0-9]+)*", name):
+        raise InstallError("invalid plugin name")
     source = root.resolve(strict=True)
     available, revision = _source(source)
     selected = _requested(source, profile, skills)
@@ -57,45 +61,48 @@ def build(root: Path, output: Path, profile: str | None = None,
         raise InstallError(f"output exists; refusing overwrite: {output}")
     output.parent.mkdir(parents=True, exist_ok=True)
     try:
-        plugin = output / "plugins" / PLUGIN
+        plugin = output / "plugins" / name
         skills_dir = plugin / "skills"
         skills_dir.mkdir(parents=True)
-        for name in selected:
-            source_files = _files(available[name])
-            target = skills_dir / name
+        for name_skill in selected:
+            source_files = _files(available[name_skill])
+            target = skills_dir / name_skill
             target.mkdir()
             for rel, expected_sha in source_files.items():
-                data = (available[name] / rel).read_bytes()
+                data = (available[name_skill] / rel).read_bytes()
                 if _digest(data) != expected_sha:
-                    raise InstallError("source changed during packaging: " + name)
+                    raise InstallError("source changed during packaging: " + name_skill)
                 path = target / rel
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_bytes(data)
+                if os.name != "nt":
+                    source_mode = (available[name_skill] / rel).stat().st_mode
+                    path.chmod(0o755 if source_mode & 0o111 else 0o644)
         desc = "Curated vendor-neutral agent engineering skills (no automatic hooks)."
         _write(plugin / "plugin.json", {
             "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-            "name": PLUGIN, "version": version, "description": desc,
+            "name": name, "version": version, "description": desc,
             "repository": "https://github.com/Tom-dlhy/agent-engineering-toolkit",
             "license": "MIT",
         })
         _write(plugin / ".codex-plugin" / "plugin.json", {
-            "name": PLUGIN, "version": version, "description": desc,
+            "name": name, "version": version, "description": desc,
             "skills": "./skills/",
         })
         _write(plugin / ".claude-plugin" / "plugin.json", {
-            "name": PLUGIN, "version": version, "description": desc,
+            "name": name, "version": version, "description": desc,
             "author": {"name": "Agent Engineering Toolkit"},
         })
         _write(output / ".agents/plugins/marketplace.json", {
             "name": "aet-local", "interface": {"displayName": "Agent Engineering Toolkit"},
-            "plugins": [{"name": PLUGIN, "source": {
-                "source": "local", "path": "./plugins/" + PLUGIN},
+            "plugins": [{"name": name, "source": {
+                "source": "local", "path": "./plugins/" + name},
                 "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
                 "category": "Developer Tools"}],
         })
         _write(output / ".claude-plugin/marketplace.json", {
             "name": "aet-local", "owner": {"name": "Agent Engineering Toolkit"},
-            "plugins": [{"name": PLUGIN, "source": "./plugins/" + PLUGIN,
+            "plugins": [{"name": name, "source": "./plugins/" + name,
                          "description": desc, "version": version}],
         })
         (output / "README.md").write_text(
@@ -103,7 +110,7 @@ def build(root: Path, output: Path, profile: str | None = None,
             "This directory is generated. Do not edit skill files in place.\n\n"
             "Claude Code: register the directory containing .claude-plugin/marketplace.json\n"
             "with 'claude plugin marketplace add /absolute/path/to/this-directory',\n"
-            "then 'claude plugin install agent-engineering-toolkit@aet-local'.\n\n"
+            "then 'claude plugin install " + name + "@aet-local'.\n\n"
             "Codex: 'codex plugin marketplace add /absolute/path/to/this-directory';\n"
             "install via the host's plugin directory or configured marketplace.\n\n"
             "These native plugins are managed by the host, not by the AET copy installer.\n"
@@ -112,10 +119,10 @@ def build(root: Path, output: Path, profile: str | None = None,
             "are data until a user explicitly authorizes their execution.\n",
             encoding="utf-8",
         )
-        ledger = {"schema": PACKAGE_SCHEMA, "version": version, "revision": revision,
+        ledger = {"schema": PACKAGE_SCHEMA, "plugin": name, "version": version, "revision": revision,
                   "selected": selected, "files": _inventory(output)}
         _write(output / "aet-distribution.json", ledger)
-        return {"path": str(output), "version": version, "revision": revision,
+        return {"path": str(output), "plugin": name, "version": version, "revision": revision,
                 "skills": selected, "files": len(ledger["files"])}
     except BaseException:
         if output.exists():
@@ -144,10 +151,13 @@ def verify(output: Path) -> dict:
         current.pop("aet-distribution.json", None)
         if files != current:
             raise InstallError("distribution drift: extra, missing or edited file")
-        plugin = output / "plugins" / PLUGIN
+        plugin_name = state.get("plugin", PLUGIN)
+        if not re.fullmatch(r"[a-z][a-z0-9]*(?:-[a-z0-9]+)*", plugin_name):
+            raise InstallError("invalid plugin identity")
+        plugin = output / "plugins" / plugin_name
         for manifest in ("plugin.json", ".codex-plugin/plugin.json", ".claude-plugin/plugin.json"):
             parsed = json.loads((plugin / manifest).read_text(encoding="utf-8"))
-            if parsed["name"] != PLUGIN or parsed["version"] != state["version"]:
+            if parsed["name"] != plugin_name or parsed["version"] != state["version"]:
                 raise InstallError("plugin manifest mismatch")
         if any((plugin / "skills" / name / "SKILL.md").is_file() is False
                for name in state["selected"]):
@@ -181,6 +191,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--profile")
     p.add_argument("--skill", action="append", default=[])
     p.add_argument("--version")
+    p.add_argument("--name", default=PLUGIN, help="Unique slug per curated native variant")
     p.add_argument("--zip", action="store_true")
     p.add_argument("--apply", action="store_true", help="Write the package (otherwise preview)")
     a = p.parse_args(argv)
@@ -195,7 +206,7 @@ def main(argv: list[str] | None = None) -> int:
             result = {"dry_run": True, "output": str(a.output), "skills": selected,
                       "revision": revision}
         else:
-            result = build(a.source, a.output, a.profile, tuple(a.skill), a.version)
+            result = build(a.source, a.output, a.profile, tuple(a.skill), a.version, a.name)
             if a.zip:
                 archive(a.output, a.output.with_suffix(".zip"))
         print(json.dumps(result, indent=2))
