@@ -253,5 +253,22 @@ class InstallerV2Tests(unittest.TestCase):
             read_lock(path, "codex")
 
 
+    def test_named_plugin_variants_are_independent(self):
+        out1, out2 = self.base / "variant-a", self.base / "variant-b"
+        build(self.source, out1, "small", version="1.0.0", name="aet-alpha")
+        build(self.source, out2, skills=("beta",), version="1.0.0", name="aet-beta")
+        self.assertTrue(verify(out1)["valid"])
+        self.assertTrue(verify(out2)["valid"])
+        meta1 = json.loads((out1 / ".agents/plugins/marketplace.json").read_text())
+        meta2 = json.loads((out2 / ".agents/plugins/marketplace.json").read_text())
+        self.assertEqual(meta1["plugins"][0]["name"], "aet-alpha")
+        self.assertEqual(meta2["plugins"][0]["name"], "aet-beta")
+
+    def test_real_repo_minimal_profile_packaged(self):
+        output = self.base / "real-dist"
+        build(ROOT, output, "minimal", version="0.1.0", name="aet-smoke")
+        self.assertTrue(verify(output)["valid"])
+
+
 if __name__ == "__main__":
     unittest.main()
