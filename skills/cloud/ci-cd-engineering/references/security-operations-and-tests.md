@@ -21,3 +21,47 @@ Static best-practice checklists alone are not production proof. Document the pre
 ## Official references
 - https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-cloud-providers
 - https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication
+
+## Secure release workflow negative-testing guide
+
+**Read when:** GitHub Actions permission, OIDC federation, fork PR,
+artifact promotion or production-environment trust is changing.
+
+### Trigger -> privilege matrix
+
+Enumerate pull_request, pull_request_target, push, tag and manual
+dispatch, including fork/untrusted event constraints. For each
+record checkout ref, effective GITHUB_TOKEN scopes, available
+secrets, artifact access, environment guard and deployment role.
+An untrusted PR must never execute arbitrary fork code under a
+privileged write token or cloud role.
+
+**Negative tests** in disposable repo/fixtures:
+1. Fork PR cannot read deploy secrets or production cloud creds.
+2. Tag on unapproved ref cannot promote artifact.
+3. Changed source HEAD invalidates stale build/review evidence.
+4. Cancelled prior deploy does not leave state silently promoted.
+5. OIDC trust rejects invalid issuer/audience/sub/environment.
+6. Artifact checksum promoted to staging equals the production
+   candidate, not merely the same version string.
+
+OIDC id-token: write is permission to request a JWT, not proof
+a cloud resource trusts it. Validate cloud-side trust policy
+with least privilege. Never log JWTs, service secrets or raw
+private customer payloads to demonstrate denial.
+
+### Deployment evidence chain
+
+Use source commit -> built digest -> tests/scan -> approvals ->
+signed/provenance evidence where available -> staging smoke ->
+production digest -> post-deploy measured checks. Capture each
+real run ID; unrelated green CI is not proof of a changed policy.
+
+When a workflow touches deployment, preserve a rollback plan,
+reconcile partial effects and separate CI pipeline changes from
+live cloud role mutation. The latter needs explicit authorization.
+Use safety checklists that actually exercise negative paths rather
+than claiming security from YAML lint only.
+
+Inspiration:
+https://github.com/github/awesome-copilot/tree/main/skills/devops-rollout-plan

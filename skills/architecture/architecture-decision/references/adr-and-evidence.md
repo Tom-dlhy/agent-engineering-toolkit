@@ -52,3 +52,56 @@ to new context rather than rewriting history. Do not call a technology
 
 Sources: https://adr.github.io/ and
 https://learn.microsoft.com/en-us/azure/architecture/guide/ .
+
+## Falsifiable ADR and right-sized design handoff
+
+**Read when:** architecture decisions impact multiple modules,
+data ownership, deployment topology or long-lived interfaces.
+
+### Decision framing
+
+Write the problem, actual system constraints, hard/non-hard criteria,
+workload that has been observed, status quo and credible alternatives.
+Avoid implying that an unmeasured user count mandates microservices.
+For complex topology compare consistency mode, tenant isolation,
+network boundaries, release independence, observability, failure
+recovery, operational cost, reversibility and skill needs.
+
+### Evidence-led comparison
+
+For each option state:
+- invariant it guarantees and the mechanism that enforces it;
+- failure mode introduced; who operates it;
+- proof needed to distinguish from simpler alternative;
+- rollback/transition effort and cost sensitivity;
+- one measurable trigger for revisiting the choice.
+
+Only score a weighted trade-off among options that pass hard
+requirements. If an option violates mandatory data isolation, no
+sum of lower latency and better maintainability should "win".
+
+### Worked example
+
+A small monolith has slow email notifications. Option A: keep module
+and enqueue transactional outbox jobs. Option B: extract a separate
+notification service. First measure how often notification blocks
+request latency, and how deployment coupling hurts work. Verify
+transaction/outbox recovery and duplicate delivery in a disposable
+environment. Do not create a service and distributed trace system
+unless evidence supports operational advantage.
+
+### ADR output
+
+Decision title / current SHA / affected modules / status quo /
+alternatives / hard constraints / evidence and uncertainties /
+chosen option / rejected reasons / invariants / negative tests /
+producer-consumer interfaces / migration and rollback plan /
+revisit trigger / owner approval.
+
+Handoff concrete contracts to implementation-planning. The ADR
+does not prove tests executed or authorize deployment. Deep designs
+can include a diagram and test spike; for a local reversible rename
+record the convention and skip ADR entirely.
+
+Method inspiration:
+https://github.com/github/awesome-copilot/tree/main/skills/agent-architecture

@@ -60,3 +60,49 @@ system fully secure or ASVS-certified.
 
 Official source: https://cheatsheetseries.owasp.org/cheatsheets/Secure_Code_Review_Cheat_Sheet.html
 and https://owasp.org/www-project-application-security-verification-standard/ .
+
+## Differential vulnerability review and false-positive triage
+
+**Read when:** reviewing an authorization or security-relevant diff,
+especially where changes affect callers, defaults or dataflow.
+
+### Three passes, limited by actual risk
+
+**Pre-analysis:** confirm exact base/head SHA, entrypoints, security
+identities and trust assumptions. A raw source snippet cannot prove
+reachable behavior. Map the first and second hop of affected callers
+where necessary, including a potentially unaware background worker.
+
+**Diff analysis:** inspect the changed lines, removed guards, new
+external effects, callers, tests and relevant git blame for code that
+may have prevented a known vulnerability. Estimate blast radius from
+actual call sites; do not invent a numeric count from a partial grep.
+A small diff that weakens authorization is high consequence even if
+only one line changed.
+
+**Adversarial hypothesis:** trace input -> validation -> auth ->
+sensitive sink. State attacker capability, current effective guard,
+reproduction preconditions, test or instrumentation, impact and
+confidence. If an existing control blocks the path, downgrade or
+reject the finding with evidence; no performative "security problem"
+labels for speculative issues.
+
+### Report contract
+
+| Field | What counts as evidence |
+|---|---|
+| Location | File:line and candidate revision |
+| Reachability | Caller/input and authorization context |
+| Consequence | What a reasonable user/attacker obtains |
+| Proof | Safe failing test, trace, or explicitly marked hypothesis |
+| Fix | Smallest correct defense at trust boundary |
+| Validation | Negative regression, tests on fixed current HEAD |
+| Limits | Interfaces, platforms, tenants or versions not checked |
+
+Deep R2 changes require independent reviewer where prescribed;
+R1 is scoped; R0 self-review remains reasonable for nonsecurity
+cosmetic diffs. An automated scanner can assist but cannot alone
+certify non-exploitability.
+
+Source inspiration:
+https://github.com/trailofbits/skills/tree/main/plugins/differential-review
