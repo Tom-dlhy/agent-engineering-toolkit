@@ -15,18 +15,20 @@ sys.path.insert(0, str(ROOT))
 from toolkit.benchmark_model import BenchmarkError, load_suite, fixture_summary
 from toolkit.benchmark_runner import execute, plan
 from toolkit.benchmark_analysis import analyze
+from toolkit.benchmark_evidence import verify_records
 
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("command", choices=("plan", "run", "analyze"))
+    p.add_argument("command", choices=("plan", "run", "verify", "analyze"))
     p.add_argument("--manifest", type=Path, help="Versioned JSON suite inside toolkit checkout")
     p.add_argument("--host", choices=("codex", "claude"))
     p.add_argument("--model", help="Explicit pinned host model name")
     p.add_argument("--trials", type=int, default=2)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--output", type=Path, help="Fresh report directory; never overwrites")
-    p.add_argument("--records", type=Path, help="Observed records.json for analysis")
+    p.add_argument("--records", type=Path, help="Observed records.json for verify/analyze")
+    p.add_argument("--verified-output", type=Path, help="New verified copy (verify only)")
     p.add_argument("--allow-paid-agent-run", action="store_true")
     p.add_argument("--allow-test-execution", action="store_true")
     p.add_argument("--trusted-disposable-host", action="store_true")
@@ -39,7 +41,11 @@ def main(argv=None) -> int:
     p.add_argument("--max-token-increase-pct", type=float)
     args = p.parse_args(argv)
     try:
-        if args.command == "analyze":
+        if args.command == "verify":
+            if not args.records or not args.verified_output:
+                raise BenchmarkError("verify needs --records and --verified-output")
+            result = verify_records(args.records, args.verified_output)
+        elif args.command == "analyze":
             if not args.records:
                 raise BenchmarkError("analyze needs --records")
             data = json.loads(args.records.read_text(encoding="utf-8"))
