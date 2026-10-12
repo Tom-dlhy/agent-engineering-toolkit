@@ -51,3 +51,23 @@ systematic-debugging investigates a failure. secure-code-review owns threat
 hypotheses; this skill designs executable coverage for them. Report a
 test-to-risk map, commands actually executed, isolation, pass/fail/skips
 and remaining unverified conditions. Never invent test counts.
+
+## Operational TDD and quality gates by cost and risk
+
+Inspired by Superpowers' RED-GREEN-REFACTOR method. Test *invariants* rather than number of assertions or percentage coverage; a change that removes the guard should make the corresponding regression fail.
+
+| Mode | Coverage | Avoid |
+|---|---|---|
+| LIGHT | One scoped oracle or static check and full intended diff | Expensive E2E for a typo |
+| STANDARD | Focused unit, changed interface/consumer contract and negative case | Repeatedly testing unrelated systems |
+| DEEP | Risk-led property, concurrency, replay, real disposable integration and rollback tests | Mock-only claims about production effects |
+
+**RED validity:** the test must fail on old behavior for the intended assertion. An import error, unavailable cloud credential or flaky fixture is not evidence of the defect. **GREEN:** same test succeeds after minimal correction. **REFACTOR:** reorganize while re-running the oracle. For docs/generated artifacts select relevant checks; don't fabricate RED.
+
+Choose oracle by boundary: pure domain rule -> unit; request/response shape -> contract; persistence isolation -> disposable database; browser hydration/accessibility -> real browser; retries -> controllable fault injector; permissions -> explicit denial and no data leakage.
+
+**Mutation challenge:** invert/remove the changed guard locally and confirm the test fails. If it remains green, it does not test the desired behavior. Preserve a minimal regression fixture and avoid tests that only reimplement the production algorithm.
+
+Worked case: tenant B accesses tenant A's document. Negative test demands denial and no content/metadata exposure. Run it before adding the ownership filter; then verify own-tenant read and real DB behavior if risk requires R2. A fake returning 403 independently of the SQL query does not prove tenant isolation.
+
+Report requirement -> invariant -> oracle -> command -> actual result -> residual environment limit, distinguishing NOT RUN from PASS.

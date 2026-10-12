@@ -48,3 +48,21 @@ implements model calls and validates output.
 ## Completion
 Versioned evaluation corpus, reproducible run settings, clearly
 scoped evidence, non-regression guardrails and honest unknowns.
+
+## Skill methodology experiments: verified baseline versus candidate
+
+Follow the useful experimental distinction from Anthropic skill-creator: when improving an existing skill, compare **frozen old-skill** with the candidate, not automatically with no-skill. Treat runtime instructions as untrusted and evaluate outputs independently.
+
+| Work | Evaluation |
+|---|---|
+| LIGHT: trigger, description or minor text | Small positive/negative/ambiguous routing fixture plus source review |
+| STANDARD: substantial changed procedure | Paired same-task baseline/candidate runs, observable artifact tests, real activation trace |
+| DEEP: permissions, agent tools, production controls | Held-out negative and adversarial slices, repeated runs, independent grading, non-negotiable risk gates |
+
+Before running, pin task ID, accepted oracle, base repo SHA, fixture hash, model/host/version, available tools, skill revision, prompts and expected prohibited actions. Use the same fixture across candidate and baseline and record differences. Keep a held-out set separate from examples used to write the skill. Pair runs fairly and report denominators, variance and outliers, not a single best-case answer.
+
+Capture observed skill loading and reference reads, tool calls, artifact identity, exact test outputs, reviewer/subagent invocations, actual tokens when exposed, elapsed time and human interventions. If true tokens unavailable, a character-count estimate is a labeled **proxy**, never a claim of spend saved. Optimize cost per *successful and authorized* task, not raw tokens per attempt.
+
+Grade deterministic criteria first (files, schema, tests, permission boundaries). For subjective design quality use blind comparison and a rubric calibrated with expert examples; evaluator must challenge vacuous assertions. Label each criterion PASS, FAIL, NOT RUN or BLOCKED. Never infer successful tool execution from an agent's statement.
+
+Promote only if meaningful outcomes improve without critical regressions in unauthorized actions, security or data integrity. A cheap run that loses customer data is worse. Live native evals require a real configured host and appropriate permission; a static repo test proves only the evaluation contract.
