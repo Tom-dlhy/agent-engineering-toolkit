@@ -59,3 +59,7 @@ State: branch/target SHA, current tests, R0/R1/R2 evidence,
 unresolved findings, authorization state, PR link or merge SHA,
 workspace retained/cleaned and unperformed follow-ups. Do not
 describe a created draft PR as merged or a mergeable PR as reviewed.
+
+## Official reference
+
+https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/merging-a-pull-request/about-pull-request-merges

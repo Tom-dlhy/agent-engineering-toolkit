@@ -52,7 +52,7 @@ class QualityRefactorTests(unittest.TestCase):
                 self.assertIn("Do not", skill.description)
                 self.assertIn("## ", (ROOT / skill.path / "SKILL.md").read_text())
                 refs = indexed_references(skill, ROOT)
-                self.assertEqual(len(refs), 3)
+                self.assertEqual(len(refs), 6 if name == "git-pr-workflow" else 3)
                 for path in refs:
                     leaf = read_reference(skill, path, ROOT)
                     self.assertGreater(len(leaf), 1400, (name, path))
@@ -61,7 +61,7 @@ class QualityRefactorTests(unittest.TestCase):
                     self.assertIn("## ", leaf)
                     self.assertIn("https://", leaf)
                     count += 1
-        self.assertEqual(count, 21)
+        self.assertEqual(count, 24)
 
     def test_positive_routing(self):
         for item in self.fixtures["selection"]:

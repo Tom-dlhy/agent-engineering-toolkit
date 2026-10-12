@@ -60,3 +60,7 @@ Document review decision and gates as PR comments or a concise ledger;
 never silently mark required checks or human approvals complete.
 Keeping a review packet as a file is useful for long plans, but
 LIGHT edits do not need persistent process artifacts.
+
+## Official reference
+
+https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews

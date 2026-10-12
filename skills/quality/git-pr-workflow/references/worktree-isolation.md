@@ -67,3 +67,7 @@ worktree, report its location and use that worktree or another branch.
 If host-native isolation prevents writes, report the environment limitation,
 execute only safe inspection, and seek permission before changing directories.
 Always distinguish creating a Git branch via API from a real local worktree.
+
+## Official reference
+
+https://git-scm.com/docs/git-worktree
