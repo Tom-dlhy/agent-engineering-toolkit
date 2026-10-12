@@ -387,5 +387,54 @@ class InstallerV2Tests(unittest.TestCase):
         self.assertIn(TOKEN, probe.read_text(encoding="utf-8"))
 
 
+    def test_uninstall_works_when_other_sources_disappear(self):
+        self.manager.apply("install", skills=("alpha", "beta"))
+        (self.beta / "SKILL.md").unlink()
+        self.manager.apply("uninstall", skills=("alpha",))
+        self.assertEqual(self.manager._state()["selected"], ["beta"])
+        self.manager.apply("uninstall")
+        self.assertEqual(self.manager.inspect()["installed"], {})
+
+    def test_dirty_source_cannot_build_published_package(self):
+        from toolkit import plugin_packager
+        from toolkit.managed_installer import generate_lock
+        original = plugin_packager._source
+        def dirty(root):
+            files, revision = original(root)
+            return files, "dirty-123456789abc"
+        with patch.object(plugin_packager, "_source", side_effect=dirty):
+            with self.assertRaisesRegex(InstallError, "dirty"):
+                build(self.source, self.base / "dirty-release", "small", version="1.0.0")
+        with patch("toolkit.managed_installer._source", side_effect=dirty):
+            with self.assertRaisesRegex(InstallError, "dirty"):
+                generate_lock(self.source, "codex", "small")
+
+    def test_marketplace_names_and_sources_are_verified(self):
+        root = self.base / "native"
+        build(self.source, root, skills=("beta",), version="1.0.0",
+              name="aet-beta")
+        codex = root / ".agents/plugins/marketplace.json"
+        marketplace = json.loads(codex.read_text())
+        self.assertEqual(marketplace["name"], "aet-beta-local")
+        self.assertEqual(marketplace["plugins"][0]["source"]["path"],
+                         "./plugins/aet-beta")
+        marketplace["name"] = "aet-local"
+        codex.write_text(json.dumps(marketplace))
+        with self.assertRaisesRegex(InstallError, "distribution drift"):
+            verify(root)
+
+    def test_release_workflow_has_tag_gate_and_validation(self):
+        import yaml
+        release = yaml.load((ROOT / ".github/workflows/release-skills.yml").read_text(),
+                            Loader=yaml.BaseLoader)
+        self.assertEqual(release["on"]["push"]["tags"], ["v*"])
+        steps = release["jobs"]["release"]["steps"]
+        commands = "\n".join(str(s.get("run", "")) for s in steps)
+        self.assertIn("validate_skills.py", commands)
+        self.assertIn("test_installer_v2.py", commands)
+        self.assertIn("gh release create", commands)
+        self.assertIn("sha256sum", commands)
+
+
 if __name__ == "__main__":
     unittest.main()
