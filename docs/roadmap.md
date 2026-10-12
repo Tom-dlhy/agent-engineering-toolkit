@@ -1,5 +1,9 @@
 # Roadmap
 
+## Evidence-driven evaluation infrastructure (2026-10-12)
+
+Versioned A/B/C fixture definitions, an offline benchmark planner, an explicitly gated native Codex/Claude test runner and an evidence-aware promotion analyzer have been added without new skills or personas. Real paid runs, observed native activation, independent artifact grading, verified token costs and generalizable quality gains are **not yet measured**. The runner is *not* a hardened security sandbox: run it only with vetted fixtures on a disposable host. See [experimental protocol](evidence-driven-evaluations.md).
+
 ## Current state
 
 - 178 first-party skills across 14 domains (13 technical + 1 optional behavioral-persona domain), with light / standard / deep workflows independent of skill knowledge depth.
