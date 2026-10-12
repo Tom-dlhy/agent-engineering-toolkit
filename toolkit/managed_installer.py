@@ -162,6 +162,8 @@ def generate_lock(root: Path, agent: str, profile: str | None = None,
     if agent not in AGENTS:
         raise InstallError(f"unknown agent: {agent}")
     available, revision = _source(root.resolve(strict=True))
+    if revision.startswith("dirty-"):
+        raise InstallError("refusing a reproducibility lock from a dirty Git checkout")
     selected = _requested(root, profile, skills)
     if not selected:
         raise InstallError("lockfile requires a profile or explicit skills")
