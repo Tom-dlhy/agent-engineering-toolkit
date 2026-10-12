@@ -264,6 +264,10 @@ The full library stays on disk. Installed profiles expose a selected subset. The
 
 Read the [architecture](docs/architecture.md) and [progressive expertise design](docs/progressive-expertise.md) for the full contract.
 
+## Measuring whether skills actually help
+
+AET includes an **opt-in A/B/C engineering benchmark harness** comparing a clean agent, focused technical skills, and full methodology on identical test fixtures. Its local analyzer checks paired evidence and blocks automatic promotion. Native model runs are never triggered by CI and require explicit budget and disposable-host approval. See [Evidence-driven evaluations](docs/evidence-driven-evaluations.md) for the experimental contract and limitations.
+
 ## Verification and security
 
 This repository includes catalog checks, tests for several executable examples, context-budget guardrails and cross-platform installer tests.
