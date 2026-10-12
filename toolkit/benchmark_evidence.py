@@ -58,8 +58,14 @@ def snapshot(workspace: Path) -> dict[str, bytes]:
         if path.is_symlink():
             raise BenchmarkError("unsafe symlink in agent workspace")
         relative = path.relative_to(workspace)
-        if any(_SENSITIVE_NAMES.search(part) for part in relative.parts):
+        if any(_SENSITIVE_NAMES.search(part) or part in
+               (".aws", ".ssh", ".mcp.json", ".config", "settings.local.json")
+               for part in relative.parts):
             raise BenchmarkError("sensitive-looking path in workspace; preserve manually")
+        # AET benchmark scaffolding is not the task's source code. Never
+        # record the injected AGENTS.md / CLAUDE.md as a produced patch.
+        if relative.parts[0] in ("AGENTS.md", "CLAUDE.md"):
+            continue
         if any(part in _SKIP_ROOT for part in relative.parts[:1]) or any(
             part in _SKIP_PARTS for part in relative.parts
         ):

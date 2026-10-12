@@ -266,7 +266,7 @@ Read the [architecture](docs/architecture.md) and [progressive expertise design]
 
 ## Measuring whether skills actually help
 
-AET includes an **opt-in A/B/C engineering benchmark harness** comparing a clean agent, focused technical skills, and full methodology on identical test fixtures. Its local analyzer checks paired evidence and blocks automatic promotion. Native model runs are never triggered by CI and require explicit budget and disposable-host approval. See [Evidence-driven evaluations](docs/evidence-driven-evaluations.md) for the experimental contract and limitations.
+AET includes an **opt-in A/B/C engineering benchmark harness** comparing a clean agent, focused technical skills, and full methodology on identical test fixtures. Its local analyzer checks paired evidence and blocks automatic promotion. The benchmark now preserves before/after source snapshots and diffs for independent review, with offline SHA-256 verification before promotion. Native model runs are never triggered by CI and require explicit budget and disposable-host approval. See [Evidence-driven evaluations](docs/evidence-driven-evaluations.md) for the experimental contract and limitations.
 
 ## Verification and security
 
