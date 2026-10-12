@@ -134,6 +134,56 @@ def _requested(root: Path, profile: str | None, skills: tuple[str, ...]) -> list
     return list(dict.fromkeys(_safe_name(n) for n in selected))
 
 
+
+LOCK_SCHEMA = "aet.lock.v1"
+
+
+def generate_lock(root: Path, agent: str, profile: str | None = None,
+                  skills: tuple[str, ...] = ()) -> dict:
+    """Reproducible, target-independent inventory of exact source skill bytes."""
+    if agent not in AGENTS:
+        raise InstallError(f"unknown agent: {agent}")
+    available, revision = _source(root.resolve(strict=True))
+    selected = _requested(root, profile, skills)
+    if not selected:
+        raise InstallError("lockfile requires a profile or explicit skills")
+    if any(name not in available for name in selected):
+        raise InstallError("unknown skill in lockfile selection")
+    return {"schema": LOCK_SCHEMA, "agent": agent, "revision": revision,
+            "selected": selected, "files": {name: _files(available[name]) for name in selected}}
+
+
+def read_lock(path: Path, agent: str) -> dict:
+    """Validate untrusted lockfile; never trust paths or ownership from it."""
+    _no_link(path)
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if data["schema"] != LOCK_SCHEMA or data["agent"] != agent:
+            raise InstallError("lockfile schema or agent mismatch")
+        selected = [_safe_name(n) for n in data["selected"]]
+        if not selected or len(set(selected)) != len(selected) or set(data["files"]) != set(selected):
+            raise InstallError("invalid lockfile selection")
+        for name, hashes in data["files"].items():
+            _safe_name(name)
+            if not isinstance(hashes, dict) or "SKILL.md" not in hashes:
+                raise InstallError("invalid lockfile inventory")
+            for rel, digest in hashes.items():
+                _safe_relative(rel)
+                if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+                    raise InstallError("invalid lockfile SHA")
+        if not isinstance(data["revision"], str):
+            raise InstallError("invalid lockfile revision")
+        return data
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise InstallError(f"invalid lockfile: {exc}") from exc
+
+
+def _assert_locked(plan: dict, lock: dict) -> None:
+    if (plan["selected"] != lock["selected"] or plan["desired"] != lock["files"]
+            or plan["revision"] != lock["revision"]):
+        raise InstallError("source differs from pinned lockfile; checkout its exact revision")
+
+
 class ManagedInstaller:
     def __init__(self, root: Path, agent: str, scope: str, project: Path | None = None,
                  home: Path | None = None):
@@ -336,10 +386,12 @@ class ManagedInstaller:
         return True
 
     def apply(self, command: str, profile: str | None = None,
-              skills: tuple[str, ...] = ()) -> dict:
+              skills: tuple[str, ...] = (), lock: dict | None = None) -> dict:
         with self._locked():
             self._recover()
             plan = self.plan(command, profile, skills)
+            if lock is not None:
+                _assert_locked(plan, lock)
             conflicts = [o for o in plan["operations"] if o["action"].startswith("conflict")]
             if conflicts:
                 raise InstallError("conflicts; no changes made: " + json.dumps(conflicts))
@@ -403,7 +455,7 @@ class ManagedInstaller:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("plan", "install", "update", "doctor", "list",
-                                            "repair", "uninstall"))
+                                            "repair", "uninstall", "lock"))
     parser.add_argument("--agent", choices=tuple(AGENTS), required=True)
     parser.add_argument("--scope", choices=("project", "user"), default="project")
     parser.add_argument("--project", type=Path)
@@ -411,9 +463,41 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--profile")
     parser.add_argument("--skill", action="append", default=[])
     parser.add_argument("--apply", action="store_true", help="Explicitly allow filesystem mutation")
+    parser.add_argument("--locked", action="store_true", help="Install exactly from a pinned lockfile")
+    parser.add_argument("--lockfile", type=Path, help="Optional lockfile path; default .aet/skills-lock-<agent>.json")
     args = parser.parse_args(argv)
     try:
         mgr = ManagedInstaller(args.source, args.agent, args.scope, args.project)
+        if args.scope == "user" and args.project is not None:
+            raise InstallError("do not specify --project with --scope user")
+        lock_path = args.lockfile or (mgr.meta / f"skills-lock-{args.agent}.json")
+        if args.command == "lock":
+            selected = tuple(args.skill) if args.profile or args.skill else tuple(mgr._state()["selected"])
+            lock_data = generate_lock(args.source, args.agent, args.profile, selected)
+            if args.apply:
+                with mgr._locked():
+                    if mgr.journal.exists():
+                        raise InstallError("pending transaction; recover before writing a lock")
+                    if lock_path.exists() or lock_path.is_symlink():
+                        current = read_lock(lock_path, args.agent)
+                        if current != lock_data:
+                            raise InstallError("lockfile already exists and differs; remove/review it explicitly")
+                    else:
+                        mgr._write_json(lock_path, lock_data)
+            print(json.dumps({"path": str(lock_path), "applied": args.apply,
+                              "selected": lock_data["selected"],
+                              "revision": lock_data["revision"]}, indent=2))
+            return 0
+        lock_data = None
+        selected_skills = tuple(args.skill)
+        selected_profile = args.profile
+        if args.locked:
+            if args.command not in ("plan", "install", "update"):
+                raise InstallError("--locked is only valid for plan/install/update")
+            if args.profile or args.skill:
+                raise InstallError("--locked determines selections; omit --profile/--skill")
+            lock_data = read_lock(lock_path, args.agent)
+            selected_skills = tuple(lock_data["selected"])
         if args.command in ("doctor", "list"):
             result = mgr.inspect()
             print(json.dumps(result, indent=2))
@@ -422,9 +506,11 @@ def main(argv: list[str] | None = None) -> int:
                 return 2
             return 0
         command = "install" if args.command == "plan" else args.command
-        result = (mgr.apply(command, args.profile, tuple(args.skill))
+        result = (mgr.apply(command, selected_profile, selected_skills, lock=lock_data)
                   if args.apply and args.command != "plan"
-                  else mgr.plan(command, args.profile, tuple(args.skill)))
+                  else mgr.plan(command, selected_profile, selected_skills))
+        if lock_data is not None:
+            _assert_locked(result, lock_data)
         # The desired manifest is internal to the planner, never clutter CLI output.
         result.pop("desired")
         result["applied"] = bool(args.apply and args.command != "plan")
