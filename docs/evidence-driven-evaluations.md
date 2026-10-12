@@ -87,12 +87,68 @@ Host invocation policies:
   agent's toolset. The **harness** separately executes the trusted test
   command after the agent stops, under its own explicit authorization.
 
-Each completed trial is checkpointed to `records.json` (a new,
-permission-limited directory). Only result metadata, artifact paths/hash,
-exit status and recognized host token counters are written. Raw conversation
-logs are not persisted by default. A timeout or interruption may leave a
+Each completed trial is checkpointed to `records.json` alongside a
+bounded private evidence bundle containing before/after task source and
+unified diffs, in addition to result metadata and recognized host token
+counters. Raw conversation logs are not persisted by default. A timeout or interruption may leave a
 **partial** report which must never be padded with invented successes.
 Never commit benchmark records or private model output to the repository.
+
+
+## Preserved results and independent verification (artifact patch)
+
+Each native run now snapshots **the actual agent-produced task tree
+before the test command runs**. The runner writes a private local evidence
+bundle under `<output>/artifacts/<run_id>/`:
+
+- `before/` — original task files, before the agent;
+- `after/` — task files as left by the agent, before acceptance checks;
+- `changes.patch` — unified UTF-8 diff (binary modifications use the
+  two original snapshots for manual comparison);
+- `manifest.json` — SHA-256 hashes, changed paths, file counts and run ID.
+
+The runner checkpoints `records.json` atomically with a pointer to the
+bundle's manifest digest. It does not overwrite pre-existing report
+directories. Failed agent calls retain their safe evidence; on symlink,
+sensitive path/content, oversized artifact or capture failure, the
+trial is marked **BLOCKED** and its acceptance command is not executed.
+Files and directories are created with restrictive permissions
+(`0600`/`0700` where supported). Raw model output is not archived.
+
+**Important:** these are bounded privacy precautions, **not** a
+general-purpose secret detector, tamper-proof storage or OS sandbox.
+The host CLI and testing code can still reach resources outside the
+temporary directory. Run only with vetted tasks, synthetic input,
+a disposable host and no sensitive credentials. Never upload the
+result directory to GitHub.
+
+After a real run, verify every archived file against its manifest
+**without running a model**:
+
+```bash
+python scripts/benchmark_aet.py verify \
+  --records .tmp/aet-benchmark-01/records.json \
+  --verified-output .tmp/aet-benchmark-01/verified-records.json
+```
+
+The verification creates a **new** copy; it never overwrites original
+records. `artifact_evidence_verified=true` means only that the local
+bundle matches its recorded checksums. It does **not** prove a native
+skill activated, that the model respected the workflow, or that the
+output is correct. Inspection of files, diff, dependency effects and
+acceptance coverage remains an independent reviewer responsibility.
+
+A human reviewer should open the `after/` files and `changes.patch`
+for **every** A/B/C trial, including failures, then edit a *separate
+private reviewed copy* to set `human_review` and
+`critical_violation` with documented justification. Run `analyze`
+on that reviewed copy, not on the raw output. The analyzer now blocks
+any promotion recommendation unless all arms have recorded captured
+and integrity-verified evidence.
+
+There is intentionally no automatic retention cleanup: evidence is
+needed for independent audit. Delete local results manually only
+after completing review and when your data-retention policy permits it.
 
 ## Independent grading and comparison
 
@@ -168,8 +224,9 @@ development and held-out task pools and preserve baseline revisions.
    independently captured and cannot be inferred from installation.
 3. The runner is a **bounded local test harness, not a hardened sandbox**
    or guarantee of isolation, billing caps or plugin disablement.
-4. Raw output is not a verified provenance chain. Human reviewers
-   must verify result reports and artifacts before claims.
+4. Artifacts are now retained with local SHA-256 integrity checks,
+   but these are not signed provenance or independent correctness proof.
+   Human reviewers must verify artifacts and results before claims.
 5. Three-arm aggregate differences alone do not establish causality,
    significance or generalization to arbitrary applications.
 6. AET does not self-edit, self-promote, merge or deploy based on

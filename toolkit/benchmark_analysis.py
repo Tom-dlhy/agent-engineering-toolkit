@@ -82,6 +82,12 @@ def analyze(records: list[dict[str, Any]], *, min_trials: int = 2,
     known_critical = any(r["critical_violation"] is True for r in records)
     unknown_critical = any(r["critical_violation"] is None for r in records)
     full_reviewed = all(r["human_review"] in ("PASS", "FAIL") for r in records)
+    # A passed acceptance command cannot establish a reviewable patch. Require
+    # independently verified bundles, including for baseline and failed arms.
+    evidence_complete = all(r.get("artifact_evidence_verified") is True and
+                            isinstance(r.get("artifact_evidence"), dict) and
+                            r["artifact_evidence"].get("status") == "CAPTURED"
+                            for r in records)
     complete_tests = all(r["agent_status"] in ("PASS", "FAIL")
                          and r["test_status"] in ("PASS", "FAIL") for r in records)
     per_task = {k: sum(1 for task_id, _ in group if task_id == k)
@@ -97,7 +103,7 @@ def analyze(records: list[dict[str, Any]], *, min_trials: int = 2,
     uplift = round(full_rate - baseline_rate, 4)
     if known_critical:
         recommendation = "NO_GO_CRITICAL_FINDING"
-    elif not enough or not complete_tests or unknown_critical or not full_reviewed:
+    elif not enough or not complete_tests or unknown_critical or not full_reviewed or not evidence_complete:
         recommendation = "INSUFFICIENT_EVIDENCE"
     elif uplift < min_success_delta:
         recommendation = "NO_GO_QUALITY_THRESHOLD"
@@ -117,6 +123,7 @@ def analyze(records: list[dict[str, Any]], *, min_trials: int = 2,
         "token_change_pct_full_vs_baseline": token_pct,
         "all_token_usage_observed": complete_tokens,
         "human_reviews_complete": full_reviewed,
+        "artifact_evidence_complete": evidence_complete,
         "critical_violations_classified": not unknown_critical,
         "execution_checks_complete": complete_tests,
         "thresholds": {"min_trials": min_trials, "min_success_delta": min_success_delta,

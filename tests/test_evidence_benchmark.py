@@ -22,7 +22,9 @@ def case(variant: str, trial: int = 0, **override):
              host="codex", model="pinned-model", tool_config="bounded",
              run_id=f"{variant}-{trial}", agent_status="PASS",
              test_status="PASS", tokens=100, human_review="PASS",
-             critical_violation=False)
+             critical_violation=False,
+             artifact_evidence={"status": "CAPTURED"},
+             artifact_evidence_verified=True)
     return {**r, **override}
 
 
