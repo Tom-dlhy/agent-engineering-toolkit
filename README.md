@@ -44,7 +44,7 @@ python scripts/skillctl.py show snowflake-snowpark-ml
 python scripts/skillctl.py references snowflake-data-pipelines
 python scripts/skillctl.py read-ref snowflake-data-pipelines references/dynamic-tables-streams-tasks.md
 # Install deliberately in a target repo only when required; no general profile grows.
-python scripts/install_profile.py --skill snowflake-query-performance --agent codex --project /path/to/project
+python scripts/manage_install.py install --skill snowflake-query-performance --agent codex --project /path/to/project
 ~~~
 
 See the [Snowflake governance and source audit](docs/snowflake-platform-audit.md).
@@ -60,7 +60,7 @@ python scripts/skillctl.py show databricks-mlflow-mlops
 python scripts/skillctl.py references databricks-automation-bundles
 python scripts/skillctl.py read-ref databricks-ai-governance references/agents-mcp-and-service-policies.md
 # Preview single-skill installation (no changes until --apply).
-python scripts/install_profile.py --skill databricks-lakeflow-pipelines --agent claude --project /path/to/project
+python scripts/manage_install.py install --skill databricks-lakeflow-pipelines --agent claude --project /path/to/project
 ~~~
 
 See [Databricks source/governance audit](docs/databricks-platform-audit.md).
@@ -89,13 +89,13 @@ python scripts/context_budget.py --profile aws-platform --activated aws-bedrock 
 python scripts/context_budget.py --all
 
 # Safe local installation: preview first, then copy
-python scripts/install_profile.py --agent codex --profile python-backend --project /path/to/project
-python scripts/install_profile.py --agent codex --profile python-backend --project /path/to/project --apply
+python scripts/manage_install.py install --agent codex --profile python-backend --project /path/to/project
+python scripts/manage_install.py install --agent codex --profile python-backend --project /path/to/project --apply
 
 # For Claude Code use --agent claude; no overwrite of existing installed skills
 ~~~
 
-The installer writes only when `--apply` is provided. It copies selected skills to `.agents/skills` (Codex) or `.claude/skills` (Claude Code). Copy/adapt `AGENTS.md` into a target project separately to adopt shared conventions. Never install every profile indiscriminately.
+The managed Installer v2 writes only when `--apply` is provided, tracks owned files, and offers update/repair/uninstall. The legacy copy-only script is deprecated. It copies selected skills to `.agents/skills` (Codex) or `.claude/skills` (Claude Code). Copy/adapt `AGENTS.md` into a target project separately to adopt shared conventions. Never install every profile indiscriminately.
 
 ## Operational persona skills (explicit opt-in)
 
@@ -104,8 +104,8 @@ Fifteen **self-contained, source-independent behavior protocols** in `skills/per
 ~~~bash
 # Inspect before applying; no existing profile needs to grow
 python scripts/skillctl.py show grill-master
-python scripts/install_profile.py --skill grill-master --agent codex --project /path/to/project
-python scripts/install_profile.py --skill grill-master --agent codex --project /path/to/project --apply
+python scripts/manage_install.py install --skill grill-master --agent codex --project /path/to/project
+python scripts/manage_install.py install --skill grill-master --agent codex --project /path/to/project --apply
 ~~~
 
 See [persona design, activation boundaries and evaluation criteria](docs/persona-protocols.md). A branding-lead coordinates creative identity and promotional media, while design/brand-identity-visualization and design/interaction-motion retain their distinct execution scopes.
@@ -143,8 +143,8 @@ Original content is MIT licensed. Third-party sources such as [ECC](https://gith
 Source-curated visual craft and motion references enhance existing design skills; new opt-in content strategy, technical SEO, AI search visibility, brand-board visualization and requirements discovery skills have narrow independent triggers. Install via a focused profile or individual --skill:
 
 ~~~bash
-python scripts/install_profile.py --profile design-craft --agent codex --project /path/to/project
-python scripts/install_profile.py --profile growth-marketing --agent claude --project /path/to/project
+python scripts/manage_install.py install --profile design-craft --agent codex --project /path/to/project
+python scripts/manage_install.py install --profile growth-marketing --agent claude --project /path/to/project
 python scripts/skillctl.py references interaction-motion
 python scripts/skillctl.py read-ref interaction-motion references/easing-and-implementation.md
 ~~~
