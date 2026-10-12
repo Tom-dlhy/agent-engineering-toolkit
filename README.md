@@ -6,6 +6,24 @@ A growing library of **177 first-party skills across 14 domains**, with **20 sma
 
 > Status (2026-10-12, following merged Snowflake PR #29; Databricks specialist expansion proposed): the original **12 technical domains** have undergone source-reviewed refactors; the data-platforms domain now contains Snowflake and Databricks specialists; the catalog has **177 skills (including 15 opt-in personas), 415 technical reference leaves and 20 installation profiles**. A single authoring contract applies to every skill, without maturity tiers. This is a **documentation and deterministic-CI milestone**, not proof of production correctness, skill-routing quality or improvement in real agent outcomes. Next: fix observed discovery limitations and run held-out baseline-vs-toolkit evaluations.
 
+## Installer v2 — managed lifecycle and native plugins
+
+The new installer is available **opt-in**. It provides cumulative and
+idempotent skills, per-file SHA ownership, read-only doctor, update/repair/
+uninstall, journaled recovery, user scope and verifiable native Claude Code/
+Codex plugin marketplaces. The legacy copy-only installer is deprecated.
+
+~~~bash
+python scripts/manage_install.py plan --agent codex --profile web-app --project /path/to/app
+python scripts/manage_install.py install --agent codex --profile web-app --project /path/to/app --apply
+python scripts/manage_install.py doctor --agent codex --project /path/to/app
+python scripts/package_plugins.py build --profile web-app --output dist/web-app --version 1.0.0 --apply
+python scripts/package_plugins.py verify --output dist/web-app
+~~~
+
+Read the [Installer v2 guide](docs/installer-v2.md). Live host activation tests
+are still required before asserting full production/SOTA qualification.
+
 ## Why
 
 The number of skills in a repository should not determine the cost of every agent session:
