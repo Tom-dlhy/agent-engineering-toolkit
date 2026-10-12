@@ -119,3 +119,43 @@ CI assertion.
 Official host specifications:
 - https://developers.openai.com/plugins/build/plugins
 - https://code.claude.com/docs/en/plugins
+
+## Reproducible project lockfiles
+
+The lockfile records the exact selected skills, source Git SHA and source-file
+SHA-256 hashes. It is portable between machines with the same source checkout.
+New installs can use a frozen lock; source drift or a different installed
+selection causes an error rather than a silent update.
+
+~~~bash
+python scripts/manage_install.py lock --agent codex --project /path/to/app --profile web-app
+python scripts/manage_install.py lock --agent codex --project /path/to/app --profile web-app --apply
+python scripts/manage_install.py install --agent codex --project /path/to/app --locked --apply
+~~~
+
+The default path is .aet/skills-lock-<agent>.json. Existing lockfiles are
+never replaced silently: review and explicitly remove or version-control a
+superseded lock before regenerating it. A frozen install does not fetch the
+source Git SHA automatically; checkout the required revision beforehand.
+
+## Optional real-agent acceptance harness
+
+A separate probe fixture contains a verification token found ONLY inside the
+probe SKILL.md (not in the model prompt). Run only with explicit authorization
+and a configured native CLI; this can consume model usage.
+
+~~~bash
+python scripts/native_agent_smoke.py prepare --output /tmp/aet-probe
+# For Claude, the probe is passed with --plugin-dir by the harness:
+python scripts/native_agent_smoke.py run --agent claude --output /tmp/aet-probe --allow-paid-agent-run
+# For Codex, first add/install/enable the generated local marketplace, then:
+python scripts/native_agent_smoke.py run --agent codex --output /tmp/aet-probe --allow-paid-agent-run
+~~~
+
+The test checks the secret token in the positive response and its absence
+in an unrelated negative response. The host transcript must still be reviewed
+to prove the negative case did not load the skill. Neither CLI nor paid model
+credentials are used in standard CI.
+
+For several independently installed native profile packages, use unique
+plugin IDs with --name aet-<profile> when building each distribution.
