@@ -27,7 +27,7 @@ class RoutingRegressionTests(unittest.TestCase):
                       "comparer les bases de données pour le stockage"):
             with self.subTest(query=query):
                 self.assertIn("database-selection", self.names(query))
-                self.assertNotIn("base-ui", self.names(query))
+                self.assertTrue({"base-ui", "authentication-solution-selection", "cloud-provider-selection"}.isdisjoint(self.names(query)))
 
     def test_debugging_is_not_provider_selection(self):
         for query in ("debug duplicate payment after provider timeout",

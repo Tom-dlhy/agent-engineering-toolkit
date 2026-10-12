@@ -97,7 +97,8 @@ A small, reviewed alias set handles database compounds (`base de données`,
 `bases de données`, `data base`) and selected FR/EN choice/diagnosis/action terms.
 It is **not general translation**. Database compounds no longer contribute `base`
 to Base UI. Debugging favors diagnostic keywords; `*-selection` candidates require
-explicit choice/comparison evidence. Simple documentation spelling edits can
+explicit choice/comparison and technical-domain evidence; `selection` alone
+cannot recommend every choice specialist. Simple documentation spelling edits can
 return zero skills. Negative query clauses introduced by `do not use`, `without`,
 `sans`, etc. are removed from positive scoring until punctuation or `but`/`mais`/`and`/`et`.
 Clause scope remains heuristic; rephrase complex mixed intentions or inspect them

@@ -44,6 +44,7 @@ _ACTIONS = frozenset("modify change fix edit update refactor restrict remove mig
 _BOUNDARIES = frozenset("auth authentication authorization permissions iam secrets credentials tenant ownership encryption production prod sensitive personal".split())
 _EXCLUSION_SCOPE = re.compile(r"^(?:do not use|don't use|do not apply|do not substitute|not for|avoid using|ne pas utiliser)\b", re.I)
 _GENERIC_IDENTITY = frozenset("ui cloud python data api service engineering selection design quality platform architecture library components".split())
+_CHOICE_GENERIC = frozenset("selection compare choice decision revising provider solution library architecture".split())
 _WORDING_ACTIONS = frozenset({"fix", "edit", "update"})
 _OPERATIONAL = frozenset("predicate filter endpoint policy code checks guard rule rules handler".split())
 _COMPLEXITY = frozenset("architecture api endpoint backend frontend integration refactor workflow design component pipeline selection compare".split())
@@ -207,9 +208,11 @@ def discover(
                   ("domain", _routing_tokens(skill.domain), 2),
                   ("description", _routing_tokens(positive), 1))
         score = 0
+        positive_overlap: set[str] = set()
         reasons: list[str] = []
         for label, words, weight in groups:
             overlap = tokens & words
+            positive_overlap.update(overlap)
             score += weight * len(overlap)
             if overlap:
                 reasons.append(label + ": " + ", ".join(sorted(overlap)))
@@ -229,6 +232,8 @@ def discover(
                     unfavorable.append("check exclusion scope: " + clause.strip())
         if score and skill.name.endswith("-selection") and not tokens & {"selection", "compare", "choice", "decision", "revising"}:
             negative_reasons.append("technology choice is not requested explicitly")
+        if score and skill.name.endswith("-selection") and not positive_overlap - _CHOICE_GENERIC:
+            negative_reasons.append("no evidence for this choice's technical domain")
         identity = _routing_tokens(skill.name) - _GENERIC_IDENTITY
         negated_identity = negated & identity
         if negated_identity and not tokens & negated_identity:
