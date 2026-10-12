@@ -1,48 +1,88 @@
 ---
 name: git-pr-workflow
 domain: quality
-version: "0.2.0"
+version: "1.0.0"
 description: >-
-  Use when creating, reviewing or updating Git branches and pull requests,
-  resolving conflicts, applying review feedback or checking protected merge
-  requirements. Do not force push shared refs or merge without authority,
-  and do not assume PR mergeability implies release readiness.
+  Use when creating or finishing isolated Git branches/worktrees, opening or
+  reviewing pull requests, assembling review evidence, resolving conflicts or
+  deciding a safe integration path. Do not force push, erase another worktree,
+  merge, publish or deploy without explicit authorization.
 ---
 
-# Git and PR workflow — controlled, reviewable changes
+# Git and PR workflow — reversible, reviewable integration
 
-## Before writing
-Inspect target repository, current branch/HEAD, required checks, branch
-rules, issue/acceptance scope, dirty worktree and concurrent PRs.
-Do not overwrite unrelated work or create duplicate branches.
+## Ownership and initial inspection
 
-## Execution
-1. Branch from current base and preserve expected SHA. Use one coherent
-   change per PR; split only when independent intent or rollback requires it.
-2. Commit meaningfully, avoid secrets/binary surprises and avoid unrelated
-   formatting noise. Run diff checks, appropriate tests and lockfile checks.
-3. Open a Draft PR for unreviewed/refactoring work with scope, risks,
-   evidence, untested cases and exact head/base revisions.
-4. Address review threads with targeted patches; avoid silent ref changes
-   or rewriting reviewers' approved code without justification.
-5. Before any merge, re-evaluate check runs for **current head/merge queue**,
-   approvals, ruleset/branch protection, conflicts and authorization.
-6. No merge, publish or production action solely because CI is green
-   or the API reports mergeable=true.
+Git branches and worktrees protect distinct work; they do **not** themselves
+prove changes are safe. Inspect repo path, current/ref base SHA, branch
+protection, dirty/untracked files, existing worktrees, live PR state and
+pending reviews before writing. Preserve user-owned work. A green CI on
+a stale SHA, API mergeable=true or a reviewer approval never independently
+authorizes a merge. For a simple edit in an already isolated branch,
+avoid making a second branch or a worktree just to look thorough.
 
-## Targeted references
-- [Git branching, rebase and conflict safety](references/branching-and-conflict-safety.md) —
-  **read when** choosing merge/rebase/cherry-pick, protecting history,
-  resolving conflicts or working with concurrent edits.
-- [PR review, required checks and rulesets](references/pr-review-and-merge-gates.md) —
-  **read when** writing review findings, checking stale CI,
-  merge queue and branch protection or handling security review.
-- [GitHub Actions trust model](references/actions-pr-security.md) —
-  **read when** the PR changes workflows, tokens, forks, checkout
-  permissions or untrusted contributions.
+## Decision by work complexity
 
-## Boundaries
-secure-code-review owns application vulnerabilities;
-dependency-supply-chain owns package/action provenance; release-readiness
-owns deployment GO/NO-GO. Report actual commit, tests, review state,
-conflicts and merge status without claiming unauthorized actions succeeded.
+| Evidence | Isolation and history | Review / integration |
+|---|---|---|
+| LIGHT, existing safe task branch | Work in place; narrow commits and targeted diff inspection | R0, no automatic PR/reviewer unless requested |
+| STANDARD, multi-file or separate feature | New branch if required; worktree only if active work risks collision | PR with scoped description, CI, R0 or warranted R1 |
+| DEEP, concurrent efforts, major migration/trust boundary | Isolated worktree or host-native equivalent, pinned base, explicit owner gates | R2 or required independent risk review, combined-tree checks, rollback/approval |
+
+A worktree is a local isolation mechanism, not synonymous with parallel
+execution. Detect whether the host already supplies isolated workspaces.
+Never impose Git operations on a platform with a superior native mechanism.
+
+## Execution protocol
+
+1. Determine task authority, base and HEAD; inspect status, worktrees,
+   locks, CI policy and files likely to overlap.
+2. Select smallest safe isolation: current branch if safe; dedicated branch
+   or verified worktree when other changes must be preserved. Refuse
+   checkout/reset that would destroy uncommitted content.
+3. Implement with coherent commits; inspect staged changes for secrets,
+   generated artifacts, accidental scope and lockfile drift.
+4. Verify exact changed revision with targeted tests plus impacted
+   integration checks. Do not declare success from an older CI result.
+5. Prepare a PR only when requested or when the agreed workflow requires
+   one. Include intent, non-goals, base/head, test evidence, review R0/R1/R2,
+   skipped checks, deployment/rollback considerations and open risks.
+6. For feedback, inspect the *current* diff and use
+   review-feedback-arbiter rather than blindly applying comments.
+7. Before integration: recompute base, protection/ruleset, reviews,
+   merge conflicts, approvals and actual combined-tree behavior.
+8. Offer/execute the **authorized** integration choice; retain workspace
+   and worktree for PR review if not merged. Cleanup only resources
+   created for this task and verified safe to remove.
+
+## Stop conditions and defensive defaults
+
+STOP on unapproved merge, force push, release, production deploy or
+destructive cleanup. STOP if the merge base is unclear, user edits would
+be overwritten, conflicts have unknown semantics, expected SHA changed,
+required CI is failing or a security blocker remains. A failed merge/CI
+is evidence to investigate, not a cue for --force. Do not remove
+another person's worktree or branch; no git clean -fdx as a routine step.
+
+## Selective local references
+
+- [Git branching, rebase and conflict safety](references/branching-and-conflict-safety.md)
+  — **read when** choosing merge/rebase/cherry-pick or resolving conflicts.
+- [PR review, required checks and rulesets](references/pr-review-and-merge-gates.md)
+  — **read when** checking approvals, protected branches or merge queues.
+- [GitHub Actions trust model](references/actions-pr-security.md)
+  — **read when** changing workflow permissions or untrusted CI.
+- [Worktree isolation, host detection and cleanup](references/worktree-isolation.md)
+  — **read when** parallel tasks need isolated checkout or an existing worktree may exist.
+- [Minimal review packet and revision-safe feedback](references/code-review-handoff.md)
+  — **read when** requesting R1/R2 or replying to comments across revisions.
+- [Branch completion and safe integration](references/branch-completion.md)
+  — **read when** finishing feature work, presenting merge/PR/retain choices or cleaning a worktree.
+
+## Boundary and exit
+
+verification-before-done owns evidence adequacy; release-readiness owns
+deployable artifact and rollback; secure-code-review owns application
+vulnerabilities; execution-orchestrator chooses agent scheduling.
+Exit with exact branch/base/head, changed file list, commands/results,
+review level, blockers, merge permission and workspace disposition.
