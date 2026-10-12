@@ -5,6 +5,7 @@ Use only on a separate disposable trusted host with reviewed fixtures.
 """
 from __future__ import annotations
 import hashlib
+import os
 import json
 from pathlib import Path
 import random
@@ -16,6 +17,7 @@ import uuid
 
 from .benchmark_model import BenchmarkError, Suite, Task, VARIANTS, inventory
 from .catalog import load_catalog
+from .benchmark_evidence import snapshot, store, canonical_bytes, digest
 
 FULL_METHODS = ("task-routing", "verification-before-done",
                 "implementation-planning", "test-strategy")
@@ -155,6 +157,27 @@ def plan(suite: Suite, root: Path, *, host: str, model: str,
                        "a temporary folder is NOT an OS sandbox."}
 
 
+
+def _checkpoint(output: Path, records: list[dict]) -> None:
+    """Atomic replacement of *our* journal only; avoid partial JSON on crash."""
+    scratch = output / (".records-" + str(uuid.uuid4()) + ".tmp")
+    fd = os.open(scratch, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        with os.fdopen(fd, "wb") as stream:
+            stream.write(canonical_bytes(records))
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(scratch, output / "records.json")
+    finally:
+        if scratch.exists():
+            scratch.unlink()
+
+
+def _snapshot_digest(contents: dict[str, bytes]) -> str:
+    return digest(canonical_bytes({name: digest(data) for name, data in
+                                   sorted(contents.items())}))
+
+
 def execute(suite: Suite, root: Path, *, host: str, model: str, trials: int,
             output: Path, allow_paid: bool, allow_tests: bool, trusted_host: bool,
             max_runs: int, timeout: int, max_total_seconds: int,
@@ -176,16 +199,20 @@ def execute(suite: Suite, root: Path, *, host: str, model: str, trials: int,
     output.mkdir(parents=True, mode=0o700)
     output.chmod(0o700)
     started = time.monotonic()
-    records = []
+    records: list[dict] = []
     for task_id, trial, variant in p["run_order"]:
         remaining = max_total_seconds - int(time.monotonic() - started)
         if remaining <= 0:
             break
         task = next(t for t in suite.tasks if t.id == task_id)
+        run_id = str(uuid.uuid4())
         with tempfile.TemporaryDirectory(prefix="aet-benchmark-") as tmp:
             working = Path(tmp)
             selected = _stage(task, working, root, host, variant, p["fixtures"][task_id])
-            before, _ = _artifacts(working)
+            # Snapshot is taken BEFORE the model or test command can modify the
+            # fixture, excluding the mounted AET instruction files.
+            before = snapshot(working)
+            before_sha = _snapshot_digest(before)
             cmd = _command(host, model, task.prompt)
             begin = time.monotonic()
             timeout_hit = False
@@ -196,8 +223,24 @@ def execute(suite: Suite, root: Path, *, host: str, model: str, trials: int,
                 status, text, timeout_hit = None, "", True
             duration = round(time.monotonic() - begin, 2)
             tokens = _usage(host, text) if status == 0 else None
+
+            # Capture the exact agent-produced files BEFORE acceptance tests
+            # have a chance to mutate them. Even failed agent runs are captured.
+            artifact_paths: list[str] = []
+            after_sha = None
+            evidence = {"status": "BLOCKED"}
+            try:
+                after = snapshot(working)
+                after_sha = _snapshot_digest(after)
+                evidence = store(output, run_id, before, after)
+                artifact_paths = sorted(after)
+            except (BenchmarkError, OSError):
+                # Fail closed: don't run tests or claim reviewable results if
+                # a symlink, credential, oversized output or I/O issue appears.
+                evidence = {"status": "BLOCKED", "reason": "artifact_capture_rejected"}
+
             checked, check_code = "NOT_RUN", None
-            if status == 0:
+            if status == 0 and evidence["status"] == "CAPTURED":
                 remaining = max_total_seconds - int(time.monotonic() - started)
                 if remaining > 0:
                     try:
@@ -207,13 +250,12 @@ def execute(suite: Suite, root: Path, *, host: str, model: str, trials: int,
                         checked = "PASS" if test.returncode == 0 else "FAIL"
                     except (subprocess.TimeoutExpired, OSError):
                         checked = "BLOCKED"
-            try:
-                after, artifact_paths = _artifacts(working)
-            except BenchmarkError:
-                after, artifact_paths, checked = None, [], "BLOCKED"
+            elif evidence["status"] != "CAPTURED":
+                checked = "BLOCKED"
+
             row = {
                 "task_id": task.id, "trial": trial, "variant": variant,
-                "run_id": str(uuid.uuid4()), "suite_sha256": suite.sha256,
+                "run_id": run_id, "suite_sha256": suite.sha256,
                 "fixture_sha256": p["fixtures"][task_id],
                 "host": host, "model": model, "tool_config": p["tool_config"],
                 "mounted_skills": selected, "observed_skill_activation": None,
@@ -221,13 +263,15 @@ def execute(suite: Suite, root: Path, *, host: str, model: str, trials: int,
                 "agent_exit": status, "timed_out": timeout_hit,
                 "test_status": checked, "test_exit": check_code,
                 "tokens": tokens, "duration_seconds": duration,
-                "artifact_sha256": after, "initial_sha256": before,
-                "artifact_paths": artifact_paths,
+                "artifact_sha256": after_sha, "initial_sha256": before_sha,
+                "artifact_paths": artifact_paths, "artifact_evidence": evidence,
+                "artifact_evidence_verified": False,
                 "human_review": "NOT_REVIEWED", "critical_violation": None,
             }
             records.append(row)
-            (output / "records.json").write_text(
-                json.dumps(records, indent=2) + "\n", encoding="utf-8")
+            _checkpoint(output, records)
     return {"report": str(output / "records.json"), "completed": len(records),
             "expected": p["total_runs"], "partial": len(records) < p["total_runs"],
-            "warning": "Host not securely sandboxed; agent/check success is NOT human-reviewed quality."}
+            "artifacts": str(output / "artifacts"),
+            "warning": "Evidence is stored before tests in a private local directory; "
+                       "host is not securely sandboxed and human verification is required."}
