@@ -15,6 +15,15 @@
 3. **Real integrations:** use authorized version-pinned apps to validate frontend SSR/keyboard/assistive technology, API and cloud SDK behavior, database migrations/restore, identity boundaries and safe deployment paths. Differentiate passing offline fixtures from working production stacks.
 4. **Claims and maintenance:** recheck version-sensitive official docs, hosting limits, feature entitlements and legal requirements before use; capture test provenance and update only the skills whose real failures justify changes.
 
+## Installer v2 — opt-in implementation, live host acceptance pending
+
+Managed local installation, persistent ownership ledger, cumulative profiles,
+SHA drift checks, read-only doctor, update/repair/uninstall, journal recovery,
+release metadata and native Codex/Claude plugin packaging are implemented.
+Cross-platform lifecycle suites run in CI; real agent activation (including
+negative routing and measured outcomes) remains a separate acceptance gate.
+See [Installer v2](installer-v2.md).
+
 ## Planned: external Skill Package Manager
 
 - Read-only search/inspect first, exact immutable SHA, license/NOTICE and dependency audit.
