@@ -12,8 +12,14 @@ description: >-
 
 ## Choose REUSE before CREATE
 
-1. **Audit intent:** read the governance charter and current registry. Specify the
-   behavior the skill should improve, with positive, negative and ambiguous tasks.
+1. **Audit intent:** identify the target context and read available governance
+   and catalog sources. In an AET checkout use `registry/skills.yaml`; in a
+   global bundle use the gateway's Markdown indexes. The full AET charter is
+   maintained externally: use a supplied copy or location, never invent its
+   path. If unavailable, name the evidence gap rather than blocking authorized
+   analysis or silently assuming compliance. See intake-and-decomposition for
+   the boundary. Specify the behavior to improve, with positive, negative
+   and ambiguous tasks.
 2. **Compare existing skills and references:** apply REUSE → EXTEND → REFERENCE →
    CREATE only if responsibility and activation are truly independent; REJECT unsafe
    or duplicative suggestions. Do not equate a new technology noun with a new skill.

@@ -58,6 +58,23 @@ the installed metadata and check that an activated leaf was actually read.
 Decision with rejected alternatives, local overlap, planned leaf paths,
 new discovery cost, source/license outcome and evaluation plan.
 
-See the local governance charter and https://agentskills.io/specification for
-host-independent format guidance; confirm supported host semantics before
-claiming native activation.
+## Governance availability and portable intake
+
+In an AET checkout, use `registry/skills.yaml` and applicable `AGENTS.md`,
+`CONTRIBUTING.md` and `docs/progressive-expertise.md`. The full AET charter
+is maintained externally: use its supplied copy or location when available;
+never guess its path. In a global bundle, use the gateway's Markdown indexes
+and relevant installed guides; a checkout CLI is not required.
+
+A personal skill audit can produce a pinned intake/overlap record without
+creating a repository or PR. When the full charter is unavailable, distinguish
+rules actually inspected from unverified charter compliance. Continue
+authorized analysis or reversible drafting; leave publication or integration
+that requires missing governance review pending.
+
+This fallback does not bypass project rules, provenance, user authorization
+or a required repository review. external-skill-audit owns third-party
+provenance; git-pr-workflow owns authorized branch/PR actions.
+
+See https://agentskills.io/specification for host-independent format guidance;
+confirm supported host semantics before claiming native activation.

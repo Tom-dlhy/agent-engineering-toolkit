@@ -34,8 +34,11 @@ Long-running Tasks extension is not the old experimental
   schemas, handle partial/error response and cancellations.
 
 ## Version proof
-Record MCP spec date, SDK major, transport and capability
-handshake; test client/server with pinned matrix.
+Record MCP spec date, exact SDK package versions, transport and
+per-request capability exchange; test client/server with a pinned matrix.
+For the 2026-07-28 core, do not add `initialize`/`initialized` or protocol
+sessions. An initialization handshake belongs only to explicitly
+supported legacy 2025 compatibility paths.
 TypeScript SDK v1 line targets 2025-11-25; v2 has
 separate server/client packages and supports newer spec.
 Do not paste snippets across major versions.

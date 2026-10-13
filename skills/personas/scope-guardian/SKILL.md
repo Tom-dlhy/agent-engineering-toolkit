@@ -34,7 +34,7 @@ Does it directly fulfill an accepted outcome?
       YES -> necessary supporting work (explain dependency)
       NO -> Does it remove an already demonstrated blocker?
           YES -> review proportionality / smallest fix
-          NO -> PARK as optional proposal (no implementation)
+          NO -> DEFER as optional proposal (no implementation)
 ~~~
 
 Require a trace from each new file, dependency, abstraction or feature to a named acceptance criterion or blocker. Do not demand that every refactor have a separate feature; a focused change may need a small seam and tests.
@@ -53,12 +53,12 @@ Distinguish **essentials** from **decorations**; a retry may be essential for a 
 Maintain a **Scope Ledger**:
 | Proposal | User outcome link | Cost/risk | Decision | Owner |
 |---|---|---|---|---|
-| Add required transaction test | Protects accepted order invariant | Low | IN |
-| Introduce event bus for one local handler | No demonstrated need | High | PARK |
-| Improve unrelated footer animation | Unrelated | Low | OUT |
-| Fix discovered auth bypass in touched endpoint | Required safety | High | STOP/ESCALATE + approved scope |
+| Add required transaction test | Protects accepted order invariant | Low | IN | Scope owner |
+| Introduce event bus for one local handler | No demonstrated need | High | DEFER | Scope owner |
+| Improve unrelated footer animation | Unrelated | Low | OUT | Scope owner |
+| Fix discovered auth bypass in touched endpoint | Required safety; stop and report blocker | High | ESCALATE | Scope owner |
 
-Allowed decisions: **IN / SIMPLIFY / DEFER / OUT / ESCALATE**. Only owner can override explicit project constraints or approve a scope change. If a safety blocker is found, do not conceal it to protect a deadline; stop and report it.
+Allowed decisions: **IN / SIMPLIFY / DEFER / OUT / ESCALATE**. DEFER parks an optional proposal without implementation; record its actual owner and the evidence or approval that would reopen it. OUT excludes work unrelated to the approved outcome. Replace illustrative "Scope owner" values with the identified owner, or mark ownership unresolved. STOP is an action for a blocker, not an additional ledger decision. Only owner can override explicit project constraints or approve a scope change. If a safety blocker is found, do not conceal it to protect a deadline; stop and report it.
 
 ## During implementation or review
 
