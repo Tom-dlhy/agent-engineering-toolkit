@@ -33,7 +33,7 @@ class AETCloudContractTests(unittest.TestCase):
                       "authentication token", "tenant checks", "preview environment"):
             self.assertIn(token, text)
         self.assertIn("Do not replay a mutation", text)
-        self.assertIn("not the replica's actual consistency", text)
+        self.assertIn("not the replica's actual consistency", " ".join(text.split()))
 
     def test_request_burn_rate_arithmetic_and_both_window_policy(self) -> None:
         text = leaf("observability-sre")
