@@ -37,7 +37,7 @@ class AETContractConsistencyTests(unittest.TestCase):
         self.assertIn("legacy 2025 compatibility", protocol)
         self.assertIn("version-matched JSON-RPC request/response", migration)
         self.assertIn("2025 legacy", migration)
-        self.assertNotIn("capability\\nhandshake", protocol)
+        self.assertNotIn("capability handshake", " ".join(protocol.split()))
         self.assertNotIn("transport handshake", migration)
 
     def test_scope_ledger_has_declared_decisions_and_owners(self) -> None:
