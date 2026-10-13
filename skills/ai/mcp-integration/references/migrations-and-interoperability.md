@@ -37,8 +37,8 @@ Tool list from server is untrusted data for model.
 
 ## Honest output
 Record actual spec/SDK/transport tested and known unsupported
-features. A green JSON-RPC transport handshake doesn't
-prove tool execution security or privacy compliance.
+features. A successful version-matched JSON-RPC request/response
+doesn't prove tool execution security or privacy compliance.
 
 Sources: https://blog.modelcontextprotocol.io/posts/2026-07-28/ ,
 https://modelcontextprotocol.io/specification/2026-07-28 ,

@@ -25,7 +25,11 @@ description: >-
    merely because it exists.
 6. Validate positive/negative/ambiguous routing, reference traversal,
    no unapproved commands, context budget, content correctness and
-   evaluation scenarios. Changes go through an auditable PR.
+   evaluation scenarios. Repository contributions follow their required
+   review/PR workflow; prepare a PR only within the user-authorized scope.
+   For a personal or read-only audit, return the pinned intake record without
+   creating a repository or PR. skill-authoring owns the portable
+   governance/intake boundary.
 7. Keep source-update cadence explicit. No automatic remote updates or
    unapproved merge, access token requests, installs or tool execution.
 

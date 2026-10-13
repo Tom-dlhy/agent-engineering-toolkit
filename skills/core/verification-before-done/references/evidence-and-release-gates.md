@@ -9,7 +9,7 @@ preparation and risk before reporting a result.
 |---|---|---|---|---|
 | Reject invalid API payload | `pytest tests/test_api.py -q` | PR SHA / Python 3.x | PASS | HTTP adapter mocked |
 | Migrate DB safely | Staging backfill + rollback | Staging DB | BLOCKED | No staging auth |
-| UI menu keyboard | Browser/AT test | Browser target | SKIPPED | Browser unavailable |
+| UI menu keyboard | Browser/AT test | Browser target | NOT RUN | Browser unavailable |
 
 Replace illustrative entries with **executed** results. A check is sufficient
 only for outcomes actually asserted by it; CI being green is necessary for
@@ -17,10 +17,16 @@ workflow policy but never proof of unrelated external correctness.
 
 ## Completion states
 
-- VERIFIED IN SCOPE: observed checks cover specified behavior on current revision.
-- PARTIAL: some acceptance criteria proven, limitations named.
-- BLOCKED: missing authorization, env/tool access or test fixture.
-- NOT COMPLETE: known failing relevant test, contract break or unresolved blocker.
+Use the same task-level states as SKILL.md:
+
+- COMPLETE: observed checks and required review/authorization gates cover the agreed scope on the current revision; no unresolved required gate.
+- PARTIALLY VERIFIED: some acceptance criteria are proven; remaining checks and their limits are named, with no known required failure or blocking prerequisite.
+- BLOCKED: a required authorization, environment, reviewer, tool or fixture is unavailable; report any partial evidence separately.
+- FAILED: a relevant executed check fails or an observed contract break remains unresolved.
+
+These are task outcomes, not per-check results. A check not executed is
+NOT RUN, with its reason; do not convert missing evidence into PASS or FAIL.
+A blocked required gate prevents COMPLETE even when other checks pass.
 
 GitHub `mergeable` is a version control status and does not mean ready for production
 or authorized to merge. A passing check may become stale after branch changes.
