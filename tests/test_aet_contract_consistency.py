@@ -69,7 +69,7 @@ class AETContractConsistencyTests(unittest.TestCase):
         self.assertIn("does not bypass project rules", intake)
         self.assertIn("user-authorized scope", external)
         self.assertIn("read-only audit", external)
-        self.assertIn("without creating a repository or PR", external)
+        self.assertIn("without creating a repository or PR", " ".join(external.split()))
 
 
 if __name__ == "__main__":
