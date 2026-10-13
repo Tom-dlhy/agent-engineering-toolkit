@@ -5,6 +5,30 @@
 ## Service-specific failure modes
 Message lock expires before processing, duplicate delivery after settlement failure, max delivery count/DLQ, session ordering, auth role pending, connection namespace `*.servicebus.windows.net` and network policy.
 
+### Consumer lock and settlement contract
+Choose PeekLock for explicit settlement; ReceiveAndDelete accepts transfer
+loss. Bound processing/prefetch and renewal; renewal does not guarantee a
+valid lock.
+
+After *detected* lock loss, start no new business effect for that delivery.
+If an effect already committed, preserve its durable operation result:
+failed Complete is not a rollback. On redelivery, reconcile the stable
+business operation ID before replay. An in-memory flag is insufficient.
+
+Complete after durably recording success, with the receiver connection open.
+Recover a lost lock on a fresh delivery, rather than repeatedly settling
+a stale delivery. Shutdown must preserve recovery evidence.
+
+Test both directions: lock loss **before** a new effect means no effect from
+that delivery; committed effect followed by settlement failure and
+redelivery means one business effect **only when external idempotency is
+enforced**. Lock loss during an already-started effect does not provide
+perfect fencing. Pin actual SDK exceptions and verify provider behavior in
+an explicitly authorized disposable namespace.
+
+Source reviewed 2026-10-13:
+https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-transfers-locks-settlement
+
 ## Role and resource boundary
 `Azure Service Bus Data Sender` for send and `Azure Service Bus Data Receiver` for settlement/receive; manage entities with separate control-plane role. Sessions, queues and topic subscriptions require corresponding permissions.
 
