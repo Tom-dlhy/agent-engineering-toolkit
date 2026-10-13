@@ -5,6 +5,30 @@
 ## Service-specific failure modes
 D1 uses SQLite semantics, not PostgreSQL isolation or multi-tenant authorization by default. Bound query/row size, migration strategy, index/performance, read replication/session consistency, backup/restore and env preview DB separation.
 
+### Sessions and read-after-write contract
+When using D1 Sessions/read replication, `env.DB.withSession("first-primary")`
+starts on the primary; `"first-unconstrained"` may start on a replica.
+Use the same session for a write and its dependent read.
+
+To continue across authenticated requests, carry the returned
+`session.getBookmark()` (a string after queries, null before any query)
+into the next request's `env.DB.withSession(bookmark)`; this preserves a
+minimum observed database version. Validate the caller and object
+authorization separately: a bookmark is **not** an authentication token.
+
+If the required bookmark is lost, do not claim that continuity is unchanged.
+Choose `first-primary` if a fresh primary read meets the requirement;
+otherwise report the gap. Do not replay a mutation to recreate a bookmark.
+Without D1 Sessions, queries use the primary rather than read replicas.
+
+Test dependent read, bookmark propagation, missing-bookmark fallback and
+unchanged tenant checks. A fake binding verifies the caller's decisions, not
+the replica's actual consistency: verify that separately in an authorized
+preview environment with the target runtime/API pinned.
+
+Source reviewed 2026-10-13:
+https://developers.cloudflare.com/d1/worker-api/d1-database/
+
 ## Trust and tenancy
 Binding attached to Worker allows querying configured database; management/migrations via scoped Wrangler deployment account token. Never interpolate raw SQL query parameters, use `.bind()` and validate identifiers.
 
